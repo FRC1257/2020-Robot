@@ -28,10 +28,10 @@ public class Robot extends TimedRobot {
         encoder1 = motor1.getEncoder();
         pidController1 = motor1.getPIDController();
 
-        SmartDashboard.putNumber("kP", 0.0);
+        SmartDashboard.putNumber("kP", 0.000001);
         SmartDashboard.putNumber("kI", 0.0);
         SmartDashboard.putNumber("kD", 0.0);
-        SmartDashboard.putNumber("kFF", 0.000160);
+        SmartDashboard.putNumber("kFF", 0.000180);
         SmartDashboard.putNumber("Setpoint", 4500);
 
         controller = new XboxController(0);
