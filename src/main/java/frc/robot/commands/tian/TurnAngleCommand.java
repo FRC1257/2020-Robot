@@ -1,20 +1,17 @@
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.tian;
 
-import static frc.robot.Constants.*;
-
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.FunPlusPhoenix;
 
-public class ClosedLoopDriveCommand extends CommandBase {
+// Use with .withTimeout() to add a timeout
+public class TurnAngleCommand extends CommandBase {
 
-    private final Drivetrain drivetrain;
-    private final XboxController controller;
+    private final FunPlusPhoenix drivetrain;
+    private final double angle;
 
-    public ClosedLoopDriveCommand(Drivetrain drivetrain, XboxController controller) {
+    public TurnAngleCommand(FunPlusPhoenix drivetrain, double angle) {
         this.drivetrain = drivetrain;
-        this.controller = controller;
+        this.angle = angle;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drivetrain);
     }
@@ -22,14 +19,13 @@ public class ClosedLoopDriveCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        drivetrain.turnAngle(angle);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        drivetrain.closedLoopDrive(-controller.getY(Hand.kLeft) * DRIVE_MAX_VEL, 
-            controller.getX(Hand.kRight) * DRIVE_MAX_ROT);
+
     }
 
     // Called once the command ends or is interrupted.
@@ -41,6 +37,6 @@ public class ClosedLoopDriveCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return drivetrain.getState() != FunPlusPhoenix.State.PID_ANGLE;
     }
 }

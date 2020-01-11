@@ -1,18 +1,18 @@
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.tian;
 
 import static frc.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.FunPlusPhoenix;
 
 public class ClosedLoopDriveCommand extends CommandBase {
 
-    private final Drivetrain drivetrain;
+    private final FunPlusPhoenix drivetrain;
     private final XboxController controller;
 
-    public ClosedLoopDriveCommand(Drivetrain drivetrain, XboxController controller) {
+    public ClosedLoopDriveCommand(FunPlusPhoenix drivetrain, XboxController controller) {
         this.drivetrain = drivetrain;
         this.controller = controller;
         // Use addRequirements() here to declare subsystem dependencies.

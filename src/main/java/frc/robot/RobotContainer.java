@@ -4,8 +4,8 @@ import static frc.robot.Constants.*; // import the Constants class so we can use
                                      // easily
 
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.drivetrain.ManualDriveCommand;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.commands.tian.ManualDriveCommand;
+import frc.robot.subsystems.FunPlusPhoenix;
 import frc.robot.util.Gyro;
 
 /**
@@ -16,7 +16,7 @@ import frc.robot.util.Gyro;
  */
 public class RobotContainer {
 
-    private final Drivetrain drivetrain;
+    private final FunPlusPhoenix drivetrain;
 
     private final XboxController controller;
 
@@ -26,7 +26,7 @@ public class RobotContainer {
     public RobotContainer() {
         controller = new XboxController(CONTROLLER_ID);
 
-        drivetrain = new Drivetrain();
+        drivetrain = new FunPlusPhoenix();
         drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, controller));
         
         configureButtonBindings();

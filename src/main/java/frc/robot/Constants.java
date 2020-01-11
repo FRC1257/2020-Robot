@@ -39,8 +39,8 @@ public final class Constants {
     public static double DRIVE_PROFILE_RIGHT_POS_P = 0.1;
     public static double DRIVE_PROFILE_LEFT_POS_P = 0.1;
 
-    public static int DRIVE_FRONT_LEFT = 0;
-    public static int DRIVE_FRONT_RIGHT = 1;
-    public static int DRIVE_BACK_LEFT = 2;
-    public static int DRIVE_BACK_RIGHT = 3;
+    public static int DRIVE_FRONT_LEFT = 7;
+    public static int DRIVE_FRONT_RIGHT = 2;
+    public static int DRIVE_BACK_LEFT = 6;
+    public static int DRIVE_BACK_RIGHT = 1;
 }

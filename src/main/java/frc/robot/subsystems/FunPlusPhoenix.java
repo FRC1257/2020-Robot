@@ -69,6 +69,9 @@ public class FunPlusPhoenix extends SubsystemBase {
         backLeftMotor.follow(frontLeftMotor);
         backRightMotor.follow(frontRightMotor);
 
+        frontRightMotor.setInverted(true);
+        backRightMotor.setInverted(true);
+
         frontLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         frontRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
@@ -197,7 +200,7 @@ public class FunPlusPhoenix extends SubsystemBase {
                 speedLeft = forward + turn;
                 speedRight = maxInput;
             }
-        } 
+        }  
         else {
             if(turn >= 0.0) {
                 speedLeft = forward + turn;
