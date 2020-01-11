@@ -8,11 +8,16 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Gyro;
 
@@ -31,6 +36,9 @@ public class Drivetrain extends SubsystemBase {
 
     private SimpleMotorFeedforward feedforward;
     private DifferentialDriveKinematics driveKinematics;
+    private DifferentialDriveVoltageConstraint voltageConstraint;
+    private TrajectoryConfig trajectoryConfig;
+    private DifferentialDriveOdometry driveOdometry;
 
     private PIDController distPID;
     private PIDController anglePID;
@@ -40,6 +48,8 @@ public class Drivetrain extends SubsystemBase {
 
     private TrapezoidProfile distProfile;
     private Timer profileTimer;
+
+    private Trajectory trajectory;
 
     public enum State {
         MANUAL,
@@ -77,14 +87,19 @@ public class Drivetrain extends SubsystemBase {
         rightEncoder = new CANEncoder(frontRightMotor);
         leftEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M);
         rightEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M);
-        leftEncoder.setVelocityConversionFactor(DRIVE_WHEEL_DIAM_M * DRIVE_WHEEL_DIAM_M / 60.0);
-        rightEncoder.setVelocityConversionFactor(DRIVE_WHEEL_DIAM_M * DRIVE_WHEEL_DIAM_M / 60.0);
+        leftEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0);
+        rightEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0);
 
         leftVelPID = new PIDController(DRIVE_LEFT_VEL_PID_P, 0, 0);
         rightVelPID = new PIDController(DRIVE_RIGHT_VEL_PID_P, 0, 0);
 
         feedforward = new SimpleMotorFeedforward(DRIVE_KS, DRIVE_KV, DRIVE_KA);
         driveKinematics = new DifferentialDriveKinematics(DRIVE_TRACK_WIDTH_M);
+        voltageConstraint = new DifferentialDriveVoltageConstraint(feedforward, driveKinematics, DRIVE_MAX_VOLTAGE_RAMSETE);
+        trajectoryConfig = new TrajectoryConfig(DRIVE_RAMSETE_MAX_VEL, DRIVE_RAMSETE_MAX_VEL)
+            .setKinematics(driveKinematics)
+            .addConstraint(voltageConstraint);
+        driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(Gyro.getInstance().getRobotAngle()));
 
         distPID = new PIDController(DRIVE_DIST_PID_P, DRIVE_DIST_PID_I, DRIVE_DIST_PID_D);
         distPID.setTolerance(DRIVE_DIST_PID_TOLERANCE);
@@ -183,6 +198,8 @@ public class Drivetrain extends SubsystemBase {
             break;
         }
 
+        driveOdometry.update(Rotation2d.fromDegrees(Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), rightEncoder.getPosition());
+
         speedForward = 0;
         speedTurn = 0;
     }
@@ -268,6 +285,10 @@ public class Drivetrain extends SubsystemBase {
         Gyro.getInstance().zeroRobotAngle();
         distPID.reset();
         state = State.PROFILE_DIST;
+    }
+
+    public void driveTrajectory(Trajectory trajectory) {
+        this.trajectory = trajectory;
     }
 
     public void outputValues() {
