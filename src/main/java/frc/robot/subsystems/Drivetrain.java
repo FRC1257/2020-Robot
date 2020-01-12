@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Gyro;
 
-// TODO change this class to never reset encoders/gyro in order to not mess up odometry
 public class Drivetrain extends SubsystemBase {
   
     private CANSparkMax frontLeftMotor;
@@ -114,9 +113,6 @@ public class Drivetrain extends SubsystemBase {
 
     public void reset() {
         state = defaultState;
-        leftEncoder.setPosition(0);
-        rightEncoder.setPosition(0);
-        Gyro.getInstance().zeroRobotAngle();
         distSetpoint = -1257;
         angleSetpoint = -1257;
         pathTimer.stop();
@@ -146,10 +142,12 @@ public class Drivetrain extends SubsystemBase {
                     state = defaultState;
                     break;
                 }
+
+                double angleError = Gyro.getInstance().getRobotAngle() - angleSetpoint;
                 
                 // Apply PID controller to forward speed and basic P control to angle
                 double[] pidDistArcadeSpeeds = arcadeDrive(distPID.calculate(getAverageEncoderPosition(), distSetpoint),
-                    -Gyro.getInstance().getRobotAngle() * DRIVE_MAINTAIN_ANGLE_PID_P);
+                    angleError * DRIVE_MAINTAIN_ANGLE_PID_P);
 
                 frontLeftMotor.set(pidDistArcadeSpeeds[0]);
                 frontRightMotor.set(pidDistArcadeSpeeds[1]);
@@ -187,13 +185,15 @@ public class Drivetrain extends SubsystemBase {
                 ChassisSpeeds profiledChassisSpeeds = new ChassisSpeeds(currentStateProf.velocity, 0, 0);
                 DifferentialDriveWheelSpeeds profiledDSpeeds = driveKinematics.toWheelSpeeds(profiledChassisSpeeds);
 
+                double positionError = currentStateProf.position - getAverageEncoderPosition();
+
                 // use P to acquire desired velocity, P to acquire desired position, and feedforward to acquire desired velocity
                 frontLeftMotor.setVoltage(leftVelPID.calculate(leftEncoder.getVelocity(), profiledDSpeeds.leftMetersPerSecond) + 
                     feedforward.calculate(profiledDSpeeds.leftMetersPerSecond) + 
-                    (currentStateProf.position - leftEncoder.getPosition()) * DRIVE_PROFILE_LEFT_POS_P);
+                    positionError * DRIVE_PROFILE_LEFT_POS_P);
                 frontRightMotor.setVoltage(rightVelPID.calculate(rightEncoder.getVelocity(), profiledDSpeeds.rightMetersPerSecond) + 
                     feedforward.calculate(profiledDSpeeds.leftMetersPerSecond) + 
-                    (currentStateProf.position - rightEncoder.getPosition()) * DRIVE_PROFILE_RIGHT_POS_P);
+                    positionError * DRIVE_PROFILE_RIGHT_POS_P);
 
                 if(distProfile.isFinished(pathTimer.get())) {
                     state = defaultState;
@@ -225,7 +225,8 @@ public class Drivetrain extends SubsystemBase {
             break;
         }
 
-        driveOdometry.update(Rotation2d.fromDegrees(Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), rightEncoder.getPosition());
+        // negative so that counter clockwise = positive angle
+        driveOdometry.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), rightEncoder.getPosition());
 
         speedForward = 0;
         speedTurn = 0;
@@ -283,18 +284,18 @@ public class Drivetrain extends SubsystemBase {
 
     // dist in m
     public void driveDist(double dist) {
-        distSetpoint = dist;
-        leftEncoder.setPosition(0);
-        rightEncoder.setPosition(0);
-        Gyro.getInstance().zeroRobotAngle();
+        distSetpoint = getAverageEncoderPosition() + dist;
+        angleSetpoint = Gyro.getInstance().getRobotAngle();
         distPID.reset();
         state = State.PID_DIST;
     }
 
     // angle in deg
     public void turnAngle(double angle) {
-        angleSetpoint = angle;
-        Gyro.getInstance().zeroRobotAngle();
+        angleSetpoint = Gyro.getInstance().getRobotAngle() + angle;
+        while(angle < -180) angle += 360;
+        while(angle > 180) angle -= 360;
+        
         anglePID.reset();
         state = State.PID_ANGLE;
     }
@@ -303,13 +304,9 @@ public class Drivetrain extends SubsystemBase {
     public void driveDistProfile(double dist) {
         distProfile = new TrapezoidProfile(
             new TrapezoidProfile.Constraints(DRIVE_PROFILE_MAX_VEL, DRIVE_PROFILE_MAX_ACC),
-            new TrapezoidProfile.State(dist, 0));
+            new TrapezoidProfile.State(getAverageEncoderPosition() + dist, 0));
         pathTimer.reset();
         pathTimer.start();
-
-        leftEncoder.setPosition(0);
-        rightEncoder.setPosition(0);
-        Gyro.getInstance().zeroRobotAngle();
         distPID.reset();
         state = State.PROFILE_DIST;
     }
