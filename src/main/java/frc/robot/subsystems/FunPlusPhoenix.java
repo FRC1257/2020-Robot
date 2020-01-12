@@ -126,7 +126,7 @@ public class FunPlusPhoenix extends SubsystemBase {
                 }
                 
                 // Apply PID controller to forward speed and basic P control to angle
-                double[] pidDistArcadeSpeeds = arcadeDrive(distPID.calculate(getLeftEncoderPosition(), distSetpoint),
+                double[] pidDistArcadeSpeeds = arcadeDrive(distPID.calculate(getAverageEncoderPosition(), distSetpoint),
                     -Gyro.getInstance().getRobotAngle() * DRIVE_MAINTAIN_ANGLE_PID_P);
 
                 frontLeftMotor.set(pidDistArcadeSpeeds[0]);
@@ -261,7 +261,6 @@ public class FunPlusPhoenix extends SubsystemBase {
         setLeftEncoderPosition(0);
         setRightEncoderPosition(0);
         Gyro.getInstance().zeroRobotAngle();
-        distPID.reset();
         state = State.PROFILE_DIST;
     }
 
@@ -292,6 +291,11 @@ public class FunPlusPhoenix extends SubsystemBase {
     // returns in m
     public double getRightEncoderPosition() {
         return frontRightMotor.getSelectedSensorPosition() / 4096.0 * Math.PI * DRIVE_WHEEL_DIAM_M;
+    }
+
+    // returns in m
+    public double getAverageEncoderPosition() {
+        return (getLeftEncoderPosition() + getRightEncoderPosition()) / 2.0;
     }
 
     // returns in m/s

@@ -7,7 +7,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -15,12 +17,11 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Gyro;
 
+// TODO change this class to never reset encoders/gyro in order to not mess up odometry
 public class Drivetrain extends SubsystemBase {
   
     private CANSparkMax frontLeftMotor;
@@ -36,8 +37,6 @@ public class Drivetrain extends SubsystemBase {
 
     private SimpleMotorFeedforward feedforward;
     private DifferentialDriveKinematics driveKinematics;
-    private DifferentialDriveVoltageConstraint voltageConstraint;
-    private TrajectoryConfig trajectoryConfig;
     private DifferentialDriveOdometry driveOdometry;
 
     private PIDController distPID;
@@ -47,8 +46,9 @@ public class Drivetrain extends SubsystemBase {
     private double angleSetpoint;
 
     private TrapezoidProfile distProfile;
-    private Timer profileTimer;
+    private Timer pathTimer;
 
+    private RamseteController ramseteController;
     private Trajectory trajectory;
 
     public enum State {
@@ -56,7 +56,8 @@ public class Drivetrain extends SubsystemBase {
         CLOSED_LOOP,
         PID_DIST,
         PID_ANGLE,
-        PROFILE_DIST
+        PROFILE_DIST,
+        RAMSETE
     }
     private State defaultState = State.MANUAL;
     private State state = defaultState;
@@ -95,10 +96,6 @@ public class Drivetrain extends SubsystemBase {
 
         feedforward = new SimpleMotorFeedforward(DRIVE_KS, DRIVE_KV, DRIVE_KA);
         driveKinematics = new DifferentialDriveKinematics(DRIVE_TRACK_WIDTH_M);
-        voltageConstraint = new DifferentialDriveVoltageConstraint(feedforward, driveKinematics, DRIVE_MAX_VOLTAGE_RAMSETE);
-        trajectoryConfig = new TrajectoryConfig(DRIVE_RAMSETE_MAX_VEL, DRIVE_RAMSETE_MAX_VEL)
-            .setKinematics(driveKinematics)
-            .addConstraint(voltageConstraint);
         driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(Gyro.getInstance().getRobotAngle()));
 
         distPID = new PIDController(DRIVE_DIST_PID_P, DRIVE_DIST_PID_I, DRIVE_DIST_PID_D);
@@ -108,7 +105,9 @@ public class Drivetrain extends SubsystemBase {
         anglePID.setTolerance(DRIVE_ANGLE_PID_TOLERANCE);
         anglePID.enableContinuousInput(-180.0, 180.0);
 
-        profileTimer = new Timer();
+        ramseteController = new RamseteController(DRIVE_RAMSETE_B, DRIVE_RAMSETE_ZETA);
+
+        pathTimer = new Timer();
 
         reset();
     }
@@ -117,9 +116,11 @@ public class Drivetrain extends SubsystemBase {
         state = defaultState;
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
+        Gyro.getInstance().zeroRobotAngle();
         distSetpoint = -1257;
         angleSetpoint = -1257;
-        profileTimer.stop();
+        pathTimer.stop();
+        pathTimer.reset();
     }
 
     @Override
@@ -143,10 +144,11 @@ public class Drivetrain extends SubsystemBase {
             case PID_DIST:
                 if(distSetpoint == -1257) {
                     state = defaultState;
+                    break;
                 }
                 
                 // Apply PID controller to forward speed and basic P control to angle
-                double[] pidDistArcadeSpeeds = arcadeDrive(distPID.calculate(leftEncoder.getPosition(), distSetpoint),
+                double[] pidDistArcadeSpeeds = arcadeDrive(distPID.calculate(getAverageEncoderPosition(), distSetpoint),
                     -Gyro.getInstance().getRobotAngle() * DRIVE_MAINTAIN_ANGLE_PID_P);
 
                 frontLeftMotor.set(pidDistArcadeSpeeds[0]);
@@ -160,6 +162,7 @@ public class Drivetrain extends SubsystemBase {
             case PID_ANGLE:
                 if(angleSetpoint == -1257) {
                     state = defaultState;
+                    break;
                 }
 
                 // Apply PID controller to forward speed and basic P control to angle
@@ -177,23 +180,47 @@ public class Drivetrain extends SubsystemBase {
             case PROFILE_DIST:
                 if(distProfile == null) {
                     state = defaultState;
+                    break;
                 }
 
-                TrapezoidProfile.State currentState = distProfile.calculate(profileTimer.get());
-                ChassisSpeeds profiledChassisSpeeds = new ChassisSpeeds(currentState.velocity, 0, 0);
+                TrapezoidProfile.State currentStateProf = distProfile.calculate(pathTimer.get());
+                ChassisSpeeds profiledChassisSpeeds = new ChassisSpeeds(currentStateProf.velocity, 0, 0);
                 DifferentialDriveWheelSpeeds profiledDSpeeds = driveKinematics.toWheelSpeeds(profiledChassisSpeeds);
 
-                // ues P to acquire desired velocity, P to acquire desired position, and feedforwrad to acquire desired velocity
+                // use P to acquire desired velocity, P to acquire desired position, and feedforward to acquire desired velocity
                 frontLeftMotor.setVoltage(leftVelPID.calculate(leftEncoder.getVelocity(), profiledDSpeeds.leftMetersPerSecond) + 
                     feedforward.calculate(profiledDSpeeds.leftMetersPerSecond) + 
-                    (currentState.position - leftEncoder.getPosition()) * DRIVE_PROFILE_LEFT_POS_P);
+                    (currentStateProf.position - leftEncoder.getPosition()) * DRIVE_PROFILE_LEFT_POS_P);
                 frontRightMotor.setVoltage(rightVelPID.calculate(rightEncoder.getVelocity(), profiledDSpeeds.rightMetersPerSecond) + 
                     feedforward.calculate(profiledDSpeeds.leftMetersPerSecond) + 
-                    (currentState.position - rightEncoder.getPosition()) * DRIVE_PROFILE_RIGHT_POS_P);
+                    (currentStateProf.position - rightEncoder.getPosition()) * DRIVE_PROFILE_RIGHT_POS_P);
 
-                if(distProfile.isFinished(profileTimer.get())) {
+                if(distProfile.isFinished(pathTimer.get())) {
                     state = defaultState;
-                    profileTimer.stop();
+                    pathTimer.stop();
+                    distProfile = null;
+                }
+            break;
+            case RAMSETE:
+                if(trajectory == null) {
+                    state = defaultState;
+                    break;
+                }
+
+                Trajectory.State currentStateTraj = trajectory.sample(pathTimer.get());
+                ChassisSpeeds ramseteChassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentStateTraj);
+                DifferentialDriveWheelSpeeds ramseteDSpeeds = driveKinematics.toWheelSpeeds(ramseteChassisSpeeds);
+
+                // use P to acquire desired velocity and feedforward to acquire desired velocity
+                frontLeftMotor.setVoltage(leftVelPID.calculate(leftEncoder.getVelocity(), ramseteDSpeeds.leftMetersPerSecond) + 
+                    feedforward.calculate(ramseteDSpeeds.leftMetersPerSecond));
+                frontRightMotor.setVoltage(rightVelPID.calculate(rightEncoder.getVelocity(), ramseteDSpeeds.rightMetersPerSecond) + 
+                    feedforward.calculate(ramseteDSpeeds.leftMetersPerSecond));
+
+                if(trajectory.getTotalTimeSeconds() <= pathTimer.get()) {
+                    state = defaultState;
+                    pathTimer.stop();
+                    trajectory = null;
                 }
             break;
         }
@@ -277,8 +304,8 @@ public class Drivetrain extends SubsystemBase {
         distProfile = new TrapezoidProfile(
             new TrapezoidProfile.Constraints(DRIVE_PROFILE_MAX_VEL, DRIVE_PROFILE_MAX_ACC),
             new TrapezoidProfile.State(dist, 0));
-        profileTimer.reset();
-        profileTimer.start();
+        pathTimer.reset();
+        pathTimer.start();
 
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
@@ -287,8 +314,22 @@ public class Drivetrain extends SubsystemBase {
         state = State.PROFILE_DIST;
     }
 
+    // drives a certain trajectory
     public void driveTrajectory(Trajectory trajectory) {
         this.trajectory = trajectory;
+        pathTimer.reset();
+        pathTimer.start();
+        state = State.RAMSETE;
+    }
+
+    // sets the robot pose to a given position
+    // should only be called once at the beginning of autonomous
+    public void setRobotPose(Pose2d pose, Rotation2d rotation) {
+        leftEncoder.setPosition(0);
+        rightEncoder.setPosition(0);
+        Gyro.getInstance().setRobotAngle(rotation.getDegrees());
+
+        driveOdometry.resetPosition(pose, rotation);
     }
 
     public void outputValues() {
@@ -298,16 +339,24 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Drive Right Encoder Vel (m/s)", rightEncoder.getVelocity());
 
         if(distProfile != null) {
-            SmartDashboard.putNumber("Drive Profile Time Left", distProfile.timeLeftUntil(profileTimer.get()));
-            TrapezoidProfile.State currentState = distProfile.calculate(profileTimer.get());
+            SmartDashboard.putNumber("Drive Profile Time Left", distProfile.timeLeftUntil(pathTimer.get()));
+            TrapezoidProfile.State currentState = distProfile.calculate(pathTimer.get());
             SmartDashboard.putNumber("Drive Profile Pos (m)", currentState.position);
             SmartDashboard.putNumber("Drive Profile Vel (m/s)", currentState.velocity);
+        }
+        if(trajectory != null) {
+            SmartDashboard.putNumber("Trajectory Time Left", trajectory.getTotalTimeSeconds() - pathTimer.get());
         }
 
         SmartDashboard.putNumber("Drive Dist Setpoint", distSetpoint);
         SmartDashboard.putNumber("Drive Angle Setpoint", angleSetpoint);
 
         SmartDashboard.putString("Drive State", state.name());
+    }
+
+    // returns in m
+    public double getAverageEncoderPosition() {
+        return (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0;
     }
 
     public State getState() {

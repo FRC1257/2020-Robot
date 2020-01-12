@@ -42,9 +42,6 @@ public final class Constants {
 
     public static double DRIVE_RAMSETE_B = 2.0;
     public static double DRIVE_RAMSETE_ZETA = 0.7;
-    public static double DRIVE_RAMSETE_MAX_VEL = 3.0; // m/s
-    public static double DRIVE_RAMSETE_MAX_ACC = 5.0; // m/s^2
-    public static double DRIVE_MAX_VOLTAGE_RAMSETE = 10.0; // V
 
     public static int DRIVE_FRONT_LEFT = 7;
     public static int DRIVE_FRONT_RIGHT = 2;

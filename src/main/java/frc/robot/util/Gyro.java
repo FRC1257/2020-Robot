@@ -36,7 +36,7 @@ public class Gyro {
      * @return The angle in degrees.
      */
     public double getYawAngle() {
-        return navx.getYaw();
+        return navx.getAngle();
     }
 
     /**
@@ -61,7 +61,11 @@ public class Gyro {
      * Sets the current yaw angle to "0".
      */
     public void zeroYawAngle() {
-        navx.zeroYaw();
+        navx.setAngleAdjustment(-navx.getAngle());
+    }
+
+    public void setYawAngle(double angle) {
+        navx.setAngleAdjustment(angle - navx.getAngle());
     }
 
     /**
@@ -88,7 +92,7 @@ public class Gyro {
     }
 
     /**
-     * Gets the current tilt of the robot while climbing. Utilizes the NavX if it is connected, but
+     * Gets the current tilt of the robot. Utilizes the NavX if it is connected, but
      * otherwise it will use the backup gyro
      * 
      * @return THe angle in degrees
@@ -106,6 +110,13 @@ public class Gyro {
      */
     public void zeroRobotAngle() {
         zeroYawAngle();
+    }
+
+    /**
+     * Sets the current rotation of the robot to a given value.
+     */
+    public void setRobotAngle(double angle) {
+        setYawAngle(angle);
     }
 
     /**

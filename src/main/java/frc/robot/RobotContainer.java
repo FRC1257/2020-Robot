@@ -4,6 +4,7 @@ import static frc.robot.Constants.*; // import the Constants class so we can use
                                      // easily
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.tian.ManualDriveCommand;
 import frc.robot.subsystems.FunPlusPhoenix;
 import frc.robot.util.Gyro;
@@ -42,5 +43,9 @@ public class RobotContainer {
     public void outputValues() {
         drivetrain.outputValues();
         Gyro.getInstance().outputValues();
+    }
+
+    public Command getAutoCommand() {
+        return null;
     }
 }
