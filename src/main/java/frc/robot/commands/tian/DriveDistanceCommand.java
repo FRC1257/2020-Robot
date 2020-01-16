@@ -1,7 +1,6 @@
 package frc.robot.commands.tian;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.FunPlusPhoenix;
 
 // Use with .withTimeout() to add a timeout
