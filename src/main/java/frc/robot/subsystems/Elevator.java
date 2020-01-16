@@ -2,12 +2,14 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
   
-    private WPI_TalonSRX motor;
+    private CANSparkMax motor;
 
     public enum State {
         MANUAL
@@ -17,7 +19,7 @@ public class Elevator extends SubsystemBase {
     private double speed;
 
     public Elevator() {
-        motor = new WPI_TalonSRX(ELEVATOR_MOTOR_ID);
+        motor = new CANSparkMax(ELEVATOR_MOTOR_ID,MotorType.kBrushless);
     }
 
     @Override
