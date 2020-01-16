@@ -10,6 +10,17 @@ package frc.robot;
  */
 
 public final class Constants {
+    //Xbox Controller Constants
     public static int CONTROLLER_DRIVE_ID = 0;
     public static int CONTROLLER_OPERATOR_ID = 1;
+
+    //Intake Constants
+    public static int INTAKE_MOTOR_ID = 1;
+
+    public static double INTAKE_SPEED = -0.8;
+    public static double NEUTRAL_SPEED = 0.0;
+    public static double EJECT_SPEED = 0.8;
+
+
+    
 }
