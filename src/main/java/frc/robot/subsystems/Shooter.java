@@ -1,13 +1,14 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX; // can change depending on what motor we're using
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// possibly the motor library import needed depending on what motor we're using
 
 public class Shooter extends SubsystemBase {
 
-    private WPI_VictorSPX shooterMotor;
+    private CANSparkMax shooterMotor;
     
     public enum State {
         NEUTRAL,
@@ -16,7 +17,7 @@ public class Shooter extends SubsystemBase {
     private State state = State.NEUTRAL;
 
     public Shooter() {
-        shooterMotor = new WPI_VictorSPX(SHOOTER_MOTOR_ID);
+        shooterMotor = new CANSparkMax(SHOOTER_MOTOR_ID, MotorType.kBrushless);
     }
 
     @Override
@@ -24,8 +25,10 @@ public class Shooter extends SubsystemBase {
         switch(state) {
             case NEUTRAL:
                 shooterMotor.set(NEUTRAL_SHOOTER_MOTOR_SPEED);
+                break;
             case SHOOTING:
                 shooterMotor.set(SHOOTING_SHOOTER_MOTOR_SPEED);
+                break;
         }
     }
 
