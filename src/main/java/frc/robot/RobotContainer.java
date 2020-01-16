@@ -3,6 +3,8 @@ package frc.robot;
 import static frc.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.elevator.ManualCommand;
+import frc.robot.subsystems.Elevator;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,9 +18,14 @@ public class RobotContainer {
     private final XboxController driveController;
     private final XboxController operatorController;
 
+    private final Elevator elevator;
+
     public RobotContainer() {
         driveController = new XboxController(CONTROLLER_DRIVE_ID);
         operatorController = new XboxController(CONTROLLER_OPERATOR_ID);
+
+        elevator = new Elevator();
+        elevator.setDefaultCommand(new ManualCommand(elevator, operatorController));
 
         configureButtonBindings();
     }
