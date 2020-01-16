@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX; // can change depending on what motor we're using
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// possibly the motor library import needed
+// possibly the motor library import needed depending on what motor we're using
 
 public class Shooter extends SubsystemBase {
 
@@ -13,7 +13,7 @@ public class Shooter extends SubsystemBase {
         NEUTRAL,
         SHOOTING
     }
-    private State state = State.MANUAL;
+    private State state = State.NEUTRAL;
 
     public Shooter() {
         shooterMotor = new WPI_VictorSPX(SHOOTER_MOTOR_ID);
