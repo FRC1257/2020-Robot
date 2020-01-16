@@ -19,7 +19,7 @@ public class ShooterNeutralCommand extends CommandBase {
 
     @Override
     public void execute() {
-
+        shooter.neutral();
     }
 
     @Override

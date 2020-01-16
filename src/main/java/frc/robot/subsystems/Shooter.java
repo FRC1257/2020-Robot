@@ -10,12 +10,28 @@ public class Shooter extends SubsystemBase {
     private WPI_VictorSPX shooterMotor;
     
     public enum State {
-        MANUAL
+        MANUAL,
+        SHOOTING
     }
     private State state = State.MANUAL;
 
     public Shooter() {
         shooterMotor = new WPI_VictorSPX(SHOOTER_MOTOR_ID);
-        
+    }
+
+    @Override
+    public void periodic() {
+        switch(state) {
+            case MANUAL:
+            case SHOOTING:
+        }
+    }
+
+    public void neutral() {
+        state = State.NEUTRAL;
+    }
+
+    public void shooting() {
+        state = State.SHOOTING;
     }
 }
