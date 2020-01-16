@@ -1,8 +1,9 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//possibly the motor library import needed
+// possibly the motor library import needed
 
 public class Shooter extends SubsystemBase {
 
@@ -17,5 +18,4 @@ public class Shooter extends SubsystemBase {
         shooterMotor = new WPI_VictorSPX(SHOOTER_MOTOR_ID);
         
     }
-
 }
