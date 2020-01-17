@@ -304,7 +304,8 @@ public class Drivetrain extends SubsystemBase {
     public void driveDistProfile(double dist) {
         distProfile = new TrapezoidProfile(
             new TrapezoidProfile.Constraints(DRIVE_PROFILE_MAX_VEL, DRIVE_PROFILE_MAX_ACC),
-            new TrapezoidProfile.State(getAverageEncoderPosition() + dist, 0)); // TODO fix this and add beginning point too
+            new TrapezoidProfile.State(getAverageEncoderPosition() + dist, 0),
+            new TrapezoidProfile.State(getAverageEncoderPosition(), 0));
         pathTimer.reset();
         pathTimer.start();
         distPID.reset();
