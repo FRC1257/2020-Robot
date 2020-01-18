@@ -7,7 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-class Intake extends SubsystemBase {
+public class Intake extends SubsystemBase {
 
     CANSparkMax intakeMotor;
 
@@ -35,5 +35,14 @@ class Intake extends SubsystemBase {
                 intakeMotor.set(INTAKE_EJECT_SPEED);
                 break;
         }
+    }
+    public void neutral() {
+        state = State.NEUTRAL;
+    }
+    public void eject() {
+        state = State.EJECT;
+    }
+    public void intake(){
+        state = State.INTAKE;
     }
 }

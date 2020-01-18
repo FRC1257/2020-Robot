@@ -6,9 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
-class Indexer extends SubsystemBase {
+public class Indexer extends SubsystemBase {
 
     CANSparkMax conveyerMotor;
     CANSparkMax stopMotor;
@@ -16,7 +15,7 @@ class Indexer extends SubsystemBase {
 
     public enum State {
         NEUTRAL,
-        SHOOTING,
+        SHOOT,
         INTAKE,
         EJECT
     }
@@ -34,7 +33,7 @@ class Indexer extends SubsystemBase {
                 conveyerMotor.set(INDEXER_CONVEYER_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
                 break;
-            case SHOOTING:
+            case SHOOT:
                 conveyerMotor.set(INDEXER_CONVEYER_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
@@ -47,5 +46,19 @@ class Indexer extends SubsystemBase {
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
         }
+    }
+    public void neutral() {
+        state = State.NEUTRAL;
+    }
+
+    public void shoot() {
+        state = State.SHOOT;
+    }
+
+    public void eject() {
+        state = State.EJECT;
+    }
+    public void intake(){
+        state = State.INTAKE;
     }
 }
