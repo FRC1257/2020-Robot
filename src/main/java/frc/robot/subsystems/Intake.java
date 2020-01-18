@@ -27,13 +27,13 @@ class Intake extends SubsystemBase {
     public void periodic() {
         switch(state) {
             case NEUTRAL: 
-                intakeMotor.set(NEUTRAL_SPEED);
+                intakeMotor.set(INTAKE_NEUTRAL_SPEED);
                 break;
             case INTAKE:
-                intakeMotor.set(INTAKE_SPEED);
+                intakeMotor.set(INTAKE_INTAKE_SPEED);
                 break;
             case EJECT:
-                intakeMotor.set(EJECT_SPEED);
+                intakeMotor.set(INTAKE_EJECT_SPEED);
                 break;
         }
     }

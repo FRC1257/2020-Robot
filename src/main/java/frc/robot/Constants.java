@@ -17,9 +17,20 @@ public final class Constants {
     //Intake Constants
     public static int INTAKE_MOTOR_ID = 1;
 
-    public static double INTAKE_SPEED = -0.8;
-    public static double NEUTRAL_SPEED = 0.0;
-    public static double EJECT_SPEED = 0.8;
+    public static double INTAKE_NEUTRAL_SPEED = 0.0;
+    public static double INTAKE_INTAKE_SPEED = -0.8;
+    public static double INTAKE_EJECT_SPEED = 0.8;
+
+    //Indexer Constants
+    public static double INDEXER_CONVEYER_NEUTRAL_SPEED = 0.0;
+    public static double INDEXER_CONVEYER_SHOOT_SPEED = 0.5;
+    public static double INDEXER_CONVEYER_EJECT_SPEED = 0.5;
+    public static double INDEXER_CONVEYER_INTAKE_SPEED = 1.0;
+
+    public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
+    public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
+
+
 
 
     
