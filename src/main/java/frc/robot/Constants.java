@@ -22,6 +22,9 @@ public final class Constants {
     public static double INTAKE_EJECT_SPEED = 0.8;
 
     //Indexer Constants
+    public static int INDEXER_CONVEYER_MOTOR_ID = 2;
+    public static int INDEXER_STOP_MOTOR_ID = 3;
+
     public static double INDEXER_CONVEYER_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYER_SHOOT_SPEED = 0.5;
     public static double INDEXER_CONVEYER_EJECT_SPEED = 0.5;

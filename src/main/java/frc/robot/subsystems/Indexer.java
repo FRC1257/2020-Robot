@@ -22,8 +22,8 @@ public class Indexer extends SubsystemBase {
     State state = State.NEUTRAL;
 
     public Indexer() {
-        conveyerMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
-        stopMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
+        conveyerMotor = new CANSparkMax(INDEXER_CONVEYER_MOTOR_ID, MotorType.kBrushless);
+        stopMotor = new CANSparkMax(INDEXER_STOP_MOTOR_ID, MotorType.kBrushless);
     }
     
     @Override

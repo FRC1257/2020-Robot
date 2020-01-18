@@ -1,13 +1,13 @@
 package frc.robot.commands.indexer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Indexer;
 
 public class IndexerEjectCommand extends CommandBase {
 
-    private final Intake indexer;
+    private final Indexer indexer;
 
-    public IndexerEjectCommand(Intake indexer) {
+    public IndexerEjectCommand(Indexer indexer) {
         this.indexer = indexer;        
         addRequirements(indexer);
     }
@@ -31,5 +31,4 @@ public class IndexerEjectCommand extends CommandBase {
     public boolean isFinished() {
         return false;
     }
-    
 }

@@ -18,7 +18,7 @@ public class RobotContainer {
     private final XboxController driveController;
     private final XboxController operatorController;
     private final Intake intake;
-    private final Intake indexer;
+    private final Indexer indexer;
 
 
     public RobotContainer() {
@@ -28,14 +28,14 @@ public class RobotContainer {
         intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
         
-        
-
+        indexer = new Indexer();
+        indexer.setDefaultCommand(new IntakeNeutralCommand(intake));
 
         configureButtonBindings();
     }
 
     // defines button -> command mappings
     private void configureButtonBindings() {
-
+        
     }
 }
