@@ -27,8 +27,8 @@ public final class Constants {
 
     public static double INDEXER_CONVEYER_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYER_SHOOT_SPEED = 0.5;
-    public static double INDEXER_CONVEYER_EJECT_SPEED = 0.5;
-    public static double INDEXER_CONVEYER_INTAKE_SPEED = 1.0;
+    public static double INDEXER_CONVEYER_EJECT_SPEED = -0.5;
+    public static double INDEXER_CONVEYER_INTAKE_SPEED = 0.5;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
