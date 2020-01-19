@@ -39,11 +39,11 @@ public class Indexer extends SubsystemBase {
                 break;
             case INTAKE:
                 conveyerMotor.set(INDEXER_CONVEYER_INTAKE_SPEED);
-                stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
+                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case EJECT:
                 conveyerMotor.set(INDEXER_CONVEYER_EJECT_SPEED);
-                stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
+                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
         }
     }
