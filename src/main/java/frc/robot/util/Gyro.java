@@ -44,6 +44,15 @@ public class Gyro {
     }
 
     /**
+     * Gets the current yaw angle velocity in deg / s
+     * 
+     * @return The yaw angle rate in degrees.
+     */
+    public double getYawAngleVelocity() {
+        return navx.getRate();
+    }
+
+    /**
      * Gets the current roll angle.
      * 
      * @return The angle in degrees.
@@ -96,6 +105,15 @@ public class Gyro {
      */
     public double getRobotAngle() {
         return getYawAngle();
+    }
+
+    /**
+     * Gets the current rotation rate of the robot in deg/s
+     * 
+     * @return The angle rate in degrees.
+     */
+    public double getRobotAngleVelocity() {
+        return getYawAngleVelocity();
     }
 
     /**
@@ -152,6 +170,7 @@ public class Gyro {
         SmartDashboard.putNumber("Pitch Angle", getPitchAngle());
 
         SmartDashboard.putNumber("Robot Angle", getRobotAngle());
+        SmartDashboard.putNumber("Robot Angle Vel", getRobotAngleVelocity());
         SmartDashboard.putNumber("Tilt Angle", getTiltAngle());
         SmartDashboard.putBoolean("Gyro Connected", navXConnected());
     }
