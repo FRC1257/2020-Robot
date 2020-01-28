@@ -12,9 +12,9 @@ public class Intake extends SubsystemBase {
     CANSparkMax intakeMotor;
 
     public enum State {
-        INTAKE,
         NEUTRAL,
-        EJECT
+        INTAKING,
+        EJECTING
     }
     State state = State.NEUTRAL;
 
@@ -28,21 +28,24 @@ public class Intake extends SubsystemBase {
             case NEUTRAL: 
                 intakeMotor.set(INTAKE_NEUTRAL_SPEED);
                 break;
-            case INTAKE:
+            case INTAKING:
                 intakeMotor.set(INTAKE_INTAKE_SPEED);
                 break;
-            case EJECT:
+            case EJECTING:
                 intakeMotor.set(INTAKE_EJECT_SPEED);
                 break;
         }
     }
+
     public void neutral() {
         state = State.NEUTRAL;
+    
     }
     public void eject() {
-        state = State.EJECT;
+        state = State.EJECTING;
     }
-    public void intake(){
-        state = State.INTAKE;
+
+    public void intake() {
+        state = State.INTAKING;
     }
 }

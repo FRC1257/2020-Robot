@@ -12,12 +12,11 @@ public class Indexer extends SubsystemBase {
     CANSparkMax conveyerMotor;
     CANSparkMax stopMotor;
 
-
     public enum State {
         NEUTRAL,
-        SHOOT,
-        INTAKE,
-        EJECT
+        SHOOTING,
+        INTAKING,
+        EJECTING
     }
     State state = State.NEUTRAL;
 
@@ -33,32 +32,34 @@ public class Indexer extends SubsystemBase {
                 conveyerMotor.set(INDEXER_CONVEYER_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
                 break;
-            case SHOOT:
+            case SHOOTING:
                 conveyerMotor.set(INDEXER_CONVEYER_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
-            case INTAKE:
+            case INTAKING:
                 conveyerMotor.set(INDEXER_CONVEYER_INTAKE_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
-            case EJECT:
+            case EJECTING:
                 conveyerMotor.set(INDEXER_CONVEYER_EJECT_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
         }
     }
+
     public void neutral() {
         state = State.NEUTRAL;
     }
 
     public void shoot() {
-        state = State.SHOOT;
+        state = State.SHOOTING;
     }
 
     public void eject() {
-        state = State.EJECT;
+        state = State.EJECTING;
     }
-    public void intake(){
-        state = State.INTAKE;
+
+    public void intake() {
+        state = State.INTAKING;
     }
 }

@@ -37,12 +37,12 @@ public class RobotContainer {
     // defines button -> command mappings
     private void configureButtonBindings() {
         //Intake Bindings
-        (new JoystickButton(operatorController, Button.kA.value)).whenPressed(new IntakeEjectCommand(intake));
-        (new JoystickButton(operatorController, Button.kB.value)).whenPressed(new IntakeIntakeCommand(intake));
+        (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new IntakeEjectCommand(intake));
+        (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new IntakeIntakeCommand(intake));
 
-        (new JoystickButton(operatorController, Button.kX.value)).whenPressed(new IndexerIntakeCommand(indexer));
-        (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerIntakeCommand(indexer));
-        (new JoystickButton(operatorController, Button.kBumperLeft.value)).whenPressed(new IndexerIntakeCommand(indexer));
-        (new JoystickButton(operatorController, Button.kBumperRight.value)).whenPressed(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kY.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerIntakeCommand(indexer));
     }
 }

@@ -8,13 +8,13 @@ public class IndexerEjectCommand extends CommandBase {
     private final Indexer indexer;
 
     public IndexerEjectCommand(Indexer indexer) {
-        this.indexer = indexer;        
+        this.indexer = indexer;   
         addRequirements(indexer);
     }
 
     @Override
     public void initialize() {
-
+        
     }
 
     @Override
