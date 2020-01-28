@@ -4,6 +4,7 @@ import static frc.robot.Constants.*;
 import frc.robot.commands.intake.*;
 import frc.robot.commands.indexer.*;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.elevator.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -18,9 +19,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
     private final XboxController operatorController;
+    
     private final Intake intake;
     private final Indexer indexer;
-
+    private final Elevator elevator;
 
     public RobotContainer() {
         operatorController = new XboxController(CONTROLLER_OPERATOR_ID);
@@ -30,6 +32,9 @@ public class RobotContainer {
         
         indexer = new Indexer();
         indexer.setDefaultCommand(new IndexerNeutralCommand(indexer));
+
+        elevator = new Elevator();
+        elevator.setDefaultCommand(new ManualCommand(elevator, operatorController));
 
         configureButtonBindings();
     }
