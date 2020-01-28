@@ -1,10 +1,13 @@
 package frc.robot;
 
 import static frc.robot.Constants.*;
-
+import frc.robot.commands.intake.*;
+import frc.robot.commands.indexer.*;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.elevator.ManualCommand;
-import frc.robot.subsystems.Elevator;
+import frc.robot.commands.elevator.*;
+import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -15,14 +18,20 @@ import frc.robot.subsystems.Elevator;
 
 public class RobotContainer {
 
-    private final XboxController driveController;
     private final XboxController operatorController;
-
+    
+    private final Intake intake;
+    private final Indexer indexer;
     private final Elevator elevator;
 
     public RobotContainer() {
-        driveController = new XboxController(CONTROLLER_DRIVE_ID);
         operatorController = new XboxController(CONTROLLER_OPERATOR_ID);
+
+        intake = new Intake();
+        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
+        
+        indexer = new Indexer();
+        indexer.setDefaultCommand(new IndexerNeutralCommand(indexer));
 
         elevator = new Elevator();
         elevator.setDefaultCommand(new ManualCommand(elevator, operatorController));
@@ -32,6 +41,13 @@ public class RobotContainer {
 
     // defines button -> command mappings
     private void configureButtonBindings() {
+        //Intake Bindings
+        (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new IntakeEjectCommand(intake));
+        (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new IntakeIntakeCommand(intake));
 
+        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kY.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerIntakeCommand(indexer));
     }
 }
