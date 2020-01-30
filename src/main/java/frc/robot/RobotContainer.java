@@ -26,7 +26,7 @@ public class RobotContainer {
         shooter = new Shooter();
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));
 
-        driveController = new XboxController(CONTROLLER_DRIVE_ID);
+        driveController = new XboxController(CONTROLLER_DRIVER_ID);
         operatorController = new XboxController(CONTROLLER_OPERATOR_ID);
 
         configureButtonBindings();

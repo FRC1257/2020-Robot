@@ -10,8 +10,10 @@ package frc.robot;
  */
 
 public final class Constants {
-    public static int CONTROLLER_DRIVE_ID = 0;
+    public static int CONTROLLER_DRIVER_ID = 0;
     public static int CONTROLLER_OPERATOR_ID = 1;
+
+    // Shooter Constants
     public static int SHOOTER_MOTOR_ID = 5; // probably will change later
     public static int NEUTRAL_SHOOTER_MOTOR_SPEED = 0; // need to change later
     public static int SHOOTING_SHOOTER_MOTOR_SPEED = 0; // need to change later
