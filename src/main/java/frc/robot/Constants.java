@@ -34,6 +34,10 @@ public final class Constants {
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
 
+    public static double INDEXER_DEADBAND = 5.0;
+    public static double INDEXER_PID_SETPOINT = 100.0;
+
+
     // Elevator Constants
     public final static int ELEVATOR_MOTOR_ID = 0;
 }

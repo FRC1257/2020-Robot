@@ -20,6 +20,8 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
        intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
+       intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
+
     }
     
     @Override
