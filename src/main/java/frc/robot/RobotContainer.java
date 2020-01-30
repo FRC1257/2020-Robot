@@ -52,10 +52,10 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new IntakeIntakeCommand(intake));
 
         // Indexer Bindings
-        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerNeutralCommand(indexer));
         (new JoystickButton(operatorController, Button.kY.value)).whileHeld(new IndexerIntakeCommand(indexer));
-        (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerIntakeCommand(indexer));
-        (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerEjectCommand(indexer));
+        (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
 
         // Shooting Bindings
         (new JoystickButton(operatorController, Button.kA.value)).whenPressed(new ShooterShootingCommand(shooter));
