@@ -2,6 +2,8 @@ package frc.robot.commands.indexer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
+import static frc.robot.Constants.*;
+
 
 public class IndexerIntakeCommand extends CommandBase {
 
@@ -29,6 +31,6 @@ public class IndexerIntakeCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return (!(Math.abs(INDEXER_PID_SETPOINT - indexer.getEncoderVal()) <= INDEXER_DEADBAND));
     }
 }
