@@ -38,7 +38,7 @@ public class RobotContainer {
      * Use this method to define your button -> command mappings.
      */
     private void configureButtonBindings() {
-        (new JoystickButton(controller, XboxController.Button.kY.value)).whenPressed(new ReverseDriveCommand(drivetrain);
+        (new JoystickButton(controller, XboxController.Button.kY.value)).whenPressed(new ReverseDriveCommand(drivetrain));
     }
 
     public void outputValues() {
