@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
     CANSparkMax motor1;
+    CANSparkMax motor2;
+
     CANEncoder encoder1;
     CANPIDController pidController1;
 
@@ -27,6 +29,10 @@ public class Robot extends TimedRobot {
         motor1.setIdleMode(IdleMode.kCoast);
         encoder1 = motor1.getEncoder();
         pidController1 = motor1.getPIDController();
+
+        motor2 = new CANSparkMax(3, MotorType.kBrushless);
+        motor2.restoreFactoryDefaults();
+        motor2.setIdleMode(IdleMode.kCoast);
 
         SmartDashboard.putNumber("kP", 0.000001);
         SmartDashboard.putNumber("kI", 0.0);
