@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class Intake extends SubsystemBase {
 
@@ -38,6 +40,12 @@ public class Intake extends SubsystemBase {
                 break;
         }
     }
+    public void outputValues() {
+        SmartDashboard.putString("Intake State", state.name());
+
+        SmartDashboard.putNumber("intake motor Current", intakeMotor.getOutputCurrent());
+        SmartDashboard.putNumber("intake motor Temperature (C)", intakeMotor.getMotorTemperature());
+    }
 
     public void neutral() {
         state = State.NEUTRAL;
@@ -49,5 +57,8 @@ public class Intake extends SubsystemBase {
 
     public void intake() {
         state = State.INTAKING;
+    }
+    public State getState(){
+        return state;
     }
 }

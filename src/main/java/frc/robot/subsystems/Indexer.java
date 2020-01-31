@@ -65,7 +65,6 @@ public class Indexer extends SubsystemBase {
     public void periodic() {
         switch(state) {
             case NEUTRAL: 
-                resetEncoder();
                 PIDSetpoint = 0;
                 conveyerMotorTop.set(INDEXER_CONVEYER_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
@@ -148,10 +147,13 @@ public class Indexer extends SubsystemBase {
     public void resetEncoder() {
         conveyerEncoderTop.setPosition(0.0);
     }
+
     public double getPIDSetpoint( ){
         return PIDSetpoint;
     }
+
     public void setPIDSetpoint(double value) {
+        resetEncoder();
         PIDSetpoint = value;
         state = State.PID;
     }
@@ -177,6 +179,9 @@ public class Indexer extends SubsystemBase {
     }
     public void pid() {
         state = State.PID;
+    }
+    public State getState(){
+        return state;
     }
 
 }
