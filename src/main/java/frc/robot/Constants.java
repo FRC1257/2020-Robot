@@ -37,6 +37,7 @@ public final class Constants {
     public static double INDEXER_PID_SETPOINT = 90.0;
     public static double INDEXER_DEADBAND = 5.0;
     public static double [] PID_CONSTS = {4.0,6.0,8.0,9.0};
+    public static double ONE_INDEX_SETPOINT = 90.0;
 
     //NEO Constants
 

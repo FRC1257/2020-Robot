@@ -21,6 +21,8 @@ public class Indexer extends SubsystemBase {
 
     CANSparkMax stopMotor;
 
+    private double PIDSetpoint;
+
 
     public enum State {
         NEUTRAL,
@@ -51,21 +53,25 @@ public class Indexer extends SubsystemBase {
     public void periodic() {
         switch(state) {
             case NEUTRAL: 
+                PIDSetpoint = 0;
                 conveyerMotor.set(INDEXER_CONVEYER_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
                 break;
             case SHOOTING:
+                PIDSetpoint = 0;
                 conveyerMotor.set(INDEXER_CONVEYER_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
             case INTAKING:
+                PIDSetpoint = 0;
                 conveyerMotor.set(INDEXER_CONVEYER_INTAKE_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case PIDINTAKING:
+            
                 PIDconveyer.setReference(INDEXER_PID_SETPOINT,ControlType.kPosition);
-                if (currentPIDSetpoint == 0) {
-                    state = State.MANUAL;
+                if (PIDSetpoint == 0) {
+                    state = State.NEUTRAL;
                 } 
                 else {
                     PIDconveyer.setReference(INDEXER_PID_SETPOINT,ControlType.kPosition);
@@ -83,8 +89,12 @@ public class Indexer extends SubsystemBase {
         return conveyerEncoder.getPosition();
     }
 
-    public double setPIDSetpoint(double value) {
-        return value;
+    public void setPIDSetpoint(double value) {
+        PIDSetpoint = value;
+    }
+
+    public void moveOneIndex() {
+        setPIDSetpoint(ONE_INDEX_SETPOINT);
     }
 
     public void neutral() {
