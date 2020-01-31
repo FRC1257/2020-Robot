@@ -23,8 +23,9 @@ public final class Constants {
     public static double INTAKE_EJECT_SPEED = 0.8;
 
     // Indexer Constants
-    public static int INDEXER_CONVEYER_MOTOR_ID = 2;
-    public static int INDEXER_STOP_MOTOR_ID = 3;
+    public static int INDEXER_CONVEYER_TOP_MOTOR_ID = 2;
+    public static int INDEXER_CONVEYER_BOTTOM_MOTOR_ID = 3;
+    public static int INDEXER_STOP_MOTOR_ID = 4;
 
     public static double INDEXER_CONVEYER_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYER_SHOOT_SPEED = 0.5;
@@ -34,9 +35,8 @@ public final class Constants {
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
 
-    public static double INDEXER_PID_SETPOINT = 90.0;
     public static double INDEXER_DEADBAND = 5.0;
-    public static double [] PID_CONSTS = {4.0,6.0,8.0,9.0};
+    public static int [] PID_CONVEYER_CONSTS = {4,6,8,9};
     public static double ONE_INDEX_SETPOINT = 90.0;
 
     //NEO Constants
