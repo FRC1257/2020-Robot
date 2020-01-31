@@ -15,7 +15,7 @@ public class BottomAuto extends SequentialCommandGroup {
         
         Trajectory bottomTrajectory = TrajectoryLoader.loadTrajectoryFromFile("Bottom.wpilib.json");
 
-        addCommands(new ResetAutoPositionCommand(drivetrain, bottomTrajectory.getInitialPose()), 
-            new DriveTrajectoryCommand(drivetrain, bottomTrajectory));
+        addCommands(new ResetAutoPositionCommand(drivetrain, TrajectoryLoader.getInitialPoseReversed(bottomTrajectory)), 
+            new DriveTrajectoryCommand(drivetrain, bottomTrajectory, true));
     }
 }

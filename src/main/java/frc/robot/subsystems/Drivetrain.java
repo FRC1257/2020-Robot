@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Transform2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -21,7 +23,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Gyro;
 
-// TODO think more about the reversed drive stuff
+// TODO fix paths to reflect the changed reverse paths
 public class Drivetrain extends SubsystemBase {
   
     private CANSparkMax frontLeftMotor;
@@ -50,6 +52,7 @@ public class Drivetrain extends SubsystemBase {
 
     private RamseteController ramseteController;
     private Trajectory trajectory;
+    private boolean reversedTrajectory;
 
     public enum State {
         MANUAL,
@@ -91,6 +94,8 @@ public class Drivetrain extends SubsystemBase {
         rightEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M);
         leftEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0);
         rightEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0);
+        leftEncoder.setPosition(0);
+        rightEncoder.setPosition(0);
 
         leftVelPID = new PIDController(DRIVE_LEFT_VEL_PID_P, 0, 0);
         rightVelPID = new PIDController(DRIVE_RIGHT_VEL_PID_P, 0, 0);
@@ -211,14 +216,37 @@ public class Drivetrain extends SubsystemBase {
                 }
 
                 Trajectory.State currentStateTraj = trajectory.sample(pathTimer.get());
-                ChassisSpeeds ramseteChassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentStateTraj);
+                ChassisSpeeds ramseteChassisSpeeds;
+
+                if(!reversedTrajectory) {
+                    ramseteChassisSpeeds = ramseteController.calculate(
+                        driveOdometry.getPoseMeters(), 
+                        currentStateTraj);
+                }
+                else {
+                    ramseteChassisSpeeds = ramseteController.calculate(
+                        driveOdometry.getPoseMeters().transformBy(new Transform2d(new Translation2d(0, 0), new Rotation2d(PI))), 
+                        currentStateTraj);
+                }
                 DifferentialDriveWheelSpeeds ramseteDSpeeds = driveKinematics.toWheelSpeeds(ramseteChassisSpeeds);
 
+                double leftSetpoint;
+                double rightSetpoint;
+
+                if(!reversedTrajectory) {
+                    leftSetpoint = ramseteDSpeeds.leftMetersPerSecond;
+                    rightSetpoint = ramseteDSpeeds.rightMetersPerSecond;
+                }
+                else {
+                    leftSetpoint = -ramseteDSpeeds.rightMetersPerSecond;
+                    rightSetpoint = -ramseteDSpeeds.leftMetersPerSecond;
+                }
+
                 // use P to acquire desired velocity and feedforward to acquire desired velocity
-                frontLeftMotor.setVoltage(leftVelPID.calculate(leftEncoder.getVelocity(), ramseteDSpeeds.leftMetersPerSecond) + 
-                    feedforward.calculate(ramseteDSpeeds.leftMetersPerSecond));
-                frontRightMotor.setVoltage(rightVelPID.calculate(rightEncoder.getVelocity(), ramseteDSpeeds.rightMetersPerSecond) + 
-                    feedforward.calculate(ramseteDSpeeds.leftMetersPerSecond));
+                frontLeftMotor.setVoltage(leftVelPID.calculate(leftEncoder.getVelocity(), leftSetpoint) + 
+                    feedforward.calculate(leftSetpoint));
+                frontRightMotor.setVoltage(rightVelPID.calculate(rightEncoder.getVelocity(), rightSetpoint) + 
+                    feedforward.calculate(rightSetpoint));
 
                 if(trajectory.getTotalTimeSeconds() <= pathTimer.get()) {
                     state = defaultState;
@@ -316,13 +344,15 @@ public class Drivetrain extends SubsystemBase {
     }
 
     // drives a certain trajectory
-    public void driveTrajectory(Trajectory trajectory) {
+    public void driveTrajectory(Trajectory trajectory, boolean reversedTrajectory) {
         this.trajectory = trajectory;
+        this.reversedTrajectory = reversedTrajectory;
         pathTimer.reset();
         pathTimer.start();
         state = State.RAMSETE;
     }
 
+    // toggles reverse drive
     public void toggleReverse() {
         reversed = !reversed;
     }

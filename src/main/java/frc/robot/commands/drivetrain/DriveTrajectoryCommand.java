@@ -8,10 +8,12 @@ public class DriveTrajectoryCommand extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final Trajectory trajectory;
+    private final boolean reversed;
 
-    public DriveTrajectoryCommand(Drivetrain drivetrain, Trajectory trajectory) {
+    public DriveTrajectoryCommand(Drivetrain drivetrain, Trajectory trajectory, boolean reversed) {
         this.drivetrain = drivetrain;
         this.trajectory = trajectory;
+        this.reversed = reversed;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drivetrain);
     }
@@ -19,7 +21,7 @@ public class DriveTrajectoryCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        drivetrain.driveTrajectory(trajectory);
+        drivetrain.driveTrajectory(trajectory, reversed);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

@@ -47,4 +47,6 @@ public final class Constants {
     public static int DRIVE_FRONT_RIGHT = 2;
     public static int DRIVE_BACK_LEFT = 6;
     public static int DRIVE_BACK_RIGHT = 1;
+
+    public static double PI = 3.14159265;
 }
