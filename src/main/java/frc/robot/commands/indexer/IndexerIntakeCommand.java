@@ -31,6 +31,6 @@ public class IndexerIntakeCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (!(Math.abs(INDEXER_PID_SETPOINT - indexer.getEncoderVal()) <= INDEXER_DEADBAND));
+        return false;
     }
 }
