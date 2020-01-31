@@ -1,12 +1,13 @@
 package frc.robot;
 
-import static frc.robot.Constants.*; // import the Constants class so we can use the variables in it
-                                     // easily
+import static frc.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.tian.ManualDriveCommand;
-import frc.robot.subsystems.FunPlusPhoenix;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.drivetrain.ReverseDriveCommand;
+import frc.robot.commands.drivetrain.ManualDriveCommand;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Gyro;
 
 /**
@@ -17,7 +18,7 @@ import frc.robot.util.Gyro;
  */
 public class RobotContainer {
 
-    private final FunPlusPhoenix drivetrain;
+    private final Drivetrain drivetrain;
 
     private final XboxController controller;
 
@@ -27,7 +28,7 @@ public class RobotContainer {
     public RobotContainer() {
         controller = new XboxController(CONTROLLER_ID);
 
-        drivetrain = new FunPlusPhoenix();
+        drivetrain = new Drivetrain();
         drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, controller));
         
         configureButtonBindings();
@@ -37,7 +38,7 @@ public class RobotContainer {
      * Use this method to define your button -> command mappings.
      */
     private void configureButtonBindings() {
-        
+        (new JoystickButton(controller, XboxController.Button.kY.value)).whenPressed(new ReverseDriveCommand(drivetrain);
     }
 
     public void outputValues() {

@@ -8,5 +8,7 @@ public class ResetAutoPositionCommand extends InstantCommand {
 
     public ResetAutoPositionCommand(Drivetrain drivetrain, Pose2d pose) {
         drivetrain.setRobotPose(pose);
+        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(drivetrain);
     }
 }

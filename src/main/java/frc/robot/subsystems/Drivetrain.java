@@ -64,6 +64,7 @@ public class Drivetrain extends SubsystemBase {
 
     private double speedForward;
     private double speedTurn;
+    private boolean reversed;
 
     public Drivetrain() {
         frontLeftMotor = new CANSparkMax(DRIVE_FRONT_LEFT, MotorType.kBrushless);
@@ -118,19 +119,20 @@ public class Drivetrain extends SubsystemBase {
         angleSetpoint = -1257;
         pathTimer.stop();
         pathTimer.reset();
+        reversed = false;
     }
 
     @Override
     public void periodic() {
         switch(state) {
             case MANUAL:
-                double[] arcadeSpeeds = arcadeDrive(speedForward, speedTurn);
+                double[] arcadeSpeeds = arcadeDrive(reversed ? -speedForward : speedForward, speedTurn);
 
                 frontLeftMotor.set(arcadeSpeeds[0]);
                 frontRightMotor.set(arcadeSpeeds[1]);
             break;
             case CLOSED_LOOP:
-                ChassisSpeeds chassisSpeeds = new ChassisSpeeds(speedForward, 0, speedTurn);
+                ChassisSpeeds chassisSpeeds = new ChassisSpeeds(reversed ? -speedForward : speedForward, 0, speedTurn);
                 DifferentialDriveWheelSpeeds dSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
 
                 frontLeftMotor.setVoltage(leftVelPID.calculate(leftEncoder.getVelocity(), dSpeeds.leftMetersPerSecond) + 
@@ -319,6 +321,10 @@ public class Drivetrain extends SubsystemBase {
         pathTimer.reset();
         pathTimer.start();
         state = State.RAMSETE;
+    }
+
+    public void toggleReverse() {
+        reversed = !reversed;
     }
 
     // sets the robot pose to a given position
