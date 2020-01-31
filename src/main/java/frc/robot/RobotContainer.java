@@ -46,8 +46,9 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new IntakeIntakeCommand(intake));
 
         (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerIntakeCommand(indexer));
-        (new JoystickButton(operatorController, Button.kY.value)).whileHeld(new IndexerIntakeCommand(indexer));
-        (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerIntakeCommand(indexer));
-        (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kY.value)).whileHeld(new IndexerPIDCommand(indexer));
+        (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerEjectCommand(indexer));
+        (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
+
     }
 }
