@@ -96,47 +96,77 @@ public class Indexer extends SubsystemBase {
     }
 
     public void outputValues() {
-        SmartDashboard.putString("Cargo Arm State", state.name());
+        SmartDashboard.putString("Indexer State", state.name());
 
-        SmartDashboard.putNumber("Cargo Arm PID Setpoint", PIDSetpoint);
-        SmartDashboard.putNumber("Cargo Arm Position", getEncoderVal());
+        SmartDashboard.putNumber("Indexer PID Setpoint", PIDSetpoint);
 
         SmartDashboard.putNumber("conveyerMotorTop Current", conveyerMotorTop.getOutputCurrent());
-        SmartDashboard.putNumber("conveyerMotorTop Temperature (C)", conveyerMotorTop.getMotorTemperature());
+        SmartDashboard.putNumber("TopEncoder Values", getEncoderVal());
+
 
         SmartDashboard.putNumber("conveyerMotorBottom Current", conveyerMotorBottom.getOutputCurrent());
-        SmartDashboard.putNumber("conveyerMotorBottom Temperature (C)", conveyerMotorBottom.getMotorTemperature());
+        SmartDashboard.putNumber("BottomEncoder Values", getEncoderVal());
 
         SmartDashboard.putNumber("stopMotor Current", stopMotor.getOutputCurrent());
-        SmartDashboard.putNumber("stopMotor Current Temperature (C)", stopMotor.getMotorTemperature());
+
     }
     private void setConstantTuning() {
-        SmartDashboard.putNumber("Cargo Arm Max Speed", INDEXER_MAX_SPEED);
 
-        SmartDashboard.putNumber("Cargo Arm P", INDEXER_PIDF[0]);
-        SmartDashboard.putNumber("Cargo Arm I", INDEXER_PIDF[1]);
-        SmartDashboard.putNumber("Cargo Arm D", INDEXER_PIDF[2]);
-        SmartDashboard.putNumber("Cargo Arm F", INDEXER_PIDF[3]);
+        SmartDashboard.putNumber("Indexer P", INDEXER_PIDF[0]);
+        SmartDashboard.putNumber("Indexer I", INDEXER_PIDF[1]);
+        SmartDashboard.putNumber("Indexer D", INDEXER_PIDF[2]);
+        SmartDashboard.putNumber("Indexer F", INDEXER_PIDF[3]);
+
+        SmartDashboard.putNumber("Indexer One Setpoint", ONE_INDEX_SETPOINT);
+
+        SmartDashboard.putNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
+        SmartDashboard.putNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
+
+        SmartDashboard.putNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYER_EJECT_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYER_NEUTRAL_SPEED);
     }
 
     public void getConstantTuning() {
-        INDEXER_MAX_SPEED = SmartDashboard.getNumber("Cargo Arm Max Speed", INDEXER_MAX_SPEED);
-
-        if (INDEXER_PIDF[0] != SmartDashboard.getNumber("Cargo Arm P", INDEXER_PIDF[0])) {
-            INDEXER_PIDF[0] = SmartDashboard.getNumber("Cargo Arm P", INDEXER_PIDF[0]);
+        if (INDEXER_PIDF[0] != SmartDashboard.getNumber("Indexer P", INDEXER_PIDF[0])) {
+            INDEXER_PIDF[0] = SmartDashboard.getNumber("Indexer P", INDEXER_PIDF[0]);
             PIDconveyerTop.setP(INDEXER_PIDF[0]);
         }
-        if (INDEXER_PIDF[1] != SmartDashboard.getNumber("Cargo Arm I", INDEXER_PIDF[1])) {
-            INDEXER_PIDF[1] = SmartDashboard.getNumber("Cargo Arm I", INDEXER_PIDF[1]);
+        if (INDEXER_PIDF[1] != SmartDashboard.getNumber("Indexer I", INDEXER_PIDF[1])) {
+            INDEXER_PIDF[1] = SmartDashboard.getNumber("Indexer I", INDEXER_PIDF[1]);
             PIDconveyerTop.setP(INDEXER_PIDF[1]);
         }
-        if (INDEXER_PIDF[2] != SmartDashboard.getNumber("Cargo Arm D", INDEXER_PIDF[2])) {
-            INDEXER_PIDF[2] = SmartDashboard.getNumber("Cargo Arm D", INDEXER_PIDF[2]);
+        if (INDEXER_PIDF[2] != SmartDashboard.getNumber("Indexer D", INDEXER_PIDF[2])) {
+            INDEXER_PIDF[2] = SmartDashboard.getNumber( "Indexer D", INDEXER_PIDF[2]);
             PIDconveyerTop.setP(INDEXER_PIDF[2]);
         }
-        if (INDEXER_PIDF[3] != SmartDashboard.getNumber("Cargo Arm F", INDEXER_PIDF[3])) {
-            INDEXER_PIDF[3] = SmartDashboard.getNumber("Cargo Arm F", INDEXER_PIDF[3]);
+        if (INDEXER_PIDF[3] != SmartDashboard.getNumber("Indexer F", INDEXER_PIDF[3])) {
+            INDEXER_PIDF[3] = SmartDashboard.getNumber("Indexer F", INDEXER_PIDF[3]);
             PIDconveyerTop.setP(INDEXER_PIDF[3]);
+        }
+        
+        if (ONE_INDEX_SETPOINT != SmartDashboard.getNumber("Indexer One Setpoint", ONE_INDEX_SETPOINT)) {
+            ONE_INDEX_SETPOINT = SmartDashboard.getNumber("Indexer One Setpoint", ONE_INDEX_SETPOINT);
+        }
+        if (INDEXER_STOP_SHOOT_SPEED != SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED)) {
+            INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
+        }
+
+        if (INDEXER_STOP_NEUTRAL_SPEED != SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED)) {
+            INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
+        }
+        if (INDEXER_CONVEYER_SHOOT_SPEED != SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED)) {
+            INDEXER_CONVEYER_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED);
+        }
+        if (INDEXER_CONVEYER_EJECT_SPEED != SmartDashboard.getNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYER_EJECT_SPEED)) {
+            INDEXER_CONVEYER_EJECT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYER_EJECT_SPEED);
+        }
+        if (INDEXER_CONVEYER_INTAKE_SPEED != SmartDashboard.getNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED)) {
+            INDEXER_CONVEYER_INTAKE_SPEED = SmartDashboard.getNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED);
+        }
+        if (INDEXER_CONVEYER_NEUTRAL_SPEED != SmartDashboard.getNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYER_NEUTRAL_SPEED)) {
+            INDEXER_CONVEYER_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYER_NEUTRAL_SPEED);
         }
     }
      
@@ -151,7 +181,6 @@ public class Indexer extends SubsystemBase {
     public double getPIDSetpoint( ){
         return PIDSetpoint;
     }
-
     public void setPIDSetpoint(double value) {
         resetEncoder();
         PIDSetpoint = value;

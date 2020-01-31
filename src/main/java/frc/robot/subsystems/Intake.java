@@ -24,6 +24,8 @@ public class Intake extends SubsystemBase {
        intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
        intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
 
+       setConstantTuning();
+
     }
     
     @Override
@@ -43,8 +45,24 @@ public class Intake extends SubsystemBase {
     public void outputValues() {
         SmartDashboard.putString("Intake State", state.name());
 
-        SmartDashboard.putNumber("intake motor Current", intakeMotor.getOutputCurrent());
-        SmartDashboard.putNumber("intake motor Temperature (C)", intakeMotor.getMotorTemperature());
+        SmartDashboard.putNumber("Intake motor Current", intakeMotor.getOutputCurrent());
+    }
+    private void setConstantTuning() {
+        SmartDashboard.putNumber("Intake Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED);
+        SmartDashboard.putNumber("Intake Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED);
+        SmartDashboard.putNumber("Intake Eject Speed", INDEXER_CONVEYER_EJECT_SPEED);
+    }
+
+    public void getConstantTuning() {
+        if (INTAKE_EJECT_SPEED != SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED)) {
+            INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
+        }
+        if (INTAKE_INTAKE_SPEED != SmartDashboard.getNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED)) {
+            INTAKE_INTAKE_SPEED = SmartDashboard.getNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
+        }
+        if (INTAKE_NEUTRAL_SPEED != SmartDashboard.getNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED)) {
+            INTAKE_NEUTRAL_SPEED = SmartDashboard.getNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);
+        }
     }
 
     public void neutral() {
