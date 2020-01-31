@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Gyro;
 
+// TODO think more about the reversed drive stuff
 public class Drivetrain extends SubsystemBase {
   
     private CANSparkMax frontLeftMotor;
@@ -322,12 +323,11 @@ public class Drivetrain extends SubsystemBase {
 
     // sets the robot pose to a given position
     // should only be called once at the beginning of autonomous
-    public void setRobotPose(Pose2d pose, Rotation2d rotation) {
+    public void setRobotPose(Pose2d pose) {
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
-        Gyro.getInstance().setRobotAngle(rotation.getDegrees());
-
-        driveOdometry.resetPosition(pose, rotation);
+        
+        driveOdometry.resetPosition(pose, new Rotation2d(Gyro.getInstance().getRobotAngle()));
     }
 
     public void outputValues() {
