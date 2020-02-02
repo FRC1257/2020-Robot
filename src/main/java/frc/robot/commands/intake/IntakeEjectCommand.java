@@ -30,6 +30,5 @@ public class IntakeEjectCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
-    }
-    
+    } 
 }
