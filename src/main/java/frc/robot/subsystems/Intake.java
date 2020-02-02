@@ -18,6 +18,7 @@ public class Intake extends SubsystemBase {
         INTAKING,
         EJECTING
     }
+    
     State state = State.NEUTRAL;
 
     public Intake() {
@@ -25,7 +26,6 @@ public class Intake extends SubsystemBase {
        intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
 
        setConstantTuning();
-
     }
     
     @Override
@@ -42,11 +42,13 @@ public class Intake extends SubsystemBase {
                 break;
         }
     }
+    
     public void outputValues() {
         SmartDashboard.putString("Intake State", state.name());
 
         SmartDashboard.putNumber("Intake motor Current", intakeMotor.getOutputCurrent());
     }
+
     private void setConstantTuning() {
         SmartDashboard.putNumber("Intake Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED);
         SmartDashboard.putNumber("Intake Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED);
@@ -69,6 +71,7 @@ public class Intake extends SubsystemBase {
         state = State.NEUTRAL;
     
     }
+
     public void eject() {
         state = State.EJECTING;
     }
@@ -76,6 +79,7 @@ public class Intake extends SubsystemBase {
     public void intake() {
         state = State.INTAKING;
     }
+
     public State getState(){
         return state;
     }

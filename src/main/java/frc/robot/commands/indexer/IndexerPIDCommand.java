@@ -30,6 +30,6 @@ public class IndexerPIDCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (!(Math.abs(indexer.getPIDSetpoint() - indexer.getEncoderVal()) <= INDEXER_DEADBAND));
+        return (!(Math.abs(indexer.getcurrentPIDSetpoint() - indexer.getEncoderVal()) <= INDEXER_DEADBAND));
     }
 }

@@ -23,8 +23,7 @@ public class Indexer extends SubsystemBase {
 
     CANSparkMax stopMotor;
 
-    private double PIDSetpoint;
-
+    private double currentPIDSetpoint;
 
     public enum State {
         NEUTRAL,
@@ -47,7 +46,6 @@ public class Indexer extends SubsystemBase {
         conveyerMotorBottom.restoreFactoryDefaults();
         conveyerMotorBottom.setIdleMode(IdleMode.kBrake);
         conveyerMotorBottom.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
-
         conveyerMotorBottom.follow(conveyerMotorTop);
 
         PIDconveyerTop.setP(INDEXER_PIDF[0]);
@@ -65,27 +63,27 @@ public class Indexer extends SubsystemBase {
     public void periodic() {
         switch(state) {
             case NEUTRAL: 
-                PIDSetpoint = 0;
+                currentPIDSetpoint = 0;
                 conveyerMotorTop.set(INDEXER_CONVEYER_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
                 break;
             case SHOOTING:
-                PIDSetpoint = 0;
+                currentPIDSetpoint = 0;
                 conveyerMotorTop.set(INDEXER_CONVEYER_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
             case INTAKING:
-                PIDSetpoint = 0;
+                currentPIDSetpoint = 0;
                 conveyerMotorTop.set(INDEXER_CONVEYER_INTAKE_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case PID:
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                  
-                if (PIDSetpoint == 0) {
+                if (currentPIDSetpoint == 0) {
                     state = State.NEUTRAL;
                 } 
                 else {
-                    PIDconveyerTop.setReference(PIDSetpoint,ControlType.kPosition);
+                    PIDconveyerTop.setReference(currentPIDSetpoint,ControlType.kPosition);
                 }
                 break;
             case EJECTING:
@@ -98,7 +96,7 @@ public class Indexer extends SubsystemBase {
     public void outputValues() {
         SmartDashboard.putString("Indexer State", state.name());
 
-        SmartDashboard.putNumber("Indexer PID Setpoint", PIDSetpoint);
+        SmartDashboard.putNumber("Indexer PID Setpoint", currentPIDSetpoint);
 
         SmartDashboard.putNumber("conveyerMotorTop Current", conveyerMotorTop.getOutputCurrent());
         SmartDashboard.putNumber("TopEncoder Values", getEncoderVal());
@@ -111,7 +109,6 @@ public class Indexer extends SubsystemBase {
 
     }
     private void setConstantTuning() {
-
         SmartDashboard.putNumber("Indexer P", INDEXER_PIDF[0]);
         SmartDashboard.putNumber("Indexer I", INDEXER_PIDF[1]);
         SmartDashboard.putNumber("Indexer D", INDEXER_PIDF[2]);
@@ -149,13 +146,14 @@ public class Indexer extends SubsystemBase {
         if (ONE_INDEX_SETPOINT != SmartDashboard.getNumber("Indexer One Setpoint", ONE_INDEX_SETPOINT)) {
             ONE_INDEX_SETPOINT = SmartDashboard.getNumber("Indexer One Setpoint", ONE_INDEX_SETPOINT);
         }
+
         if (INDEXER_STOP_SHOOT_SPEED != SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED)) {
             INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
         }
-
         if (INDEXER_STOP_NEUTRAL_SPEED != SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED)) {
             INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
         }
+
         if (INDEXER_CONVEYER_SHOOT_SPEED != SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED)) {
             INDEXER_CONVEYER_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED);
         }
@@ -178,17 +176,18 @@ public class Indexer extends SubsystemBase {
         conveyerEncoderTop.setPosition(0.0);
     }
 
-    public double getPIDSetpoint( ){
-        return PIDSetpoint;
+    public double getcurrentPIDSetpoint( ){
+        return currentPIDSetpoint;
     }
-    public void setPIDSetpoint(double value) {
+
+    public void setcurrentPIDSetpoint(double value) {
         resetEncoder();
-        PIDSetpoint = value;
+        currentPIDSetpoint = value;
         state = State.PID;
     }
 
     public void moveOneIndex() {
-        setPIDSetpoint(ONE_INDEX_SETPOINT);
+        setcurrentPIDSetpoint(ONE_INDEX_SETPOINT);
     }
 
     public void neutral() {
@@ -206,11 +205,12 @@ public class Indexer extends SubsystemBase {
     public void intake() {
         state = State.INTAKING;
     }
+
     public void pid() {
         state = State.PID;
     }
+
     public State getState(){
         return state;
     }
-
 }
