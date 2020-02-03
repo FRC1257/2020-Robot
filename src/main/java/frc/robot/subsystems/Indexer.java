@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Indexer extends SubsystemBase {
 
-    CANSparkMax conveyerMotorTop;
-    CANEncoder conveyerEncoderTop;
-    CANPIDController PIDconveyerTop;
+    CANSparkMax conveyorMotorTop;
+    CANEncoder conveyorEncoderTop;
+    CANPIDController PIDconveyorTop;
 
-    CANSparkMax conveyerMotorBottom;
-    CANEncoder conveyerEncoderBottom;
-    CANPIDController PIDconveyerBottom;
+    CANSparkMax conveyorMotorBottom;
+    CANEncoder conveyorEncoderBottom;
+    CANPIDController PIDconveyorBottom;
 
     CANSparkMax stopMotor;
 
@@ -35,26 +35,26 @@ public class Indexer extends SubsystemBase {
     State state = State.NEUTRAL;
 
     public Indexer() {
-        conveyerMotorTop = new CANSparkMax(INDEXER_CONVEYER_TOP_MOTOR_ID, MotorType.kBrushless);
-        conveyerMotorTop.restoreFactoryDefaults();
-        conveyerMotorTop.setIdleMode(IdleMode.kBrake);
-        conveyerMotorTop.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
-        conveyerEncoderTop = conveyerMotorTop.getEncoder();
-        PIDconveyerTop = conveyerMotorTop.getPIDController();
+        conveyorMotorTop = new CANSparkMax(INDEXER_CONVEYOR_TOP_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorTop.restoreFactoryDefaults();
+        conveyorMotorTop.setIdleMode(IdleMode.kBrake);
+        conveyorMotorTop.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        conveyorEncoderTop = conveyorMotorTop.getEncoder();
+        PIDconveyorTop = conveyorMotorTop.getPIDController();
 
-        conveyerMotorBottom = new CANSparkMax(INDEXER_CONVEYER_BOTTOM_MOTOR_ID, MotorType.kBrushless);
-        conveyerMotorBottom.restoreFactoryDefaults();
-        conveyerMotorBottom.setIdleMode(IdleMode.kBrake);
-        conveyerMotorBottom.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
-        conveyerMotorBottom.follow(conveyerMotorTop);
+        conveyorMotorBottom = new CANSparkMax(INDEXER_CONVEYOR_BOTTOM_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorBottom.restoreFactoryDefaults();
+        conveyorMotorBottom.setIdleMode(IdleMode.kBrake);
+        conveyorMotorBottom.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        conveyorMotorBottom.follow(conveyorMotorTop);
 
-        PIDconveyerTop.setP(INDEXER_PIDF[0]);
-        PIDconveyerTop.setI(INDEXER_PIDF[1]);
-        PIDconveyerTop.setD(INDEXER_PIDF[2]);
-        PIDconveyerTop.setFF(INDEXER_PIDF[3]);
+        PIDconveyorTop.setP(INDEXER_PIDF[0]);
+        PIDconveyorTop.setI(INDEXER_PIDF[1]);
+        PIDconveyorTop.setD(INDEXER_PIDF[2]);
+        PIDconveyorTop.setFF(INDEXER_PIDF[3]);
 
         stopMotor = new CANSparkMax(INDEXER_STOP_MOTOR_ID, MotorType.kBrushless);
-        stopMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
+        stopMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
         setConstantTuning();
         currentPIDSetpoint = 0.0;
@@ -65,17 +65,17 @@ public class Indexer extends SubsystemBase {
         switch(state) {
             case NEUTRAL: 
                 currentPIDSetpoint = 0.0;
-                conveyerMotorTop.set(INDEXER_CONVEYER_NEUTRAL_SPEED);
+                conveyorMotorTop.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
                 break;
             case SHOOTING:
                 currentPIDSetpoint = 0.0;
-                conveyerMotorTop.set(INDEXER_CONVEYER_SHOOT_SPEED);
+                conveyorMotorTop.set(INDEXER_CONVEYOR_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
             case INTAKING:
                 currentPIDSetpoint = 0.0;
-                conveyerMotorTop.set(INDEXER_CONVEYER_INTAKE_SPEED);
+                conveyorMotorTop.set(INDEXER_CONVEYOR_INTAKE_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case PID:
@@ -84,11 +84,11 @@ public class Indexer extends SubsystemBase {
                     state = State.NEUTRAL;
                 } 
                 else {
-                    PIDconveyerTop.setReference(currentPIDSetpoint,ControlType.kPosition);
+                    PIDconveyorTop.setReference(currentPIDSetpoint,ControlType.kPosition);
                 }
                 break;
             case EJECTING:
-                conveyerMotorTop.set(INDEXER_CONVEYER_EJECT_SPEED);
+                conveyorMotorTop.set(INDEXER_CONVEYOR_EJECT_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
         }
@@ -99,11 +99,11 @@ public class Indexer extends SubsystemBase {
 
         SmartDashboard.putNumber("Indexer PID Setpoint", currentPIDSetpoint);
 
-        SmartDashboard.putNumber("conveyerMotorTop Current", conveyerMotorTop.getOutputCurrent());
+        SmartDashboard.putNumber("conveyorMotorTop Current", conveyorMotorTop.getOutputCurrent());
         SmartDashboard.putNumber("TopEncoder Values", getEncoderVal());
 
 
-        SmartDashboard.putNumber("conveyerMotorBottom Current", conveyerMotorBottom.getOutputCurrent());
+        SmartDashboard.putNumber("conveyorMotorBottom Current", conveyorMotorBottom.getOutputCurrent());
         SmartDashboard.putNumber("BottomEncoder Values", getEncoderVal());
 
         SmartDashboard.putNumber("stopMotor Current", stopMotor.getOutputCurrent());
@@ -120,28 +120,28 @@ public class Indexer extends SubsystemBase {
         SmartDashboard.putNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
         SmartDashboard.putNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
 
-        SmartDashboard.putNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYER_EJECT_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYER_NEUTRAL_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
 
     public void getConstantTuning() {
         if (INDEXER_PIDF[0] != SmartDashboard.getNumber("Indexer P", INDEXER_PIDF[0])) {
             INDEXER_PIDF[0] = SmartDashboard.getNumber("Indexer P", INDEXER_PIDF[0]);
-            PIDconveyerTop.setP(INDEXER_PIDF[0]);
+            PIDconveyorTop.setP(INDEXER_PIDF[0]);
         }
         if (INDEXER_PIDF[1] != SmartDashboard.getNumber("Indexer I", INDEXER_PIDF[1])) {
             INDEXER_PIDF[1] = SmartDashboard.getNumber("Indexer I", INDEXER_PIDF[1]);
-            PIDconveyerTop.setP(INDEXER_PIDF[1]);
+            PIDconveyorTop.setP(INDEXER_PIDF[1]);
         }
         if (INDEXER_PIDF[2] != SmartDashboard.getNumber("Indexer D", INDEXER_PIDF[2])) {
             INDEXER_PIDF[2] = SmartDashboard.getNumber( "Indexer D", INDEXER_PIDF[2]);
-            PIDconveyerTop.setP(INDEXER_PIDF[2]);
+            PIDconveyorTop.setP(INDEXER_PIDF[2]);
         }
         if (INDEXER_PIDF[3] != SmartDashboard.getNumber("Indexer F", INDEXER_PIDF[3])) {
             INDEXER_PIDF[3] = SmartDashboard.getNumber("Indexer F", INDEXER_PIDF[3]);
-            PIDconveyerTop.setP(INDEXER_PIDF[3]);
+            PIDconveyorTop.setP(INDEXER_PIDF[3]);
         }
         
         if (ONE_INDEX_SETPOINT != SmartDashboard.getNumber("Indexer One Setpoint", ONE_INDEX_SETPOINT)) {
@@ -155,26 +155,26 @@ public class Indexer extends SubsystemBase {
             INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
         }
 
-        if (INDEXER_CONVEYER_SHOOT_SPEED != SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED)) {
-            INDEXER_CONVEYER_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED);
+        if (INDEXER_CONVEYOR_SHOOT_SPEED != SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED)) {
+            INDEXER_CONVEYOR_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
         }
-        if (INDEXER_CONVEYER_EJECT_SPEED != SmartDashboard.getNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYER_EJECT_SPEED)) {
-            INDEXER_CONVEYER_EJECT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYER_EJECT_SPEED);
+        if (INDEXER_CONVEYOR_EJECT_SPEED != SmartDashboard.getNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED)) {
+            INDEXER_CONVEYOR_EJECT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED);
         }
-        if (INDEXER_CONVEYER_INTAKE_SPEED != SmartDashboard.getNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED)) {
-            INDEXER_CONVEYER_INTAKE_SPEED = SmartDashboard.getNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED);
+        if (INDEXER_CONVEYOR_INTAKE_SPEED != SmartDashboard.getNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED)) {
+            INDEXER_CONVEYOR_INTAKE_SPEED = SmartDashboard.getNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
         }
-        if (INDEXER_CONVEYER_NEUTRAL_SPEED != SmartDashboard.getNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYER_NEUTRAL_SPEED)) {
-            INDEXER_CONVEYER_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYER_NEUTRAL_SPEED);
+        if (INDEXER_CONVEYOR_NEUTRAL_SPEED != SmartDashboard.getNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED)) {
+            INDEXER_CONVEYOR_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
         }
     }
      
     public double getEncoderVal() {
-        return conveyerEncoderTop.getPosition();
+        return conveyorEncoderTop.getPosition();
     }
 
     public void resetEncoder() {
-        conveyerEncoderTop.setPosition(RESET_SETPOINT);
+        conveyorEncoderTop.setPosition(RESET_SETPOINT);
     }
 
     public double getcurrentPIDSetpoint( ){

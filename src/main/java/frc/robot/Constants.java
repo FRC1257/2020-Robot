@@ -23,14 +23,14 @@ public final class Constants {
     public static double INTAKE_EJECT_SPEED = 0.8;
 
     // Indexer Constants
-    public static int INDEXER_CONVEYER_TOP_MOTOR_ID = 2;
-    public static int INDEXER_CONVEYER_BOTTOM_MOTOR_ID = 3;
+    public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 2;
+    public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 3;
     public static int INDEXER_STOP_MOTOR_ID = 4;
 
-    public static double INDEXER_CONVEYER_NEUTRAL_SPEED = 0.0;
-    public static double INDEXER_CONVEYER_SHOOT_SPEED = 0.5;
-    public static double INDEXER_CONVEYER_EJECT_SPEED = -0.5;
-    public static double INDEXER_CONVEYER_INTAKE_SPEED = 0.5;
+    public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
+    public static double INDEXER_CONVEYOR_SHOOT_SPEED = 0.5;
+    public static double INDEXER_CONVEYOR_EJECT_SPEED = -0.5;
+    public static double INDEXER_CONVEYOR_INTAKE_SPEED = 0.5;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
@@ -45,7 +45,7 @@ public final class Constants {
 
     //NEO Constants
 
-    public static int NEO_550_CURRENT_LIMITER = 25;
+    public static int NEO_550_CURRENT_LIMIT = 25;
 
     // Elevator Constants
     public final static int ELEVATOR_MOTOR_ID = 0;

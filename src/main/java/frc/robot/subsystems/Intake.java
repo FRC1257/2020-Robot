@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
        intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
-       intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
+       intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
        setConstantTuning();
     }
@@ -50,9 +50,9 @@ public class Intake extends SubsystemBase {
     }
 
     private void setConstantTuning() {
-        SmartDashboard.putNumber("Intake Intake Speed", INDEXER_CONVEYER_INTAKE_SPEED);
-        SmartDashboard.putNumber("Intake Shoot Speed", INDEXER_CONVEYER_SHOOT_SPEED);
-        SmartDashboard.putNumber("Intake Eject Speed", INDEXER_CONVEYER_EJECT_SPEED);
+        SmartDashboard.putNumber("Intake Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
+        SmartDashboard.putNumber("Intake Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
+        SmartDashboard.putNumber("Intake Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED);
     }
 
     public void getConstantTuning() {
