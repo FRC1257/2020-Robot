@@ -24,6 +24,8 @@ public class RobotContainer {
     private final Indexer indexer;
     private final Elevator elevator;
 
+    private int outputCounter;
+
     public RobotContainer() {
         operatorController = new XboxController(CONTROLLER_OPERATOR_ID);
 
@@ -37,6 +39,7 @@ public class RobotContainer {
         elevator.setDefaultCommand(new ManualCommand(elevator, operatorController));
 
         configureButtonBindings();
+        outputCounter = 0;
     }
 
     // defines button -> command mappings
@@ -49,6 +52,28 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerPIDCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerEjectCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
+    }
 
+    public void outputValues() {
+        switch (outputCounter) {
+            case 0:
+                intake.outputValues();
+                break;
+            case 1:
+                indexer.outputValues();
+                break;
+        }
+        outputCounter = (outputCounter + 1) % 10;
+    }
+
+    public void getConstantTuning() {
+        switch (outputCounter) {
+            case 0:
+                intake.getConstantTuning();
+                break;
+            case 1:
+                indexer.getConstantTuning();
+                break;
+        }
     }
 }

@@ -46,7 +46,7 @@ public class Intake extends SubsystemBase {
     public void outputValues() {
         SmartDashboard.putString("Intake State", state.name());
 
-        SmartDashboard.putNumber("Intake motor Current", intakeMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
     }
 
     private void setConstantTuning() {
@@ -80,7 +80,7 @@ public class Intake extends SubsystemBase {
         state = State.INTAKING;
     }
 
-    public State getState(){
+    public State getState() {
         return state;
     }
 }
