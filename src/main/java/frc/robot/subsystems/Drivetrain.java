@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.Gyro;
 
-// TODO fix paths to reflect the changed reverse paths
 public class Drivetrain extends SubsystemBase {
   
     private CANSparkMax frontLeftMotor;
