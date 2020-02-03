@@ -29,7 +29,6 @@ public class Elevator extends SubsystemBase {
                 motor.set(speed);
             break;
         }
-
         speed = 0;
     }
     

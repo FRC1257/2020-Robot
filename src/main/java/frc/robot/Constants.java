@@ -15,6 +15,9 @@ public final class Constants {
     public static int CONTROLLER_DRIVER_ID = 0;
     public static int CONTROLLER_OPERATOR_ID = 1;
 
+    // NEO Constants
+    public static int NEO_550_CURRENT_LIMIT = 25;
+
     // Intake Constants
     public static int INTAKE_MOTOR_ID = 1;
 
@@ -23,16 +26,22 @@ public final class Constants {
     public static double INTAKE_EJECT_SPEED = 0.8;
 
     // Indexer Constants
-    public static int INDEXER_CONVEYER_MOTOR_ID = 2;
-    public static int INDEXER_STOP_MOTOR_ID = 3;
+    public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 2;
+    public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 3;
+    public static int INDEXER_STOP_MOTOR_ID = 4;
 
-    public static double INDEXER_CONVEYER_NEUTRAL_SPEED = 0.0;
-    public static double INDEXER_CONVEYER_SHOOT_SPEED = 0.5;
-    public static double INDEXER_CONVEYER_EJECT_SPEED = -0.5;
-    public static double INDEXER_CONVEYER_INTAKE_SPEED = 0.5;
+    public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
+    public static double INDEXER_CONVEYOR_SHOOT_SPEED = 0.5;
+    public static double INDEXER_CONVEYOR_EJECT_SPEED = -0.5;
+    public static double INDEXER_CONVEYOR_INTAKE_SPEED = 0.5;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
+
+    public static double INDEXER_DEADBAND = 0.5;
+    public static double [] INDEXER_PIDF = {0, 0, 0, 0};
+
+    public static double INDEXER_ADVANCE_SETPOINT = 10.0;
 
     // Elevator Constants
     public final static int ELEVATOR_MOTOR_ID = 0;

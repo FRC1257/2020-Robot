@@ -26,6 +26,8 @@ public class RobotContainer {
     private final Elevator elevator;
     private final Shooter shooter;
 
+    private int outputCounter;
+
     public RobotContainer() {
         driveController = new XboxController(CONTROLLER_DRIVER_ID);
         operatorController = new XboxController(CONTROLLER_OPERATOR_ID);
@@ -43,6 +45,7 @@ public class RobotContainer {
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));
 
         configureButtonBindings();
+        outputCounter = 0;
     }
 
     // defines button -> command mappings
@@ -51,13 +54,35 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new IntakeEjectCommand(intake));
         (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new IntakeIntakeCommand(intake));
 
-        // Indexer Bindings
-        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerNeutralCommand(indexer));
-        (new JoystickButton(operatorController, Button.kY.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerPIDCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerEjectCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
 
         // Shooting Bindings
         (new JoystickButton(operatorController, Button.kA.value)).whenPressed(new ShooterShootingCommand(shooter));
+    }
+
+    public void outputValues() {
+        switch (outputCounter) {
+            case 0:
+                intake.outputValues();
+                break;
+            case 1:
+                indexer.outputValues();
+                break;
+        }
+        outputCounter = (outputCounter + 1) % 10;
+    }
+
+    public void getConstantTuning() {
+        switch (outputCounter) {
+            case 0:
+                intake.getConstantTuning();
+                break;
+            case 1:
+                indexer.getConstantTuning();
+                break;
+        }
     }
 }
