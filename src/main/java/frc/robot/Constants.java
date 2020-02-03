@@ -37,6 +37,8 @@ public final class Constants {
 
     public static double INDEXER_DEADBAND = 5.0;
     public static double [] INDEXER_PIDF = {4,6,8,9};
+
+    public static double RESET_SETPOINT = 0.0;
     public static double ONE_INDEX_SETPOINT = 90.0;
 
     public static double INDEXER_MAX_SPEED;

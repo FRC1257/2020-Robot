@@ -57,29 +57,30 @@ public class Indexer extends SubsystemBase {
         stopMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMITER);
 
         setConstantTuning();
+        currentPIDSetpoint = 0.0;
     }
     
     @Override
     public void periodic() {
         switch(state) {
             case NEUTRAL: 
-                currentPIDSetpoint = 0;
+                currentPIDSetpoint = 0.0;
                 conveyerMotorTop.set(INDEXER_CONVEYER_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
                 break;
             case SHOOTING:
-                currentPIDSetpoint = 0;
+                currentPIDSetpoint = 0.0;
                 conveyerMotorTop.set(INDEXER_CONVEYER_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
             case INTAKING:
-                currentPIDSetpoint = 0;
+                currentPIDSetpoint = 0.0;
                 conveyerMotorTop.set(INDEXER_CONVEYER_INTAKE_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case PID:
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                  
-                if (currentPIDSetpoint == 0) {
+                if (currentPIDSetpoint == 0.0) {
                     state = State.NEUTRAL;
                 } 
                 else {
@@ -173,7 +174,7 @@ public class Indexer extends SubsystemBase {
     }
 
     public void resetEncoder() {
-        conveyerEncoderTop.setPosition(0.0);
+        conveyerEncoderTop.setPosition(RESET_SETPOINT);
     }
 
     public double getcurrentPIDSetpoint( ){
