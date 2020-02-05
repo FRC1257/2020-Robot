@@ -58,7 +58,7 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerIntakeCommand(indexer));
 
         //Shooting Bindings
-        (new JoystickButton(operatorController, Button.kA.value)).whenPressed(new ShooterShootingCommand(shooter));
-        (new JoystickButton(operatorController, Button.kB.value)).whenPressed(new ShooterShootingCommand(shooter));
+        (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new ShooterShootingCommand(shooter));
+        (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new ShooterPIDCommand(shooter));
     }
 }
