@@ -15,6 +15,8 @@ public final class Constants {
     public static int CONTROLLER_DRIVER_ID = 0;
     public static int CONTROLLER_OPERATOR_ID = 1;
 
+    public static int NEO_CURRENT_LIMIT = 80;
+
     // Intake Constants
     public static int INTAKE_MOTOR_ID = 1;
 

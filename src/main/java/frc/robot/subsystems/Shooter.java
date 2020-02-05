@@ -29,6 +29,7 @@ public class Shooter extends SubsystemBase {
         shooterMotor = new CANSparkMax(SHOOTER_MOTOR_ID, MotorType.kBrushless);
         shooterMotor.restoreFactoryDefaults();
         shooterMotor.setIdleMode(IdleMode.kCoast);
+        shooterMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
         shooterPID = shooterMotor.getPIDController();
         shooterEncoder = shooterMotor.getEncoder();
