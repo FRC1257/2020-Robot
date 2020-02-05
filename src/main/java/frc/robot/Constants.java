@@ -16,6 +16,7 @@ public final class Constants {
     public static int CONTROLLER_OPERATOR_ID = 1;
 
     // NEO Constants
+    public static int NEO_CURRENT_LIMIT = 80;
     public static int NEO_550_CURRENT_LIMIT = 25;
 
     // Intake Constants
@@ -50,4 +51,8 @@ public final class Constants {
     public static int SHOOTER_MOTOR_ID = 5; // probably will change later
     public static int NEUTRAL_SHOOTER_MOTOR_SPEED = 0; // need to change later
     public static int SHOOTING_SHOOTER_MOTOR_SPEED = 0; // need to change later
+
+    public static double[] SHOOTER_PIDF = {0.000001, 0.0, 0.0, 0.000180};
+    public static double SHOOTER_SETPOINT = 4500;
+
 }

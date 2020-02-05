@@ -54,13 +54,15 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new IntakeEjectCommand(intake));
         (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new IntakeIntakeCommand(intake));
 
+        //Indexer Bindings
         (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerIntakeCommand(indexer));
         (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerPIDCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerEjectCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
 
-        // Shooting Bindings
-        (new JoystickButton(operatorController, Button.kA.value)).whenPressed(new ShooterShootingCommand(shooter));
+        //Shooting Bindings
+        (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new ShooterShootingCommand(shooter));
+        (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new ShooterPIDCommand(shooter));
     }
 
     public void outputValues() {
@@ -70,6 +72,9 @@ public class RobotContainer {
                 break;
             case 1:
                 indexer.outputValues();
+                break;
+            case 2:
+                shooter.outputValues();
                 break;
         }
         outputCounter = (outputCounter + 1) % 10;
@@ -82,6 +87,9 @@ public class RobotContainer {
                 break;
             case 1:
                 indexer.getConstantTuning();
+                break;
+            case 2:
+                shooter.getConstantTuning();
                 break;
         }
     }
