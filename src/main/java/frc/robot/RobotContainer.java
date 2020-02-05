@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.drivetrain.ReverseDriveCommand;
+import frc.robot.commands.drivetrain.SlowTurnCommand;
 import frc.robot.commands.drivetrain.ManualDriveCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Gyro;
@@ -39,6 +40,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         (new JoystickButton(controller, XboxController.Button.kY.value)).whenPressed(new ReverseDriveCommand(drivetrain));
+        (new JoystickButton(controller, XboxController.Button.kStart.value)).whenPressed(new SlowTurnCommand(drivetrain));
     }
 
     public void outputValues() {

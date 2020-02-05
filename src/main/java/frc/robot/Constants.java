@@ -15,6 +15,8 @@ public final class Constants {
     public static double DRIVE_TRACK_WIDTH_M = 1.0; // m
     public static double DRIVE_WHEEL_DIAM_M = 0.1524; // m
 
+    public static double REDUCE_TURNING_CONSTANT = 0.8;
+
     public static double DRIVE_LEFT_VEL_PID_P = 0.1;
     public static double DRIVE_RIGHT_VEL_PID_P = 0.1;
     public static double DRIVE_MAX_VEL = 3.0; // m/s
