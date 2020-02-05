@@ -59,5 +59,6 @@ public class RobotContainer {
 
         // Shooting Bindings
         (new JoystickButton(operatorController, Button.kA.value)).whenPressed(new ShooterShootingCommand(shooter));
+        (new JoystickButton(operatorController, Button.kB.value)).whenPressed(new ShooterShootingCommand(shooter));
     }
 }

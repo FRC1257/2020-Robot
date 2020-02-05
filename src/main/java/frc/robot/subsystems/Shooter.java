@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,6 +46,7 @@ public class Shooter extends SubsystemBase {
             case PID:
                 SmartDashboard.putNumber("Shooter Encoder Pos", shooterEncoder.getPosition());
                 SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
+                shooterPID.setReference(SmartDashboard.getNumber("Setpoint", 0), ControlType.kVelocity);
 
                 break;
         }
@@ -56,5 +58,9 @@ public class Shooter extends SubsystemBase {
 
     public void shooting() {
         state = State.SHOOTING;
+    }
+
+    public void pid() {
+        state = State.PID;
     }
 }
