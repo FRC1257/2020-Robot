@@ -10,8 +10,51 @@ package frc.robot;
  */
 public final class Constants {
 
-    public static int CONTROLLER_ID = 0;
+    // Xbox Controller Constants
+    public static int CONTROLLER_DRIVER_ID = 0;
+    public static int CONTROLLER_OPERATOR_ID = 1;
 
+    // NEO Constants
+    public static int NEO_CURRENT_LIMIT = 80;
+    public static int NEO_550_CURRENT_LIMIT = 25;
+
+    // Intake Constants
+    public static int INTAKE_MOTOR_ID = 1;
+
+    public static double INTAKE_NEUTRAL_SPEED = 0.0;
+    public static double INTAKE_INTAKE_SPEED = -0.8;
+    public static double INTAKE_EJECT_SPEED = 0.8;
+
+    // Indexer Constants
+    public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 2;
+    public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 3;
+    public static int INDEXER_STOP_MOTOR_ID = 4;
+
+    public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
+    public static double INDEXER_CONVEYOR_SHOOT_SPEED = 0.5;
+    public static double INDEXER_CONVEYOR_EJECT_SPEED = -0.5;
+    public static double INDEXER_CONVEYOR_INTAKE_SPEED = 0.5;
+
+    public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
+    public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
+
+    public static double INDEXER_DEADBAND = 0.5;
+    public static double [] INDEXER_PIDF = {0, 0, 0, 0};
+
+    public static double INDEXER_ADVANCE_SETPOINT = 10.0;
+
+    // Elevator Constants
+    public final static int ELEVATOR_MOTOR_ID = 0;
+
+    // Shooter Constants
+    public static int SHOOTER_MOTOR_ID = 5; // probably will change later
+    public static int NEUTRAL_SHOOTER_MOTOR_SPEED = 0; // need to change later
+    public static int SHOOTING_SHOOTER_MOTOR_SPEED = 0; // need to change later
+
+    public static double[] SHOOTER_PIDF = {0.000001, 0.0, 0.0, 0.000180};
+    public static double SHOOTER_SETPOINT = 4500;
+
+    // Drivetrain Constants
     public static double DRIVE_TRACK_WIDTH_M = 1.0; // m
     public static double DRIVE_WHEEL_DIAM_M = 0.1524; // m
 
