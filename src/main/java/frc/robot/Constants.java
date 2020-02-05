@@ -17,4 +17,8 @@ public final class Constants {
     public final static int NEO_CURRENT_LIMIT = 80;
 
     public final static int ELEVATOR_MOTOR_ID = 0;
+
+    public static final double[] ELEVATOR_PIDF = {0, 1, 2, 3};
+    public static final double ELEVATOR_PID_MAX_OUTPUT = 1;
+    public static final double ELEVATOR_PID_MIN_OUTPUT = -1;
 }
