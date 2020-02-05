@@ -20,6 +20,7 @@ public class Elevator extends SubsystemBase {
 
     public Elevator() {
         motor = new CANSparkMax(ELEVATOR_MOTOR_ID,MotorType.kBrushless);
+        motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT); // http://www.revrobotics.com/content/sw/max/sw-docs/SPARK-MAX-Java-API-Offline.pdf
     }
 
     @Override
@@ -29,7 +30,6 @@ public class Elevator extends SubsystemBase {
                 motor.set(speed);
             break;
         }
-
         speed = 0;
     }
     

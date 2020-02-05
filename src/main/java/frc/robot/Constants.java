@@ -14,5 +14,7 @@ public final class Constants {
     public static int CONTROLLER_DRIVE_ID = 0;
     public static int CONTROLLER_OPERATOR_ID = 1;
 
+    public final static int NEO_CURRENT_LIMIT = 80;
+
     public final static int ELEVATOR_MOTOR_ID = 0;
 }
