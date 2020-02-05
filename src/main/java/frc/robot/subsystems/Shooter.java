@@ -48,6 +48,19 @@ public class Shooter extends SubsystemBase {
                 SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
                 shooterPID.setReference(SmartDashboard.getNumber("Setpoint", 0), ControlType.kVelocity);
 
+                if(shooterPID.getP() != SmartDashboard.getNumber("kP", 0)) {
+                    shooterPID.setP(SmartDashboard.getNumber("kP", 0));
+                }
+                if(shooterPID.getI() != SmartDashboard.getNumber("kI", 0)) {
+                    shooterPID.setI(SmartDashboard.getNumber("kI", 0));
+                }
+                if(shooterPID.getD() != SmartDashboard.getNumber("kD", 0)) {
+                    shooterPID.setD(SmartDashboard.getNumber("kD", 0));
+                }
+                if(shooterPID.getFF() != SmartDashboard.getNumber("kFF", 0)) {
+                    shooterPID.setFF(SmartDashboard.getNumber("kFF", 0));
+                }
+
                 break;
         }
     }
