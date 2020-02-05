@@ -67,6 +67,9 @@ public class Shooter extends SubsystemBase {
     public void outputValues() {
         SmartDashboard.putNumber("Shooter Encoder Pos", shooterEncoder.getPosition());
         SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
+
+        boolean inTolerance = (SHOOTER_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_SETPOINT < 0.03;
+        SmartDashboard.putBoolean("Shooter Ready", inTolerance);
     }
 
     public void setConstantTuning() {
