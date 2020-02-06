@@ -86,6 +86,11 @@ public class Drivetrain extends SubsystemBase {
         backLeftMotor.setIdleMode(IdleMode.kCoast);
         backRightMotor.setIdleMode(IdleMode.kCoast);
 
+        frontLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        frontRightMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        backLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        backRightMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+
         backLeftMotor.follow(frontLeftMotor);
         backRightMotor.follow(frontRightMotor);
 

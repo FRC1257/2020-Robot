@@ -45,7 +45,6 @@ public class Intake extends SubsystemBase {
     
     public void outputValues() {
         SmartDashboard.putString("Intake State", state.name());
-
         SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
     }
 
