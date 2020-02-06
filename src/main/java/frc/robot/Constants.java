@@ -94,4 +94,7 @@ public final class Constants {
     public static int DRIVE_BACK_RIGHT = 1;
 
     public static double PI = 3.14159265;
+
+    // Autonomous Constants
+    public static double INDEXER_DUMP_TIME = 2.0; // seconds
 }
