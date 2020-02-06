@@ -3,6 +3,7 @@ package frc.robot;
 import static frc.robot.Constants.*;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -11,6 +12,7 @@ import frc.robot.commands.drivetrain.SlowTurnCommand;
 import frc.robot.commands.drivetrain.ManualDriveCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Gyro;
+import frc.robot.util.XboxTrigger;
 import frc.robot.commands.intake.*;
 import frc.robot.commands.indexer.*;
 import frc.robot.commands.shooter.*;
@@ -25,11 +27,10 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
 
-    private final Drivetrain drivetrain;
-
     private final XboxController driveController;
     private final XboxController operatorController;
     
+    private final Drivetrain drivetrain;
     private final Intake intake;
     private final Indexer indexer;
     private final Elevator elevator;
@@ -67,6 +68,10 @@ public class RobotContainer {
      * Use this method to define your button -> command mappings.
      */
     private void configureButtonBindings() {
+        // Drivetrain Bindings
+        (new JoystickButton(driveController, XboxController.Button.kY.value)).whenPressed(new ReverseDriveCommand(drivetrain));
+        (new JoystickButton(driveController, XboxController.Button.kStart.value)).whenPressed(new SlowTurnCommand(drivetrain));
+
         // Intake Bindings
         (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new IntakeEjectCommand(intake));
         (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new IntakeIntakeCommand(intake));
@@ -78,12 +83,8 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
 
         // Shooting Bindings
-        (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new ShooterShootingCommand(shooter));
-        (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new ShooterPIDCommand(shooter));
-
-        // Drivetrain Bindings
-        (new JoystickButton(driveController, XboxController.Button.kY.value)).whenPressed(new ReverseDriveCommand(drivetrain));
-        (new JoystickButton(driveController, XboxController.Button.kStart.value)).whenPressed(new SlowTurnCommand(drivetrain));
+        (new XboxTrigger(operatorController, Hand.kLeft)).whileActiveOnce(new ShooterShootingCommand(shooter));
+        (new XboxTrigger(operatorController, Hand.kRight)).whileActiveOnce(new ShooterPIDCommand(shooter));
     }
 
     public Command getAutoCommand() {

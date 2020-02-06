@@ -97,7 +97,6 @@ public class Indexer extends SubsystemBase {
         SmartDashboard.putNumber("Conveyor Top Current", conveyorMotorTop.getOutputCurrent());
         SmartDashboard.putNumber("Top Encoder", getEncoderValue());
 
-
         SmartDashboard.putNumber("Conveyor Bottom Current", conveyorMotorBottom.getOutputCurrent());
         SmartDashboard.putNumber("Bottom Encoder", getEncoderValue());
 

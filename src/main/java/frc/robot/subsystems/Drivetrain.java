@@ -139,14 +139,14 @@ public class Drivetrain extends SubsystemBase {
         switch(state) {
             case MANUAL:
                 double[] arcadeSpeeds = arcadeDrive(reversed ? -speedForward : speedForward,
-                    slowTurning ? speedTurn *REDUCE_TURNING_CONSTANT : speedTurn);
+                    slowTurning ? speedTurn * DRIVE_REDUCE_TURNING_CONSTANT : speedTurn);
 
                 frontLeftMotor.set(arcadeSpeeds[0]);
                 frontRightMotor.set(arcadeSpeeds[1]);
             break;
             case CLOSED_LOOP:
                 ChassisSpeeds chassisSpeeds = new ChassisSpeeds(reversed ? -speedForward : speedForward, 0,
-                    slowTurning ? speedTurn * REDUCE_TURNING_CONSTANT : speedTurn);
+                    slowTurning ? speedTurn * DRIVE_REDUCE_TURNING_CONSTANT : speedTurn);
                 DifferentialDriveWheelSpeeds dSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
 
                 frontLeftMotor.setVoltage(leftVelPID.calculate(leftEncoder.getVelocity(), dSpeeds.leftMetersPerSecond) + 
