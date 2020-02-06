@@ -197,11 +197,6 @@ public class Indexer extends SubsystemBase {
     public void intake() {
         state = State.INTAKING;
     }
-
-    public void pid() {
-        state = State.PID;
-    }
-
     public State getState(){
         return state;
     }
