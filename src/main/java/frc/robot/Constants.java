@@ -21,4 +21,6 @@ public final class Constants {
     public static final double[] ELEVATOR_PIDF = {0, 1, 2, 3};
     public static final double ELEVATOR_PID_MAX_OUTPUT = 1;
     public static final double ELEVATOR_PID_MIN_OUTPUT = -1;
+
+    public static final double ELEVATOR_TOP = 100;
 }
