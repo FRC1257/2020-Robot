@@ -61,7 +61,6 @@ public class Elevator extends SubsystemBase {
                 elevatorPID.setReference(currentPIDSetpoint, ControlType.kPosition);
                 break;
         }
-
         speed = 0;
     }
 
