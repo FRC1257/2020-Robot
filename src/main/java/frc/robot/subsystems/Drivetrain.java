@@ -148,7 +148,7 @@ public class Drivetrain extends SnailSubsystem {
                 frontLeftMotor.setVoltage(leftError * DRIVE_LEFT_VEL_PID_P + 
                     feedforward.calculate(dSpeeds.leftMetersPerSecond));
                 frontRightMotor.setVoltage(rightError * DRIVE_RIGHT_VEL_PID_P + 
-                    feedforward.calculate(dSpeeds.leftMetersPerSecond));
+                    feedforward.calculate(dSpeeds.rightMetersPerSecond));
             break;
             case PID_DIST:
                 if (distSetpoint == -1257) {
@@ -207,7 +207,7 @@ public class Drivetrain extends SnailSubsystem {
                     feedforward.calculate(profiledDSpeeds.leftMetersPerSecond) + 
                     positionError * DRIVE_PROFILE_LEFT_POS_P);
                 frontRightMotor.setVoltage(profileRightError * DRIVE_RIGHT_VEL_PID_P + 
-                    feedforward.calculate(profiledDSpeeds.leftMetersPerSecond) + 
+                    feedforward.calculate(profiledDSpeeds.rightMetersPerSecond) + 
                     positionError * DRIVE_PROFILE_RIGHT_POS_P);
 
                 if (distProfile.isFinished(pathTimer.get())) {
@@ -250,13 +250,13 @@ public class Drivetrain extends SnailSubsystem {
                 }
 
                 // use P to acquire desired velocity and feedforward to acquire desired velocity
-                double ramseteLeftError = ramseteDSpeeds.leftMetersPerSecond - leftEncoder.getVelocity();
-                double ramseteRightError = ramseteDSpeeds.rightMetersPerSecond - rightEncoder.getVelocity();
+                double ramseteLeftError = leftSetpoint - leftEncoder.getVelocity();
+                double ramseteRightError = rightSetpoint - rightEncoder.getVelocity();
 
                 frontLeftMotor.setVoltage(ramseteLeftError * DRIVE_LEFT_VEL_PID_P + 
-                    feedforward.calculate(ramseteDSpeeds.leftMetersPerSecond));
+                    feedforward.calculate(leftSetpoint));
                 frontRightMotor.setVoltage(ramseteRightError * DRIVE_RIGHT_VEL_PID_P + 
-                    feedforward.calculate(ramseteDSpeeds.leftMetersPerSecond));
+                    feedforward.calculate(rightSetpoint));
 
                 if (trajectory.getTotalTimeSeconds() <= pathTimer.get()) {
                     state = defaultState;
