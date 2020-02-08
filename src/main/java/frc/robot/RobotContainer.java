@@ -35,6 +35,6 @@ public class RobotContainer {
 
     // defines button -> command mappings
     private void configureButtonBindings() {
-        (new JoystickButton(operatorController, Button.kX.value)).whenPressed(new PIDCommand(elevator));
+        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new PIDCommand(elevator));
     }
 }

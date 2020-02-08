@@ -28,20 +28,23 @@ public class Elevator extends SubsystemBase {
 
     public Elevator() {
         motor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
-        motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         motor.restoreFactoryDefaults();
+        motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         motor.setIdleMode(IdleMode.kBrake);
 
         encoder = motor.getEncoder();
 
         elevatorPID = motor.getPIDController();
-        elevatorPID.setP(ELEVATOR_PIDF[0]);
-        elevatorPID.setI(ELEVATOR_PIDF[1]);
-        elevatorPID.setD(ELEVATOR_PIDF[2]);
-        elevatorPID.setFF(ELEVATOR_PIDF[3]);
-        elevatorPID.setIZone(0);
-        elevatorPID.setOutputRange(ELEVATOR_PID_MIN_OUTPUT, ELEVATOR_PID_MAX_OUTPUT);
+        elevatorPID.setP(ELEVATOR_PID[0]);
+        elevatorPID.setI(ELEVATOR_PID[1]);
+        elevatorPID.setD(ELEVATOR_PID[2]);
 
+        reset();
+    }
+
+    private void reset() {
+        speed = 0;
+        encoder.setPosition(0);
         currentPIDSetpoint = -1257;
     }
 
@@ -50,12 +53,15 @@ public class Elevator extends SubsystemBase {
         switch(state) {
             case MANUAL:
                 motor.set(speed);
-            break;
+                break;
             case PID:
-                if (currentPIDSetpoint != ELEVATOR_TOP) break;
+                if (currentPIDSetpoint == -1257.0) {
+                    break;
+                }
                 elevatorPID.setReference(currentPIDSetpoint, ControlType.kPosition);
-            break;
+                break;
         }
+
         speed = 0;
     }
 
@@ -66,7 +72,7 @@ public class Elevator extends SubsystemBase {
 
     public void raise() {
         encoder.setPosition(0);
-        currentPIDSetpoint = ELEVATOR_TOP;
+        currentPIDSetpoint = ELEVATOR_SETPOINT;
         state = State.PID;
     }
 }
