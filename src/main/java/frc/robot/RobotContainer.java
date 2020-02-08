@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Elevator;
 import frc.robot.commands.drivetrain.ReverseDriveCommand;
 import frc.robot.commands.drivetrain.SlowTurnCommand;
 import frc.robot.commands.auto.BottomAuto;
@@ -102,6 +103,9 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerPIDCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerEjectCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
+
+        // Elevator Bindings
+        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new PIDCommand(elevator));
 
         // Shooting Bindings
         (new XboxTrigger(operatorController, Hand.kLeft)).whileActiveOnce(new ShooterShootingCommand(shooter));
