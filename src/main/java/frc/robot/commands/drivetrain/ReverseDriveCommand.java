@@ -5,10 +5,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class ReverseDriveCommand extends InstantCommand {
 
-    private final Drivetrain drivetrain;
-
     public ReverseDriveCommand(Drivetrain drivetrain) {
-        this.drivetrain = drivetrain;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drivetrain);
 

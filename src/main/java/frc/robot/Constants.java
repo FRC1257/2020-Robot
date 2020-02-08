@@ -39,7 +39,7 @@ public final class Constants {
     public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
 
     public static double INDEXER_DEADBAND = 0.5;
-    public static double [] INDEXER_PIDF = {0, 0, 0, 0};
+    public static double[] INDEXER_PID = {0, 0, 0};
 
     public static double INDEXER_ADVANCE_SETPOINT = 10.0;
 
@@ -65,15 +65,11 @@ public final class Constants {
     public static double DRIVE_MAX_VEL = 3.0; // m/s
     public static double DRIVE_MAX_ROT = 1.0; // rad/s
 
-    public static double DRIVE_DIST_PID_P = 0.1;
-    public static double DRIVE_DIST_PID_I = 0.0;
-    public static double DRIVE_DIST_PID_D = 0.0;
+    public static double[] DRIVE_DIST_PID = {0.1, 0.0, 0.0};
     public static double DRIVE_DIST_PID_TOLERANCE = 0.1;
     public static double DRIVE_MAINTAIN_ANGLE_PID_P = 0.1;
 
-    public static double DRIVE_ANGLE_PID_P = 0.1;
-    public static double DRIVE_ANGLE_PID_I = 0.0;
-    public static double DRIVE_ANGLE_PID_D = 0.0;
+    public static double[] DRIVE_ANGLE_PID = {0.1, 0.0, 0.0};
     public static double DRIVE_ANGLE_PID_TOLERANCE = 0.1;
 
     public static double DRIVE_KS = 0.0;

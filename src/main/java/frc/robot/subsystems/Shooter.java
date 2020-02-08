@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.*;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANEncoder;
@@ -10,9 +11,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-public class Shooter extends SubsystemBase {
+public class Shooter extends SnailSubsystem {
 
     private CANSparkMax shooterMotor;
     private CANPIDController shooterPID;
@@ -33,8 +32,6 @@ public class Shooter extends SubsystemBase {
 
         shooterPID = shooterMotor.getPIDController();
         shooterEncoder = shooterMotor.getEncoder();
-
-        setConstantTuning();
     }
 
     @Override
@@ -81,16 +78,16 @@ public class Shooter extends SubsystemBase {
     }
 
     public void getConstantTuning() {
-        if(shooterPID.getP() != SmartDashboard.getNumber("Shooter PID kP", 0)) {
+        if (shooterPID.getP() != SmartDashboard.getNumber("Shooter PID kP", 0)) {
             shooterPID.setP(SmartDashboard.getNumber("Shooter PID kP", 0));
         }
-        if(shooterPID.getI() != SmartDashboard.getNumber("Shooter PID kI", 0)) {
+        if (shooterPID.getI() != SmartDashboard.getNumber("Shooter PID kI", 0)) {
             shooterPID.setI(SmartDashboard.getNumber("Shooter PID kI", 0));
         }
-        if(shooterPID.getD() != SmartDashboard.getNumber("Shooter PID kD", 0)) {
+        if (shooterPID.getD() != SmartDashboard.getNumber("Shooter PID kD", 0)) {
             shooterPID.setD(SmartDashboard.getNumber("Shooter PID kD", 0));
         }
-        if(shooterPID.getFF() != SmartDashboard.getNumber("Shooter PID kFF", 0)) {
+        if (shooterPID.getFF() != SmartDashboard.getNumber("Shooter PID kFF", 0)) {
             shooterPID.setFF(SmartDashboard.getNumber("Shooter PID kFF", 0));
         }
 
