@@ -46,6 +46,9 @@ public final class Constants {
     // Elevator Constants
     public final static int ELEVATOR_MOTOR_ID = 0;
 
+    public static final double[] ELEVATOR_PID = {0, 1, 2};
+    public static final double ELEVATOR_SETPOINT = 100;
+
     // Shooter Constants
     public static int SHOOTER_MOTOR_ID = 5; // probably will change later
     public static int NEUTRAL_SHOOTER_MOTOR_SPEED = 0; // need to change later
