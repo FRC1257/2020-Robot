@@ -15,8 +15,7 @@ public class MiddleGenTopAuto extends SequentialCommandGroup {
         Trajectory midGenTop1 = TrajectoryLoader.loadTrajectoryFromFile("Middle-Gen-Top-1.wpilib.json");
         Trajectory midGenTop2 = TrajectoryLoader.loadTrajectoryFromFile("Middle-Gen-Top-2.wpilib.json");
 
-        addCommands(new ResetAutoPositionCommand(drivetrain, TrajectoryLoader.getInitialPoseReversed(midGenTop1)), 
-            new DriveWhileShoot(drivetrain, indexer, shooter, midGenTop1),
+        addCommands(new DriveWhileShoot(drivetrain, indexer, shooter, midGenTop1),
             new DriveTrajectoryCommand(drivetrain, midGenTop2, false));
     }
 }

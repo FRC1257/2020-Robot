@@ -97,4 +97,17 @@ public final class Constants {
 
     // Autonomous Constants
     public static double INDEXER_DUMP_TIME = 2.0; // seconds
+
+    public static enum AutoPosition {
+        TOP, 
+        MIDDLE,
+        BOTTOM
+    }
+
+    public static enum AutoGoal {
+        DEFAULT,
+        TRENCH,
+        GEN_BOTTOM,
+        GEN_TOP
+    }
 }

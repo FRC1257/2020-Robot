@@ -15,8 +15,7 @@ public class TopGenTopAuto extends SequentialCommandGroup {
         Trajectory topGenTop1 = TrajectoryLoader.loadTrajectoryFromFile("Top-Gen-Top-1.wpilib.json");
         Trajectory topGenTop2 = TrajectoryLoader.loadTrajectoryFromFile("Top-Gen-Top-2.wpilib.json");
 
-        addCommands(new ResetAutoPositionCommand(drivetrain, TrajectoryLoader.getInitialPoseReversed(topGenTop1)),
-            new DriveWhileShoot(drivetrain, indexer, shooter, topGenTop1), 
+        addCommands(new DriveWhileShoot(drivetrain, indexer, shooter, topGenTop1), 
             new DriveTrajectoryCommand(drivetrain, topGenTop2, false));
     }
 }

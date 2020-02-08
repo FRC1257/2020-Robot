@@ -1,11 +1,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
     
     private RobotContainer robotContainer;
+    private Command autoCommand;
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -13,7 +17,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        // Instantiate our RobotContainer.  This will perform all our button bindings
+        // Instantiate our RobotContainer.  This will perform all our button bindings.
         robotContainer = new RobotContainer();
     }
 
@@ -28,6 +32,22 @@ public class Robot extends TimedRobot {
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
         robotContainer.outputValues();
+    }
+
+    @Override
+    public void autonomousInit() {
+        autoCommand = robotContainer.getAutoCommand();
+
+        if (autoCommand != null) {
+            autoCommand.schedule();
+        }
+    }
+
+    @Override
+    public void teleopInit() {
+        if (autoCommand != null) {
+            autoCommand.cancel();
+        }
     }
 
     @Override
