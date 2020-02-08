@@ -5,9 +5,7 @@ import static frc.robot.Constants.*;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-public class Elevator extends SubsystemBase {
+public class Elevator extends SnailSubsystem {
   
     private CANSparkMax motor;
 
@@ -19,7 +17,7 @@ public class Elevator extends SubsystemBase {
     private double speed;
 
     public Elevator() {
-        motor = new CANSparkMax(ELEVATOR_MOTOR_ID,MotorType.kBrushless);
+        motor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
     }
 
     @Override
@@ -29,7 +27,20 @@ public class Elevator extends SubsystemBase {
                 motor.set(speed);
             break;
         }
+        
         speed = 0;
+    }
+    
+    public void outputValues() {
+        
+    }
+
+    public void setConstantTuning() {
+        
+    }
+
+    public void getConstantTuning() {
+        
     }
     
     public void setElevatorSpeed(double speed) {

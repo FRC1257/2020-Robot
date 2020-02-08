@@ -39,7 +39,7 @@ public final class Constants {
     public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
 
     public static double INDEXER_DEADBAND = 0.5;
-    public static double [] INDEXER_PIDF = {0, 0, 0, 0};
+    public static double[] INDEXER_PID = {0, 0, 0};
 
     public static double INDEXER_ADVANCE_SETPOINT = 10.0;
 
@@ -58,22 +58,18 @@ public final class Constants {
     public static double DRIVE_TRACK_WIDTH_M = 1.0; // m
     public static double DRIVE_WHEEL_DIAM_M = 0.1524; // m
 
-    public static double REDUCE_TURNING_CONSTANT = 0.8;
+    public static double DRIVE_REDUCE_TURNING_CONSTANT = 0.8;
 
     public static double DRIVE_LEFT_VEL_PID_P = 0.1;
     public static double DRIVE_RIGHT_VEL_PID_P = 0.1;
     public static double DRIVE_MAX_VEL = 3.0; // m/s
     public static double DRIVE_MAX_ROT = 1.0; // rad/s
 
-    public static double DRIVE_DIST_PID_P = 0.1;
-    public static double DRIVE_DIST_PID_I = 0.0;
-    public static double DRIVE_DIST_PID_D = 0.0;
+    public static double[] DRIVE_DIST_PID = {0.1, 0.0, 0.0};
     public static double DRIVE_DIST_PID_TOLERANCE = 0.1;
     public static double DRIVE_MAINTAIN_ANGLE_PID_P = 0.1;
 
-    public static double DRIVE_ANGLE_PID_P = 0.1;
-    public static double DRIVE_ANGLE_PID_I = 0.0;
-    public static double DRIVE_ANGLE_PID_D = 0.0;
+    public static double[] DRIVE_ANGLE_PID = {0.1, 0.0, 0.0};
     public static double DRIVE_ANGLE_PID_TOLERANCE = 0.1;
 
     public static double DRIVE_KS = 0.0;
@@ -94,4 +90,20 @@ public final class Constants {
     public static int DRIVE_BACK_RIGHT = 1;
 
     public static double PI = 3.14159265;
+
+    // Autonomous Constants
+    public static double INDEXER_DUMP_TIME = 2.0; // seconds
+
+    public static enum AutoPosition {
+        TOP, 
+        MIDDLE,
+        BOTTOM
+    }
+
+    public static enum AutoGoal {
+        DEFAULT,
+        TRENCH,
+        GEN_BOTTOM,
+        GEN_TOP
+    }
 }
