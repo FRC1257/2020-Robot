@@ -1,7 +1,7 @@
 package frc.robot;
 
 import static frc.robot.Constants.*;
-
+import java.util.ArrayList;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,6 +40,7 @@ public class RobotContainer {
     private final XboxController driveController;
     private final XboxController operatorController;
     
+    private ArrayList<SnailSubsystem> subsystems;
     private final Drivetrain drivetrain;
     private final Intake intake;
     private final Indexer indexer;
@@ -72,9 +73,14 @@ public class RobotContainer {
         
         drivetrain = new Drivetrain();
         drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController));
+        
+        subsystems.add(intake);
+        subsystems.add(indexer);
+        subsystems.add(elevator);
+        subsystems.add(shooter);
+        subsystems.add(drivetrain);
 
         configureAutoChoosers();
-
         configureButtonBindings();
         outputCounter = 0;
     }
@@ -142,37 +148,20 @@ public class RobotContainer {
     }
 
     public void outputValues() {
-        switch (outputCounter) {
-            case 0:
-                intake.outputValues();
-                break;
-            case 1:
-                indexer.outputValues();
-                break;
-            case 2:
-                shooter.outputValues();
-                break;
-            case 3:
-                drivetrain.outputValues();
-                break;
-            case 4:
-                Gyro.getInstance().outputValues();
-                break;
+        subsystems.get(outputCounter).outputValues();
+
+        if (outputCounter == subsystems.size()) {
+            Gyro.getInstance().outputValues();
         }
-        outputCounter = (outputCounter + 1) % 10;
+
+        outputCounter = (outputCounter + 1) % (subsystems.size() + 1);
+    }
+
+    public void setConstantTuning() {
+        subsystems.forEach((s) -> s.setConstantTuning());
     }
 
     public void getConstantTuning() {
-        switch (outputCounter) {
-            case 0:
-                intake.getConstantTuning();
-                break;
-            case 1:
-                indexer.getConstantTuning();
-                break;
-            case 2:
-                shooter.getConstantTuning();
-                break;
-        }
+        subsystems.get(outputCounter).getConstantTuning();
     }
 }

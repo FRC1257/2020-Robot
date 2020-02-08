@@ -4,12 +4,9 @@ import static frc.robot.Constants.*;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
-public class Intake extends SubsystemBase {
+public class Intake extends SnailSubsystem {
 
     CANSparkMax intakeMotor;
 
@@ -22,10 +19,8 @@ public class Intake extends SubsystemBase {
     State state = State.NEUTRAL;
 
     public Intake() {
-       intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
-       intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-
-       setConstantTuning();
+        intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
+        intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
     }
     
     @Override
@@ -48,7 +43,7 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
     }
 
-    private void setConstantTuning() {
+    public void setConstantTuning() {
         SmartDashboard.putNumber("Intake Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
         SmartDashboard.putNumber("Intake Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
         SmartDashboard.putNumber("Intake Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED);
@@ -68,7 +63,6 @@ public class Intake extends SubsystemBase {
 
     public void neutral() {
         state = State.NEUTRAL;
-    
     }
 
     public void eject() {
