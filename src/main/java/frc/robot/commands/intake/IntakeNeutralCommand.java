@@ -3,6 +3,9 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
+/**
+ * Keeps all powercells in a constant position
+ */
 public class IntakeNeutralCommand extends CommandBase {
 
     private final Intake intake;

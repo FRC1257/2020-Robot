@@ -3,6 +3,9 @@ package frc.robot.commands.indexer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
 
+/**
+ * Maintains the position of the power cells inthe indexer
+ */
 public class IndexerNeutralCommand extends CommandBase {
 
     private final Indexer indexer;

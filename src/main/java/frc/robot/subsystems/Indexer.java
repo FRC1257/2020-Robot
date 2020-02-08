@@ -11,6 +11,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * Subsystem to handle the conveyer belt and the stop mechanism
+ * 
+ * - Utilizes two NEO 550 motors attached to the conveyer
+ * 
+ * - Utilizes one NEO 550 motor attached to the stop mechanism
+ * 
+ * - Uses PID to move the Indexer to specific setpoints
+ */
+
 public class Indexer extends SubsystemBase {
 
     private CANSparkMax conveyorMotorTop;
@@ -23,12 +33,23 @@ public class Indexer extends SubsystemBase {
 
     private double currentPIDSetpoint;
 
+    /**
+     * NEUTRAL - The position of each of the power cells is maintained
+     * 
+     * PID - Using PID control to go to and maintain a specific position
+     * 
+     * SHOOTING - The power cells are put into the shooter
+     * 
+     * INTAKING - The power cells are intaked higher into the indexer
+     * 
+     * EJECTING - THe power cells are ejected from the indexer to the intake
+     */
     public enum State {
         NEUTRAL,
+        PID,
         SHOOTING,
         INTAKING,
-        EJECTING,
-        PID
+        EJECTING
     }
     State state = State.NEUTRAL;
 
@@ -58,6 +79,9 @@ public class Indexer extends SubsystemBase {
         currentPIDSetpoint = -1257.0;
     }
     
+    /**
+     * Update motor outputs according to the current state
+     */
     @Override
     public void periodic() {
         switch(state) {
@@ -89,6 +113,9 @@ public class Indexer extends SubsystemBase {
         }
     }
 
+    /**
+     * Puts relevant values to Smart Dashboard
+     */
     public void outputValues() {
         SmartDashboard.putString("Indexer State", state.name());
 
@@ -102,8 +129,11 @@ public class Indexer extends SubsystemBase {
         SmartDashboard.putNumber("Bottom Encoder", getEncoderValue());
 
         SmartDashboard.putNumber("Stop Motor Current", stopMotor.getOutputCurrent());
-
     }
+
+    /**
+     * Puts values that can be changed into Smart Dashboard
+     */
     private void setConstantTuning() {
         SmartDashboard.putNumber("Indexer P", INDEXER_PIDF[0]);
         SmartDashboard.putNumber("Indexer I", INDEXER_PIDF[1]);
@@ -121,6 +151,9 @@ public class Indexer extends SubsystemBase {
         SmartDashboard.putNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
 
+    /**
+     * Gets values that can be changed
+     */
     public void getConstantTuning() {
         if (INDEXER_PIDF[0] != SmartDashboard.getNumber("Indexer P", INDEXER_PIDF[0])) {
             INDEXER_PIDF[0] = SmartDashboard.getNumber("Indexer P", INDEXER_PIDF[0]);
@@ -164,39 +197,67 @@ public class Indexer extends SubsystemBase {
         }
     }
      
+    /**
+     * Gets the position of the encoder
+     */
     public double getEncoderValue() {
         return conveyorEncoder.getPosition();
     }
 
+    /**
+     * Reset the Encoder position to the original position
+     */
     public void resetEncoder() {
         conveyorEncoder.setPosition(0);
     }
 
+     /**
+     * Move the indexer to a specific setpoint using PID control
+     */
     public void setCurrentPIDSetpoint(double value) {
         resetEncoder();
         currentPIDSetpoint = value;
         state = State.PID;
     }
 
+    /**
+    * Move the the conveyer to the next position
+    */
     public void advance() {
         setCurrentPIDSetpoint(INDEXER_ADVANCE_SETPOINT);
     }
-
+    
+    /**
+    * Changes state to neutral
+    */
     public void neutral() {
         state = State.NEUTRAL;
     }
 
+    /**
+    * Changes state to shoot
+    */
     public void shoot() {
         state = State.SHOOTING;
     }
 
+    /**
+    * Changes state to eject
+    */
     public void eject() {
         state = State.EJECTING;
     }
 
+    /**
+    * Changes state to intake
+    */
     public void intake() {
         state = State.INTAKING;
     }
+
+    /**
+    * returns the state
+    */
     public State getState(){
         return state;
     }

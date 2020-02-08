@@ -3,6 +3,9 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
+/**
+ * Ejects the powercells from the robot
+ */
 public class IntakeEjectCommand extends CommandBase {
 
     private final Intake intake;
