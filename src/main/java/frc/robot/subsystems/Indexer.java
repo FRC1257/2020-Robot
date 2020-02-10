@@ -113,6 +113,7 @@ public class Indexer extends SnailSubsystem {
     /**
      * Puts relevant values to Smart Dashboard
      */
+    @Override
     public void outputValues() {
         SmartDashboard.putString("Indexer State", state.name());
 
@@ -130,6 +131,7 @@ public class Indexer extends SnailSubsystem {
     /**
      * Puts values that can be changed into Smart Dashboard
      */
+    @Override
     public void setConstantTuning() {
         SmartDashboard.putNumber("Indexer PID kP", INDEXER_PID[0]);
         SmartDashboard.putNumber("Indexer PID kI", INDEXER_PID[1]);
@@ -149,6 +151,7 @@ public class Indexer extends SnailSubsystem {
     /**
      * Gets values that can be changed
      */
+    @Override
     public void getConstantTuning() {
         if (conveyorPID.getP() != SmartDashboard.getNumber("Indexer PID kP", INDEXER_PID[0])) {
             INDEXER_PID[0] = SmartDashboard.getNumber("Indexer PID kP", INDEXER_PID[0]);

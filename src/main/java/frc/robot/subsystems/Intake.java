@@ -57,6 +57,7 @@ public class Intake extends SnailSubsystem {
     /**
      * Puts relevant values to Smart Dashboard
      */
+    @Override
     public void outputValues() {
         SmartDashboard.putString("Intake State", state.name());
         SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
@@ -65,6 +66,7 @@ public class Intake extends SnailSubsystem {
     /**
      * Puts values that can be changed into Smart Dashboard
      */
+    @Override
     public void setConstantTuning() {
         SmartDashboard.putNumber("Intake Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
         SmartDashboard.putNumber("Intake Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
@@ -74,6 +76,7 @@ public class Intake extends SnailSubsystem {
     /**
      * Gets values that can be changed
      */
+    @Override
     public void getConstantTuning() {
         if (INTAKE_EJECT_SPEED != SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED)) {
             INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
