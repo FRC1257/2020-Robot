@@ -17,13 +17,31 @@ public final class Constants {
     // NEO Constants
     public static int NEO_CURRENT_LIMIT = 80;
     public static int NEO_550_CURRENT_LIMIT = 25;
+    
+    // Autonomous Constants
+    public static double INDEXER_DUMP_TIME = 2.0; // seconds
 
-    // Intake Constants
-    public static int INTAKE_MOTOR_ID = 1;
+    public static enum AutoPosition {
+        TOP, 
+        MIDDLE,
+        BOTTOM
+    }
 
-    public static double INTAKE_NEUTRAL_SPEED = 0.0;
-    public static double INTAKE_INTAKE_SPEED = -0.8;
-    public static double INTAKE_EJECT_SPEED = 0.8;
+    public static enum AutoGoal {
+        DEFAULT,
+        TRENCH,
+        GEN_BOTTOM,
+        GEN_TOP
+    }
+
+    // Elevator Constants
+    public final static int ELEVATOR_MOTOR_ID = 0;
+    public final static int ELEVATOR_FOLLOWER_MOTOR_ID = 1;
+    public final static int ELEVATOR_BRAKE_SERVO_ID = 0;
+    public final static double ELEVATOR_BRAKE_POSITION = 1.0;
+
+    public static final double[] ELEVATOR_PID = {0, 0, 0};
+    public static final double ELEVATOR_SETPOINT = 100;
 
     // Indexer Constants
     public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 2;
@@ -38,19 +56,15 @@ public final class Constants {
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = 1.0;
 
-    public static double INDEXER_DEADBAND = 0.5;
     public static double[] INDEXER_PID = {0, 0, 0};
-
     public static double INDEXER_ADVANCE_SETPOINT = 10.0;
 
-    // Elevator Constants
-    public final static int ELEVATOR_MOTOR_ID = 0;
-    public final static int ELEVATOR_FOLLOWER_MOTOR_ID = 1;
-    public final static int ELEVATOR_BRAKE_SERVO_ID = 0;
-    public final static double ELEVATOR_BRAKE_POSITION = 1.0;
+    // Intake Constants
+    public static int INTAKE_MOTOR_ID = 1;
 
-    public static final double[] ELEVATOR_PID = {0, 1, 2};
-    public static final double ELEVATOR_SETPOINT = 100;
+    public static double INTAKE_NEUTRAL_SPEED = 0.0;
+    public static double INTAKE_INTAKE_SPEED = -0.8;
+    public static double INTAKE_EJECT_SPEED = 0.8;
 
     // Shooter Constants
     public static int SHOOTER_MOTOR_ID = 5; // probably will change later
@@ -97,20 +111,4 @@ public final class Constants {
     public static int DRIVE_BACK_RIGHT = 1;
 
     public static double PI = 3.14159265;
-
-    // Autonomous Constants
-    public static double INDEXER_DUMP_TIME = 2.0; // seconds
-
-    public static enum AutoPosition {
-        TOP, 
-        MIDDLE,
-        BOTTOM
-    }
-
-    public static enum AutoGoal {
-        DEFAULT,
-        TRENCH,
-        GEN_BOTTOM,
-        GEN_TOP
-    }
 }
