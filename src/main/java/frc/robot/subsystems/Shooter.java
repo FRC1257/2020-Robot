@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Shooter extends SnailSubsystem {
 
     private CANSparkMax shooterMotor;
+    private CANSparkMax followerMotor;
+
     private CANPIDController shooterPID;
     private CANEncoder shooterEncoder;
     
@@ -29,6 +31,12 @@ public class Shooter extends SnailSubsystem {
         shooterMotor.restoreFactoryDefaults();
         shooterMotor.setIdleMode(IdleMode.kCoast);
         shooterMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+
+        followerMotor = new CANSparkMax(SHOOTER_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+        followerMotor.restoreFactoryDefaults();
+        followerMotor.setIdleMode(IdleMode.kCoast);
+        followerMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        followerMotor.follow(shooterMotor, true); // follow with inverted
 
         shooterPID = shooterMotor.getPIDController();
         shooterEncoder = shooterMotor.getEncoder();
