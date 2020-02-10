@@ -386,6 +386,7 @@ public class Drivetrain extends SnailSubsystem {
         return (leftEncoder.getPosition() + rightEncoder.getPosition()) / 2.0;
     }
 
+    @Override
     public void outputValues() {
         SmartDashboard.putNumber("Drive Left Encoder Pos (m)", leftEncoder.getPosition());
         SmartDashboard.putNumber("Drive Right Encoder Pos (m)", rightEncoder.getPosition());
@@ -408,6 +409,7 @@ public class Drivetrain extends SnailSubsystem {
         SmartDashboard.putString("Drive State", state.name());
     }
 
+    @Override
     public void setConstantTuning() {
         SmartDashboard.putNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
 
@@ -427,6 +429,7 @@ public class Drivetrain extends SnailSubsystem {
         SmartDashboard.putNumber("Drive Profile Pos Right kP", DRIVE_PROFILE_RIGHT_POS_P);
     }
 
+    @Override
     public void getConstantTuning() {
         DRIVE_REDUCE_TURNING_CONSTANT = SmartDashboard.getNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
 

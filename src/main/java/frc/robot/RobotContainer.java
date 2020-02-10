@@ -97,6 +97,7 @@ public class RobotContainer {
 
         // Elevator Bindings
         (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new PIDCommand(elevator));
+        (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new ToggleLockCommand(elevator));
 
         // Shooting Bindings
         (new XboxTrigger(operatorController, Hand.kLeft)).whileActiveOnce(new ShooterShootingCommand(shooter));

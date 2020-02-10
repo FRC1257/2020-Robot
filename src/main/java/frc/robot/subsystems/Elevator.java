@@ -9,26 +9,40 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Elevator extends SnailSubsystem {
   
     private CANSparkMax motor;
+    private CANSparkMax followerMotor;
     private CANPIDController elevatorPID;
     private CANEncoder encoder;
+
+    private Servo servo;
 
     private double currentPIDSetpoint;
 
     public enum State {
-        MANUAL, PID;
+        MANUAL,
+        PID,
     }
 
     private State state = State.MANUAL;
     private double speed;
+    private boolean locked;
 
     public Elevator() {
         motor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         motor.restoreFactoryDefaults();
         motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         motor.setIdleMode(IdleMode.kBrake);
+
+        followerMotor = new CANSparkMax(ELEVATOR_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
+        followerMotor.restoreFactoryDefaults();
+        followerMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        followerMotor.setIdleMode(IdleMode.kBrake);
+        followerMotor.follow(motor, false);
 
         encoder = motor.getEncoder();
 
@@ -37,6 +51,8 @@ public class Elevator extends SnailSubsystem {
         elevatorPID.setI(ELEVATOR_PID[1]);
         elevatorPID.setD(ELEVATOR_PID[2]);
 
+        servo = new Servo(ELEVATOR_BRAKE_SERVO_ID);
+
         reset();
     }
 
@@ -44,37 +60,64 @@ public class Elevator extends SnailSubsystem {
         speed = 0;
         encoder.setPosition(0);
         currentPIDSetpoint = -1257;
+        locked = false;
     }
 
     @Override
     public void periodic() {
-        switch(state) {
-            case MANUAL:
-                motor.set(speed);
-                break;
-            case PID:
-                if (currentPIDSetpoint == -1257.0) {
+        if(!locked) {
+            switch(state) {
+                case MANUAL:
+                    motor.set(speed);
                     break;
-                }
-                elevatorPID.setReference(currentPIDSetpoint, ControlType.kPosition);
-                break;
+                case PID:
+                    if (currentPIDSetpoint == -1257.0) {
+                        break;
+                    }
+                    elevatorPID.setReference(currentPIDSetpoint, ControlType.kPosition);
+                    break;
+            }
+        }
+        else {
+            servo.set(ELEVATOR_BRAKE_POSITION);
         }
         
         speed = 0;
     }
-    
+   
+    @Override 
     public void outputValues() {
-        
+        SmartDashboard.putNumber("Elevator Position", encoder.getPosition());
+        SmartDashboard.putNumber("Elevator Current", motor.getOutputCurrent());
+        SmartDashboard.putBoolean("Elevator Locked", locked);
     }
 
+    @Override
     public void setConstantTuning() {
-        
+        SmartDashboard.putNumber("Elevator PID kP", ELEVATOR_PID[0]);
+        SmartDashboard.putNumber("Elevator PID kI", ELEVATOR_PID[1]);
+        SmartDashboard.putNumber("Elevator PID kD", ELEVATOR_PID[2]);
     }
 
+    @Override
     public void getConstantTuning() {
-        
+        if (elevatorPID.getP() != SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0])) {
+            ELEVATOR_PID[0] = SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0]);
+            elevatorPID.setP(ELEVATOR_PID[0]);
+        }
+        if (elevatorPID.getI() != SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1])) {
+            ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1]);
+            elevatorPID.setP(ELEVATOR_PID[1]);
+        }
+        if (elevatorPID.getD() != SmartDashboard.getNumber("Elevator PID kD", ELEVATOR_PID[2])) {
+            ELEVATOR_PID[2] = SmartDashboard.getNumber( "Elevator PID kD", ELEVATOR_PID[2]);
+            elevatorPID.setP(ELEVATOR_PID[2]);
+        }
     }
     
+    public void toggleLock() {
+        locked = !locked;
+    }
 
     public void setElevatorSpeed(double speed) {
         this.speed = speed;

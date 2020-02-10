@@ -69,6 +69,7 @@ public class Shooter extends SnailSubsystem {
         state = State.PID;
     }
 
+    @Override
     public void outputValues() {
         SmartDashboard.putNumber("Shooter Encoder Pos", shooterEncoder.getPosition());
         SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
@@ -77,6 +78,7 @@ public class Shooter extends SnailSubsystem {
         SmartDashboard.putBoolean("Shooter Ready", inTolerance);
     }
 
+    @Override
     public void setConstantTuning() {
         SmartDashboard.putNumber("Shooter PID kP", SHOOTER_PIDF[0]);
         SmartDashboard.putNumber("Shooter PID kI", SHOOTER_PIDF[1]);
@@ -85,6 +87,7 @@ public class Shooter extends SnailSubsystem {
         SmartDashboard.putNumber("Shooter PID Setpoint", SHOOTER_SETPOINT);
     }
 
+    @Override
     public void getConstantTuning() {
         if (shooterPID.getP() != SmartDashboard.getNumber("Shooter PID kP", 0)) {
             shooterPID.setP(SmartDashboard.getNumber("Shooter PID kP", 0));

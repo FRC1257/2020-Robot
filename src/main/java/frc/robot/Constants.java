@@ -45,6 +45,9 @@ public final class Constants {
 
     // Elevator Constants
     public final static int ELEVATOR_MOTOR_ID = 0;
+    public final static int ELEVATOR_FOLLOWER_MOTOR_ID = 1;
+    public final static int ELEVATOR_BRAKE_SERVO_ID = 0;
+    public final static double ELEVATOR_BRAKE_POSITION = 1.0;
 
     public static final double[] ELEVATOR_PID = {0, 1, 2};
     public static final double ELEVATOR_SETPOINT = 100;
