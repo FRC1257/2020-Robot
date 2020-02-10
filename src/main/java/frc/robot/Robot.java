@@ -24,15 +24,16 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        motor1 = new CANSparkMax(2, MotorType.kBrushless);
+        motor1 = new CANSparkMax(3, MotorType.kBrushless);
         motor1.restoreFactoryDefaults();
         motor1.setIdleMode(IdleMode.kCoast);
         encoder1 = motor1.getEncoder();
         pidController1 = motor1.getPIDController();
 
-        motor2 = new CANSparkMax(3, MotorType.kBrushless);
+        motor2 = new CANSparkMax(4, MotorType.kBrushless);
         motor2.restoreFactoryDefaults();
         motor2.setIdleMode(IdleMode.kCoast);
+        motor2.follow(motor1, true);
 
         SmartDashboard.putNumber("kP", 0.000001);
         SmartDashboard.putNumber("kI", 0.0);
