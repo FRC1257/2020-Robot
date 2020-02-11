@@ -112,18 +112,18 @@ public class RobotContainer {
         Constants.AutoPosition position = autoPositionChooser.getSelected();
         Constants.AutoGoal goal = autoGoalChooser.getSelected();
 
-        if (position == Constants.AutoPosition.BOTTOM) return new BottomAuto(drivetrain, indexer, shooter);
+        if (position == Constants.AutoPosition.BOTTOM) return new BottomAuto(drivetrain, indexer, shooter, intake);
 
         switch (goal) {
             case TRENCH:
-                if (position == Constants.AutoPosition.TOP) return new TopTrenchAuto(drivetrain, indexer, shooter);
-                else if (position == Constants.AutoPosition.MIDDLE) return new MiddleTrenchAuto(drivetrain, indexer, shooter);
+                if (position == Constants.AutoPosition.TOP) return new TopTrenchAuto(drivetrain, indexer, shooter, intake);
+                else if (position == Constants.AutoPosition.MIDDLE) return new MiddleTrenchAuto(drivetrain, indexer, shooter, intake);
             case GEN_TOP: 
-                if (position == Constants.AutoPosition.TOP) return new TopGenTopAuto(drivetrain, indexer, shooter);
-                else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenTopAuto(drivetrain, indexer, shooter);
+                if (position == Constants.AutoPosition.TOP) return new TopGenTopAuto(drivetrain, indexer, shooter, intake);
+                else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenTopAuto(drivetrain, indexer, shooter, intake);
             case GEN_BOTTOM:
-                if (position == Constants.AutoPosition.TOP) return new TopGenBottomAuto(drivetrain, indexer, shooter);
-                else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter);
+                if (position == Constants.AutoPosition.TOP) return new TopGenBottomAuto(drivetrain, indexer, shooter, intake);
+                else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
             case DEFAULT:
             default:
                 return new DriveBaselineAuto(drivetrain);

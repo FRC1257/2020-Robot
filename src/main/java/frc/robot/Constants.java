@@ -20,10 +20,14 @@ public final class Constants {
 
     // Intake Constants
     public static int INTAKE_MOTOR_ID = 1;
+    public static int INTAKE_SERVO_ID = 1;
 
+    public static double INTAKE_SERVO_RELEASE_SETPOINT = 1.0;
     public static double INTAKE_NEUTRAL_SPEED = 0.0;
     public static double INTAKE_INTAKE_SPEED = -0.8;
     public static double INTAKE_EJECT_SPEED = 0.8;
+
+    public static double SERVO_RELEASE_TIME = 5.0;
 
     // Indexer Constants
     public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 2;
