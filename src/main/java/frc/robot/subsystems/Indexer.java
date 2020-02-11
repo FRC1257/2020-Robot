@@ -71,6 +71,8 @@ public class Indexer extends SnailSubsystem {
         conveyorPID.setFF(INDEXER_PID[3]);
 
         stopMotor = new CANSparkMax(INDEXER_STOP_MOTOR_ID, MotorType.kBrushless);
+        stopMotor.restoreFactoryDefaults();
+        stopMotor.setIdleMode(IdleMode.kBrake);
         stopMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
         currentPIDSetpoint = -1257.0;
