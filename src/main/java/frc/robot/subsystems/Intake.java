@@ -4,6 +4,8 @@ import static frc.robot.Constants.*;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -15,6 +17,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends SnailSubsystem {
 
     CANSparkMax intakeMotor;
+
+    Servo intakeReleaseServo;
+    boolean isReleased;
 
     /**
      * NEUTRAL - The power cells are not moved by the intake
@@ -34,6 +39,8 @@ public class Intake extends SnailSubsystem {
     public Intake() {
         intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
         intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        intakeReleaseServo = new Servo(INTAKE_SERVO_ID);
+        isReleased = false;
     }
     
     /**
@@ -51,6 +58,12 @@ public class Intake extends SnailSubsystem {
             case EJECTING:
                 intakeMotor.set(INTAKE_EJECT_SPEED);
                 break;
+        }
+        if(isReleased){
+            intakeReleaseServo.set(INTAKE_SERVO_RELEASE_SETPOINT);
+        }
+        else{
+            intakeReleaseServo.set(0);
         }
     }
     
@@ -108,6 +121,13 @@ public class Intake extends SnailSubsystem {
     */
     public void intake() {
         state = State.INTAKING;
+    }
+
+    /**
+    * toggle the servo to release the intake
+    */
+    public void toggleReleaseIntake() {
+        isReleased = (!isReleased);
     }
 
     /**

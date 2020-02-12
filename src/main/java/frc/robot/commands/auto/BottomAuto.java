@@ -7,11 +7,11 @@ import frc.robot.util.TrajectoryLoader;
 
 public class BottomAuto extends SequentialCommandGroup {
 
-    public BottomAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter) {  
+    public BottomAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {  
         
         Trajectory bottomTrajectory = TrajectoryLoader.loadTrajectoryFromFile("Bottom.wpilib.json");
 
         addCommands(
-            new DriveWhileShoot(drivetrain, indexer, shooter, bottomTrajectory));
+            new DriveWhileShoot(drivetrain, indexer, shooter, bottomTrajectory, intake));
     }
 }
