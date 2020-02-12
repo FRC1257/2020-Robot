@@ -46,6 +46,9 @@ public class Intake extends SnailSubsystem {
         if(isReleased){
             intakeReleaseServo.set(INTAKE_SERVO_RELEASE_SETPOINT);
         }
+        else{
+            intakeReleaseServo.set(0);
+        }
     }
     
     public void outputValues() {
