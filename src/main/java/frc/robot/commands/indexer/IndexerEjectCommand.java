@@ -3,6 +3,10 @@ package frc.robot.commands.indexer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
 
+/**
+ * Moves the power cells to the intake via the conveyor belt
+ */
+
 public class IndexerEjectCommand extends CommandBase {
 
     private final Indexer indexer;

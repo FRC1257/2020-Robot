@@ -9,20 +9,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.drivetrain.ReverseDriveCommand;
-import frc.robot.commands.drivetrain.SlowTurnCommand;
-import frc.robot.commands.auto.BottomAuto;
-import frc.robot.commands.auto.DriveBaselineAuto;
-import frc.robot.commands.auto.MiddleGenBottomAuto;
-import frc.robot.commands.auto.MiddleGenTopAuto;
-import frc.robot.commands.auto.MiddleTrenchAuto;
-import frc.robot.commands.auto.TopGenBottomAuto;
-import frc.robot.commands.auto.TopGenTopAuto;
-import frc.robot.commands.auto.TopTrenchAuto;
-import frc.robot.commands.drivetrain.ManualDriveCommand;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Gyro;
 import frc.robot.util.XboxTrigger;
+import frc.robot.commands.auto.*;
+import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.intake.*;
 import frc.robot.commands.indexer.*;
 import frc.robot.commands.shooter.*;
@@ -102,6 +94,10 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerPIDCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerEjectCommand(indexer));
         (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
+
+        // Elevator Bindings
+        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new PIDCommand(elevator));
+        (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new ToggleLockCommand(elevator));
 
         // Shooting Bindings
         (new XboxTrigger(operatorController, Hand.kLeft)).whileActiveOnce(new ShooterShootingCommand(shooter));

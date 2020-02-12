@@ -8,6 +8,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * Subsystem to handle the intake mechanism
+ * 
+ * - Utilizes one NEO 550 motor attached to the intake mechanism
+ */
+
 public class Intake extends SnailSubsystem {
 
     CANSparkMax intakeMotor;
@@ -15,6 +21,13 @@ public class Intake extends SnailSubsystem {
     Servo intakeReleaseServo;
     boolean isReleased;
 
+    /**
+     * NEUTRAL - The power cells are not moved by the intake
+     * 
+     * INTAKING - The power cells are intaked and given to the indexer
+     * 
+     * EJECTING - THe power cells are ejected from the intake and taken out of the robot's control
+     */
     public enum State {
         NEUTRAL,
         INTAKING,
@@ -30,6 +43,9 @@ public class Intake extends SnailSubsystem {
         isReleased = false;
     }
     
+    /**
+     * Update motor outputs according to the current state
+     */
     @Override
     public void periodic() {
         switch(state) {
@@ -51,17 +67,29 @@ public class Intake extends SnailSubsystem {
         }
     }
     
+    /**
+     * Puts relevant values to Smart Dashboard
+     */
+    @Override
     public void outputValues() {
         SmartDashboard.putString("Intake State", state.name());
         SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
     }
 
+    /**
+     * Puts values that can be changed into Smart Dashboard
+     */
+    @Override
     public void setConstantTuning() {
         SmartDashboard.putNumber("Intake Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
         SmartDashboard.putNumber("Intake Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
         SmartDashboard.putNumber("Intake Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED);
     }
 
+    /**
+     * Gets values that can be changed
+     */
+    @Override
     public void getConstantTuning() {
         if (INTAKE_EJECT_SPEED != SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED)) {
             INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
@@ -74,22 +102,37 @@ public class Intake extends SnailSubsystem {
         }
     }
 
+    /**
+    * Changes state to neutral
+    */
     public void neutral() {
         state = State.NEUTRAL;
     }
 
+    /**
+    * Changes state to eject
+    */
     public void eject() {
         state = State.EJECTING;
     }
 
+    /**
+    * Changes state to intake
+    */
     public void intake() {
         state = State.INTAKING;
     }
 
+    /**
+    * toggle the servo to release the intake
+    */
     public void toggleReleaseIntake() {
         isReleased = (!isReleased);
     }
 
+    /**
+    * returns the state
+    */
     public State getState() {
         return state;
     }
