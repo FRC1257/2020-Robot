@@ -43,9 +43,9 @@ public class Intake extends SnailSubsystem {
                 intakeMotor.set(INTAKE_EJECT_SPEED);
                 break;
         }
-            if(isReleased){
-                intakeReleaseServo.set(INTAKE_SERVO_RELEASE_SETPOINT);
-            }
+        if(isReleased){
+            intakeReleaseServo.set(INTAKE_SERVO_RELEASE_SETPOINT);
+        }
     }
     
     public void outputValues() {
