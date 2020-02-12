@@ -23,12 +23,11 @@ public class IntakeReleaseCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-
+        intake.toggleReleaseIntake();
     }
 
     @Override
     public boolean isFinished() {
-        intake.toggleReleaseIntake();
         return false;
     }
     
