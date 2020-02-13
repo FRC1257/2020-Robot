@@ -31,19 +31,17 @@ public class ClosedLoopDriveCommand extends CommandBase {
     @Override
     public void execute() {
         if (controller.getAButton()) {
-            speedForward = controller.getY(Hand.kLeft);
+            speedForward = -controller.getY(Hand.kLeft);
             speedTurn = controller.getX(Hand.kLeft);
         } else if (controller.getBumper(Hand.kRight)) {
-            speedForward = controller.getY(Hand.kRight);
+            speedForward = -controller.getY(Hand.kRight);
             speedTurn = controller.getX(Hand.kLeft);
         } else if (controller.getBumper(Hand.kLeft)) {
-            speedForward = controller.getY(Hand.kLeft);
+            speedForward = -controller.getY(Hand.kLeft);
             speedTurn = controller.getX(Hand.kRight);
-        } else {
-            // intentionally empty
         }
 
-        drivetrain.closedLoopDrive(-speedForward * DRIVE_MAX_VEL, 
+        drivetrain.closedLoopDrive(speedForward * DRIVE_MAX_VEL, 
             speedTurn * DRIVE_MAX_ROT);
     }
 

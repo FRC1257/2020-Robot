@@ -29,19 +29,17 @@ public class ManualDriveCommand extends CommandBase {
     @Override
     public void execute() {
         if (controller.getAButton()) {
-            speedForward = controller.getY(Hand.kLeft);
+            speedForward = -controller.getY(Hand.kLeft);
             speedTurn = controller.getX(Hand.kLeft);
         } else if (controller.getBumper(Hand.kRight)) {
-            speedForward = controller.getY(Hand.kRight);
+            speedForward = -controller.getY(Hand.kRight);
             speedTurn = controller.getX(Hand.kLeft);
         } else if (controller.getBumper(Hand.kLeft)) {
-            speedForward = controller.getY(Hand.kLeft);
+            speedForward = -controller.getY(Hand.kLeft);
             speedTurn = controller.getX(Hand.kRight);
-        } else {
-            // intentionally empty
         }
 
-        drivetrain.manualDrive(-speedForward, speedTurn);
+        drivetrain.manualDrive(speedForward, speedTurn);
     }
 
     // Called once the command ends or is interrupted.
