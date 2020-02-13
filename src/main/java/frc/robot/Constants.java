@@ -42,6 +42,7 @@ public final class Constants {
 
     public static final double[] ELEVATOR_PID = {0, 0, 0};
     public static final double ELEVATOR_SETPOINT = 100;
+    public static final double ELEVATOR_PID_TOLERANCE = 1;
 
     public static double SERVO_RELEASE_TIME = 5.0;
 
@@ -60,6 +61,7 @@ public final class Constants {
 
     public static double[] INDEXER_PID = {0, 0, 0};
     public static double INDEXER_ADVANCE_SETPOINT = 10.0;
+    public static double INDEXER_PID_TOLERANCE = 0.5;
 
     // Intake Constants
     public static int INTAKE_MOTOR_ID = 1;

@@ -74,9 +74,15 @@ public class Elevator extends SnailSubsystem {
                     if (currentPIDSetpoint == -1257.0) {
                         break;
                     }
+
                     elevatorPID.setReference(currentPIDSetpoint, ControlType.kPosition);
+
+                    if (Math.abs(encoder.getPosition() - currentPIDSetpoint) < ELEVATOR_PID_TOLERANCE) {
+                        state = State.MANUAL;
+                    }
                     break;
             }
+            servo.set(0.0);
         }
         else {
             servo.set(ELEVATOR_BRAKE_POSITION);

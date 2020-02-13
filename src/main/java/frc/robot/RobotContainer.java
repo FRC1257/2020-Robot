@@ -84,24 +84,26 @@ public class RobotContainer {
         // Drivetrain Bindings
         (new JoystickButton(driveController, XboxController.Button.kY.value)).whenPressed(new ReverseDriveCommand(drivetrain));
         (new JoystickButton(driveController, XboxController.Button.kStart.value)).whenPressed(new SlowTurnCommand(drivetrain));
+        (new JoystickButton(driveController, XboxController.Button.kB.value)).whileActiveOnce(new TurnAngleCommand(drivetrain, 90));
+        (new JoystickButton(driveController, XboxController.Button.kX.value)).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
 
         // Intake Bindings
-        (new JoystickButton(operatorController, Button.kA.value)).whileHeld(new IntakeEjectCommand(intake));
-        (new JoystickButton(operatorController, Button.kB.value)).whileHeld(new IntakeIntakeCommand(intake));
+        (new JoystickButton(operatorController, Button.kA.value)).whileActiveOnce(new IntakeEjectCommand(intake));
+        (new JoystickButton(operatorController, Button.kB.value)).whileActiveOnce(new IntakeIntakeCommand(intake));
 
         // Indexer Bindings
-        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kY.value)).whileActiveOnce(new IndexerIntakeCommand(indexer));
         (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerPIDCommand(indexer));
-        (new JoystickButton(operatorController, Button.kBumperLeft.value)).whileHeld(new IndexerEjectCommand(indexer));
-        (new JoystickButton(operatorController, Button.kBumperRight.value)).whileHeld(new IndexerShootCommand(indexer));
+        (new JoystickButton(operatorController, Button.kX.value)).whileActiveOnce(new IndexerEjectCommand(indexer));
+        (new XboxTrigger(operatorController, Hand.kRight)).whileActiveOnce(new IndexerShootCommand(indexer));
 
         // Elevator Bindings
-        (new JoystickButton(operatorController, Button.kX.value)).whileHeld(new PIDCommand(elevator));
-        (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new ToggleLockCommand(elevator));
+        (new JoystickButton(operatorController, Button.kX.value)).whileActiveOnce(new PIDCommand(elevator));
+        (new JoystickButton(operatorController, Button.kStart.value)).whenPressed(new ToggleLockCommand(elevator));
 
         // Shooting Bindings
         (new XboxTrigger(operatorController, Hand.kLeft)).whileActiveOnce(new ShooterShootingCommand(shooter));
-        (new XboxTrigger(operatorController, Hand.kRight)).whileActiveOnce(new ShooterPIDCommand(shooter));
+        // (new XboxTrigger(operatorController, Hand.kRight)).whileActiveOnce(new ShooterPIDCommand(shooter));
     }
 
     public Command getAutoCommand() {

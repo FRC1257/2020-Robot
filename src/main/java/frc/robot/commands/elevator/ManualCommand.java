@@ -24,7 +24,7 @@ public class ManualCommand extends CommandBase {
 
     @Override
     public void execute() {
-        elevator.setElevatorSpeed(controller.getY(Hand.kRight));
+        elevator.setElevatorSpeed(controller.getY(Hand.kLeft));
     }
 
     @Override

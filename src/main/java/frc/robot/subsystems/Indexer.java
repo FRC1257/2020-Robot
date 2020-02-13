@@ -104,6 +104,10 @@ public class Indexer extends SnailSubsystem {
                 }
                 
                 conveyorPID.setReference(currentPIDSetpoint, ControlType.kPosition);
+
+                if (Math.abs(conveyorEncoder.getPosition() - currentPIDSetpoint) < INDEXER_PID_TOLERANCE) {
+                    state = State.NEUTRAL;
+                }
                 break;
             case EJECTING:
                 conveyorMotorTop.set(INDEXER_CONVEYOR_EJECT_SPEED);

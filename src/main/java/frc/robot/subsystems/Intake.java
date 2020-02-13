@@ -16,10 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends SnailSubsystem {
 
-    CANSparkMax intakeMotor;
+    private CANSparkMax intakeMotor;
 
-    Servo intakeReleaseServo;
-    boolean isReleased;
+    private Servo intakeReleaseServo;
+    private boolean isReleased;
 
     /**
      * NEUTRAL - The power cells are not moved by the intake

@@ -34,6 +34,6 @@ public class IndexerPIDCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return indexer.getState() != Indexer.State.PID;
     }
 }
