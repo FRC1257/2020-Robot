@@ -9,6 +9,8 @@ public class ManualDriveCommand extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final XboxController controller;
+    private double speedForward;
+    private double speedTurn;
 
     public ManualDriveCommand(Drivetrain drivetrain, XboxController controller) {
         this.drivetrain = drivetrain;
@@ -26,7 +28,18 @@ public class ManualDriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        drivetrain.manualDrive(-controller.getY(Hand.kLeft), controller.getX(Hand.kRight));
+        if (controller.getAButton()) {
+            speedForward = -controller.getY(Hand.kLeft);
+            speedTurn = controller.getX(Hand.kLeft);
+        } else if (controller.getBumper(Hand.kRight)) {
+            speedForward = -controller.getY(Hand.kRight);
+            speedTurn = controller.getX(Hand.kLeft);
+        } else if (controller.getBumper(Hand.kLeft)) {
+            speedForward = -controller.getY(Hand.kLeft);
+            speedTurn = controller.getX(Hand.kRight);
+        }
+
+        drivetrain.manualDrive(speedForward, speedTurn);
     }
 
     // Called once the command ends or is interrupted.
