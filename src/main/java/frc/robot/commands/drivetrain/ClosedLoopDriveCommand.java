@@ -11,6 +11,8 @@ public class ClosedLoopDriveCommand extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final XboxController controller;
+    private double speedForward;
+    private double speedTurn;
 
     public ClosedLoopDriveCommand(Drivetrain drivetrain, XboxController controller) {
         this.drivetrain = drivetrain;
@@ -28,8 +30,21 @@ public class ClosedLoopDriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        drivetrain.closedLoopDrive(-controller.getY(Hand.kLeft) * DRIVE_MAX_VEL, 
-            controller.getX(Hand.kRight) * DRIVE_MAX_ROT);
+        if (controller.getAButton()) {
+            speedForward = controller.getY(Hand.kLeft);
+            speedTurn = controller.getX(Hand.kLeft);
+        } else if (controller.getBumper(Hand.kRight)) {
+            speedForward = controller.getY(Hand.kRight);
+            speedTurn = controller.getX(Hand.kLeft);
+        } else if (controller.getBumper(Hand.kLeft)) {
+            speedForward = controller.getY(Hand.kLeft);
+            speedTurn = controller.getX(Hand.kRight);
+        } else {
+            // intentionally empty
+        }
+
+        drivetrain.closedLoopDrive(-speedForward * DRIVE_MAX_VEL, 
+            speedTurn * DRIVE_MAX_ROT);
     }
 
     // Called once the command ends or is interrupted.
