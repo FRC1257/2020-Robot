@@ -35,8 +35,8 @@ public final class Constants {
     }
 
     // Elevator Constants
-    public final static int ELEVATOR_MOTOR_ID = 0;
-    public final static int ELEVATOR_FOLLOWER_MOTOR_ID = 1;
+    public final static int ELEVATOR_MOTOR_ID = 10;
+    public final static int ELEVATOR_FOLLOWER_MOTOR_ID = 13;
     public final static int ELEVATOR_BRAKE_SERVO_ID = 0;
     public final static double ELEVATOR_BRAKE_POSITION = 1.0;
 
@@ -47,9 +47,9 @@ public final class Constants {
     public static double SERVO_RELEASE_TIME = 5.0;
 
     // Indexer Constants
-    public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 2;
-    public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 3;
-    public static int INDEXER_STOP_MOTOR_ID = 4;
+    public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 7;
+    public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 8;
+    public static int INDEXER_STOP_MOTOR_ID = 5;
 
     public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYOR_SHOOT_SPEED = 0.5;
@@ -64,7 +64,7 @@ public final class Constants {
     public static double INDEXER_PID_TOLERANCE = 0.5;
 
     // Intake Constants
-    public static int INTAKE_MOTOR_ID = 1;
+    public static int INTAKE_MOTOR_ID = 9;
     public static int INTAKE_SERVO_ID = 1;
 
     public static double INTAKE_SERVO_RELEASE_SETPOINT = 1.0;
@@ -73,8 +73,8 @@ public final class Constants {
     public static double INTAKE_EJECT_SPEED = 0.8;
 
     // Shooter Constants
-    public static int SHOOTER_MOTOR_ID = 5; // probably will change later
-    public static int SHOOTER_FOLLOWER_MOTOR_ID = 5; // probably will change later
+    public static int SHOOTER_MOTOR_ID = 11; // probably will change later
+    public static int SHOOTER_FOLLOWER_MOTOR_ID = 12; // probably will change later
     public static int NEUTRAL_SHOOTER_MOTOR_SPEED = 0; // need to change later
     public static int SHOOTING_SHOOTER_MOTOR_SPEED = 0; // need to change later
 
@@ -111,10 +111,10 @@ public final class Constants {
     public static double DRIVE_RAMSETE_B = 2.0;
     public static double DRIVE_RAMSETE_ZETA = 0.7;
 
-    public static int DRIVE_FRONT_LEFT = 7;
+    public static int DRIVE_FRONT_LEFT = 1;
     public static int DRIVE_FRONT_RIGHT = 2;
-    public static int DRIVE_BACK_LEFT = 6;
-    public static int DRIVE_BACK_RIGHT = 1;
+    public static int DRIVE_BACK_LEFT = 3;
+    public static int DRIVE_BACK_RIGHT = 4;
 
     public static double PI = 3.14159265;
 }

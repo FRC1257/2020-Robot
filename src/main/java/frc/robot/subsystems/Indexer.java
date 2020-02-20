@@ -68,7 +68,6 @@ public class Indexer extends SnailSubsystem {
         conveyorPID.setP(INDEXER_PID[0]);
         conveyorPID.setI(INDEXER_PID[1]);
         conveyorPID.setD(INDEXER_PID[2]);
-        conveyorPID.setFF(INDEXER_PID[3]);
 
         stopMotor = new CANSparkMax(INDEXER_STOP_MOTOR_ID, MotorType.kBrushless);
         stopMotor.restoreFactoryDefaults();
