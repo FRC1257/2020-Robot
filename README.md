@@ -6,7 +6,7 @@ Code for FRC Team 1257 Parallel Universe's 2020 Robot.
 
 ## General Info
 
-Our code is written in Java and the 2020 WPILib command based framework.
+Our code is written in Java and the 2020 WPILib command-based framework.
 
 ## Subsystems
 
@@ -20,4 +20,4 @@ Our code is written in Java and the 2020 WPILib command based framework.
 
 - CTRE Phoenix
 - REV Robotics
-- NavX
+- Kauai Labs navX-MXP

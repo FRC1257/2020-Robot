@@ -10,7 +10,10 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Elevator extends SnailSubsystem {
   
@@ -21,14 +24,21 @@ public class Elevator extends SnailSubsystem {
 
     private Servo servo;
 
+    private ElevatorFeedforward feedforward;
+    private TrapezoidProfile profile;
+    private Timer profileTimer;
+
     private double currentPIDSetpoint;
 
     public enum State {
         MANUAL,
+        CLOSED_LOOP,
         PID,
+        PROFILED
     }
 
-    private State state = State.MANUAL;
+    private State defaultState = State.MANUAL;
+    private State state = defaultState;
     private double speed;
     private boolean locked;
 
@@ -45,6 +55,8 @@ public class Elevator extends SnailSubsystem {
         followerMotor.follow(motor, false);
 
         encoder = motor.getEncoder();
+        encoder.setPositionConversionFactor(ELEVATOR_CONV_FACTOR);
+        encoder.setVelocityConversionFactor(ELEVATOR_CONV_FACTOR / 60.0);
 
         elevatorPID = motor.getPIDController();
         elevatorPID.setP(ELEVATOR_PID[0]);
@@ -52,6 +64,8 @@ public class Elevator extends SnailSubsystem {
         elevatorPID.setD(ELEVATOR_PID[2]);
 
         servo = new Servo(ELEVATOR_BRAKE_SERVO_ID);
+
+        feedforward = new ElevatorFeedforward(ELEVATOR_KS, ELEVATOR_KG, ELEVATOR_KV, ELEVATOR_KA);
 
         reset();
     }
@@ -81,6 +95,30 @@ public class Elevator extends SnailSubsystem {
                         state = State.MANUAL;
                     }
                     break;
+                case CLOSED_LOOP:
+                    double error = speed - encoder.getVelocity();
+                    motor.setVoltage(error * ELEVATOR_VEL_PID_KP + feedforward.calculate(speed));
+                    break;
+                case PROFILED:
+                    if (profile == null) {
+                        state = defaultState;
+                        break;
+                    }
+                    TrapezoidProfile.State currentStateProf = profile.calculate(profileTimer.get());
+
+                    double positionError = currentStateProf.position - encoder.getPosition();
+                    double velocityError = currentStateProf.velocity - encoder.getVelocity();
+
+                    motor.setVoltage(velocityError * ELEVATOR_VEL_PID_KP + 
+                        feedforward.calculate(currentStateProf.velocity) + 
+                        positionError * ELEVATOR_PROFILE_POS_KP);
+
+                    if (profile.isFinished(profileTimer.get())) {
+                        state = defaultState;
+                        profileTimer.stop();
+                        profile = null;
+                    }
+                    break;
             }
             servo.set(0.0);
         }
@@ -94,6 +132,7 @@ public class Elevator extends SnailSubsystem {
     @Override 
     public void outputValues() {
         SmartDashboard.putNumber("Elevator Position", encoder.getPosition());
+        SmartDashboard.putNumber("Elevator Velocity", encoder.getVelocity());
         SmartDashboard.putNumber("Elevator Current", motor.getOutputCurrent());
         SmartDashboard.putBoolean("Elevator Locked", locked);
     }
@@ -103,6 +142,8 @@ public class Elevator extends SnailSubsystem {
         SmartDashboard.putNumber("Elevator PID kP", ELEVATOR_PID[0]);
         SmartDashboard.putNumber("Elevator PID kI", ELEVATOR_PID[1]);
         SmartDashboard.putNumber("Elevator PID kD", ELEVATOR_PID[2]);
+
+        SmartDashboard.putNumber("Elevator Vel kP", ELEVATOR_VEL_PID_KP);
     }
 
     @Override
@@ -119,6 +160,8 @@ public class Elevator extends SnailSubsystem {
             ELEVATOR_PID[2] = SmartDashboard.getNumber( "Elevator PID kD", ELEVATOR_PID[2]);
             elevatorPID.setP(ELEVATOR_PID[2]);
         }
+
+        ELEVATOR_VEL_PID_KP = SmartDashboard.getNumber("Elevator Vel kP", ELEVATOR_VEL_PID_KP);
     }
     
     public void toggleLock() {
@@ -130,9 +173,25 @@ public class Elevator extends SnailSubsystem {
         state = State.MANUAL;
     }
 
+    public void setElevatorSpeedClosedLoop(double speed) {
+        this.speed = speed;
+        state = State.CLOSED_LOOP;
+    }
+
     public void raise() {
         encoder.setPosition(0);
         currentPIDSetpoint = ELEVATOR_SETPOINT;
         state = State.PID;
+    }
+
+    public void raiseProfiled() {
+        encoder.setPosition(0);
+        profile = new TrapezoidProfile(
+            new TrapezoidProfile.Constraints(DRIVE_PROFILE_MAX_VEL, DRIVE_PROFILE_MAX_ACC),
+            new TrapezoidProfile.State(ELEVATOR_SETPOINT, 0),
+            new TrapezoidProfile.State(0, 0));
+        profileTimer.reset();
+        profileTimer.start();
+        state = State.PROFILED;
     }
 }

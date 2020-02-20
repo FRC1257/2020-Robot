@@ -46,6 +46,16 @@ public final class Constants {
 
     public static double SERVO_RELEASE_TIME = 5.0;
 
+    public static double ELEVATOR_KS = 0.0;
+    public static double ELEVATOR_KG = 0.0;
+    public static double ELEVATOR_KV = 0.0;
+    public static double ELEVATOR_KA = 0.0;
+
+    public static double ELEVATOR_MAX_SPEED = 1.0; // m/s
+    public static double ELEVATOR_CONV_FACTOR = 1 / 20.0;
+    public static double ELEVATOR_VEL_PID_KP = 0.1;
+    public static double ELEVATOR_PROFILE_POS_KP = 0.1;
+
     // Indexer Constants
     public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 7;
     public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 8;
