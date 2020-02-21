@@ -18,6 +18,5 @@ Our code is written in Java and the 2020 WPILib command based framework.
 
 # Vendor Dependencies
 
-- CTRE Phoenix
 - REV Robotics
 - NavX

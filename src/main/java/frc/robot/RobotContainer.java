@@ -22,9 +22,9 @@ import frc.robot.commands.elevator.*;
 import frc.robot.subsystems.*;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the Robot
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
@@ -36,7 +36,7 @@ public class RobotContainer {
     private final Drivetrain drivetrain;
     private final Intake intake;
     private final Indexer indexer;
-    // private final Elevator elevator;
+    private final Elevator elevator;
     private final Shooter shooter;
 
     private SendableChooser<Constants.AutoPosition> autoPositionChooser;
@@ -45,7 +45,7 @@ public class RobotContainer {
     private int outputCounter;
 
     /**
-     * The container for the robot.  Contains subsystems, OI devices, and commands.
+     * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         driveController = new XboxController(CONTROLLER_DRIVER_ID);
@@ -57,8 +57,8 @@ public class RobotContainer {
         indexer = new Indexer();
         indexer.setDefaultCommand(new IndexerNeutralCommand(indexer));
 
-        // elevator = new Elevator();
-        // elevator.setDefaultCommand(new ManualCommand(elevator, operatorController));
+        elevator = new Elevator();
+        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController));
 
         shooter = new Shooter();
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));
@@ -66,9 +66,10 @@ public class RobotContainer {
         drivetrain = new Drivetrain();
         drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController));
         
+        subsystems = new ArrayList<SnailSubsystem>();
         subsystems.add(intake);
         subsystems.add(indexer);
-        // subsystems.add(elevator);
+        subsystems.add(elevator);
         subsystems.add(shooter);
         subsystems.add(drivetrain);
 
@@ -92,17 +93,17 @@ public class RobotContainer {
         (new JoystickButton(operatorController, Button.kB.value)).whileActiveOnce(new IntakeIntakeCommand(intake));
 
         // Indexer Bindings
-        (new JoystickButton(operatorController, Button.kY.value)).whileActiveOnce(new IndexerIntakeCommand(indexer));
+        (new JoystickButton(operatorController, Button.kY.value)).whileActiveOnce(new IndexerRaiseCommand(indexer));
         // (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerPIDCommand(indexer));
-        (new JoystickButton(operatorController, Button.kX.value)).whileActiveOnce(new IndexerEjectCommand(indexer));
+        (new JoystickButton(operatorController, Button.kX.value)).whileActiveOnce(new IndexerLowerCommand(indexer));
         (new XboxTrigger(operatorController, Hand.kRight)).whileActiveOnce(new IndexerShootCommand(indexer));
 
         // // Elevator Bindings
-        // (new JoystickButton(operatorController, Button.kX.value)).whileActiveOnce(new PIDCommand(elevator));
-        // (new JoystickButton(operatorController, Button.kStart.value)).whenPressed(new ToggleLockCommand(elevator));
+        (new JoystickButton(operatorController, Button.kX.value)).whileActiveOnce(new ElevatorPIDCommand(elevator));
+        (new JoystickButton(operatorController, Button.kStart.value)).whenPressed(new ToggleElevatorLockCommand(elevator));
 
         // Shooting Bindings
-        (new XboxTrigger(operatorController, Hand.kLeft)).whileActiveOnce(new ShooterShootingCommand(shooter));
+        (new XboxTrigger(operatorController, Hand.kLeft)).whileActiveOnce(new ShooterShootCommand(shooter));
         // (new XboxTrigger(operatorController, Hand.kRight)).whileActiveOnce(new ShooterPIDCommand(shooter));
     }
 
@@ -146,10 +147,11 @@ public class RobotContainer {
     }
 
     public void outputValues() {
-        subsystems.get(outputCounter).outputValues();
-
         if (outputCounter == subsystems.size()) {
             Gyro.getInstance().outputValues();
+        }
+        else {
+            subsystems.get(outputCounter).outputValues();
         }
 
         outputCounter = (outputCounter + 1) % (subsystems.size() + 1);
@@ -160,6 +162,8 @@ public class RobotContainer {
     }
 
     public void getConstantTuning() {
-        subsystems.get(outputCounter).getConstantTuning();
+        if (outputCounter < subsystems.size()) {
+            subsystems.get(outputCounter).getConstantTuning();
+        }
     }
 }

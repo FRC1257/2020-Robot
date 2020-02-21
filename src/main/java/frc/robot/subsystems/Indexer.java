@@ -21,11 +21,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Indexer extends SnailSubsystem {
 
-    private CANSparkMax conveyorMotorTop;
+    private CANSparkMax conveyorMotorFront;
+    private CANSparkMax conveyorMotorBack;
+    
     private CANEncoder conveyorEncoder;
     private CANPIDController conveyorPID;
-
-    private CANSparkMax conveyorMotorBottom;
 
     private CANSparkMax stopMotor;
 
@@ -38,32 +38,33 @@ public class Indexer extends SnailSubsystem {
      * 
      * SHOOTING - The power cells are put into the shooter
      * 
-     * INTAKING - The power cells are intaked higher into the indexer
+     * RAISING - The power cells are raised higher into the indexer
      * 
-     * EJECTING - THe power cells are ejected from the indexer to the intake
+     * LOWERING - THe power cells are lowered from the indexer to the intake
      */
+    
     public enum State {
         NEUTRAL,
         PID,
         SHOOTING,
-        INTAKING,
-        EJECTING
+        RAISING,
+        LOWERING
     }
     State state = State.NEUTRAL;
 
     public Indexer() {
-        conveyorMotorTop = new CANSparkMax(INDEXER_CONVEYOR_TOP_MOTOR_ID, MotorType.kBrushless);
-        conveyorMotorTop.restoreFactoryDefaults();
-        conveyorMotorTop.setIdleMode(IdleMode.kBrake);
-        conveyorMotorTop.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-        conveyorEncoder = conveyorMotorTop.getEncoder();
-        conveyorPID = conveyorMotorTop.getPIDController();
+        conveyorMotorFront = new CANSparkMax(INDEXER_CONVEYOR_TOP_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorFront.restoreFactoryDefaults();
+        conveyorMotorFront.setIdleMode(IdleMode.kBrake);
+        conveyorMotorFront.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        conveyorEncoder = conveyorMotorFront.getEncoder();
+        conveyorPID = conveyorMotorFront.getPIDController();
 
-        conveyorMotorBottom = new CANSparkMax(INDEXER_CONVEYOR_BOTTOM_MOTOR_ID, MotorType.kBrushless);
-        conveyorMotorBottom.restoreFactoryDefaults();
-        conveyorMotorBottom.setIdleMode(IdleMode.kBrake);
-        conveyorMotorBottom.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-        conveyorMotorBottom.follow(conveyorMotorTop);
+        conveyorMotorBack = new CANSparkMax(INDEXER_CONVEYOR_BOTTOM_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorBack.restoreFactoryDefaults();
+        conveyorMotorBack.setIdleMode(IdleMode.kBrake);
+        conveyorMotorBack.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        conveyorMotorBack.follow(conveyorMotorFront, true);
 
         conveyorPID.setP(INDEXER_PID[0]);
         conveyorPID.setI(INDEXER_PID[1]);
@@ -84,15 +85,19 @@ public class Indexer extends SnailSubsystem {
     public void periodic() {
         switch(state) {
             case NEUTRAL: 
-                conveyorMotorTop.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
+                conveyorMotorFront.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
                 break;
             case SHOOTING:
-                conveyorMotorTop.set(INDEXER_CONVEYOR_SHOOT_SPEED);
+                conveyorMotorFront.set(INDEXER_CONVEYOR_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
-            case INTAKING:
-                conveyorMotorTop.set(INDEXER_CONVEYOR_INTAKE_SPEED);
+            case RAISING:
+                conveyorMotorFront.set(INDEXER_CONVEYOR_RAISE_SPEED);
+                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                break;
+            case LOWERING:
+                conveyorMotorFront.set(INDEXER_CONVEYOR_LOWER_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case PID:
@@ -108,10 +113,6 @@ public class Indexer extends SnailSubsystem {
                     state = State.NEUTRAL;
                 }
                 break;
-            case EJECTING:
-                conveyorMotorTop.set(INDEXER_CONVEYOR_EJECT_SPEED);
-                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
-                break;
         }
     }
 
@@ -123,14 +124,11 @@ public class Indexer extends SnailSubsystem {
         SmartDashboard.putString("Indexer State", state.name());
 
         SmartDashboard.putNumber("Indexer PID Setpoint", currentPIDSetpoint);
+        SmartDashboard.putNumber("Indexer Encoder", getEncoderValue());
 
-        SmartDashboard.putNumber("Conveyor Top Current", conveyorMotorTop.getOutputCurrent());
-        SmartDashboard.putNumber("Top Encoder", getEncoderValue());
-
-        SmartDashboard.putNumber("Conveyor Bottom Current", conveyorMotorBottom.getOutputCurrent());
-        SmartDashboard.putNumber("Bottom Encoder", getEncoderValue());
-
-        SmartDashboard.putNumber("Stop Motor Current", stopMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Indexer Top Conveyor Current", conveyorMotorFront.getOutputCurrent());
+        SmartDashboard.putNumber("Indexer Bottom Conveyor Current", conveyorMotorBack.getOutputCurrent());
+        SmartDashboard.putNumber("Indexer Stop Motor Current", stopMotor.getOutputCurrent());
     }
 
     /**
@@ -147,9 +145,9 @@ public class Indexer extends SnailSubsystem {
         SmartDashboard.putNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
         SmartDashboard.putNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
 
-        SmartDashboard.putNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyer Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
         SmartDashboard.putNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED);
         SmartDashboard.putNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
 
@@ -167,7 +165,7 @@ public class Indexer extends SnailSubsystem {
             conveyorPID.setP(INDEXER_PID[1]);
         }
         if (conveyorPID.getD() != SmartDashboard.getNumber("Indexer PID kD", INDEXER_PID[2])) {
-            INDEXER_PID[2] = SmartDashboard.getNumber( "Indexer PID kD", INDEXER_PID[2]);
+            INDEXER_PID[2] = SmartDashboard.getNumber("Indexer PID kD", INDEXER_PID[2]);
             conveyorPID.setP(INDEXER_PID[2]);
         }
         
@@ -177,8 +175,8 @@ public class Indexer extends SnailSubsystem {
         INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
 
         INDEXER_CONVEYOR_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
-        INDEXER_CONVEYOR_EJECT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED);
-        INDEXER_CONVEYOR_INTAKE_SPEED = SmartDashboard.getNumber("Indexer Conveyer Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
+        INDEXER_CONVEYOR_RAISE_SPEED = SmartDashboard.getNumber("Indexer Conveyer Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
+        INDEXER_CONVEYOR_LOWER_SPEED = SmartDashboard.getNumber("Indexer Conveyer Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
         INDEXER_CONVEYOR_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
      
@@ -227,23 +225,23 @@ public class Indexer extends SnailSubsystem {
     }
 
     /**
-    * Changes state to eject
+    * Changes state to lowering
     */
-    public void eject() {
-        state = State.EJECTING;
+    public void lower() {
+        state = State.LOWERING;
     }
 
     /**
-    * Changes state to intake
+    * Changes state to raising
     */
-    public void intake() {
-        state = State.INTAKING;
+    public void raise() {
+        state = State.RAISING;
     }
 
     /**
-    * returns the state
+    * Returns the state
     */
-    public State getState(){
+    public State getState() {
         return state;
     }
 }

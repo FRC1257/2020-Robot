@@ -36,7 +36,7 @@ public class Shooter extends SnailSubsystem {
         followerMotor.restoreFactoryDefaults();
         followerMotor.setIdleMode(IdleMode.kCoast);
         followerMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
-        followerMotor.follow(shooterMotor, true); // follow with inverted
+        // followerMotor.follow(shooterMotor, true); // follow with inverted
 
         shooterPID = shooterMotor.getPIDController();
         shooterEncoder = shooterMotor.getEncoder();
@@ -76,10 +76,16 @@ public class Shooter extends SnailSubsystem {
 
         boolean inTolerance = (SHOOTER_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_SETPOINT < 0.03;
         SmartDashboard.putBoolean("Shooter Ready", inTolerance);
+
+        SmartDashboard.putNumber("Shooter Primary Output", shooterMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Shooter Secondary Output", followerMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Shooter Primary Current", shooterMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Shooter Secondary Current", followerMotor.getOutputCurrent());
     }
 
     @Override
     public void setConstantTuning() {
+        SmartDashboard.putNumber("Shooter Shooting Speed", SHOOTING_SHOOTER_MOTOR_SPEED);
         SmartDashboard.putNumber("Shooter PID kP", SHOOTER_PIDF[0]);
         SmartDashboard.putNumber("Shooter PID kI", SHOOTER_PIDF[1]);
         SmartDashboard.putNumber("Shooter PID kD", SHOOTER_PIDF[2]);
@@ -89,6 +95,7 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void getConstantTuning() {
+        SHOOTING_SHOOTER_MOTOR_SPEED = SmartDashboard.getNumber("Shooter Shooting Speed", SHOOTING_SHOOTER_MOTOR_SPEED);
         if (shooterPID.getP() != SmartDashboard.getNumber("Shooter PID kP", 0)) {
             shooterPID.setP(SmartDashboard.getNumber("Shooter PID kP", 0));
         }

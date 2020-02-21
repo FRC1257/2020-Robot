@@ -4,25 +4,26 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
 
 /**
- * Moves the power cells towards the shooter via the conveyor belt
+ * Moves the power cells to the intake via the conveyor belt
  */
-public class IndexerIntakeCommand extends CommandBase {
+
+public class IndexerLowerCommand extends CommandBase {
 
     private final Indexer indexer;
 
-    public IndexerIntakeCommand(Indexer indexer) {
-        this.indexer = indexer;        
+    public IndexerLowerCommand(Indexer indexer) {
+        this.indexer = indexer;   
         addRequirements(indexer);
     }
 
     @Override
     public void initialize() {
-
+        
     }
 
     @Override
     public void execute() {
-        indexer.intake();
+        indexer.lower();
     }
 
     @Override

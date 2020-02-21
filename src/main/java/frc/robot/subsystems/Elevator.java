@@ -65,7 +65,7 @@ public class Elevator extends SnailSubsystem {
 
     @Override
     public void periodic() {
-        if(!locked) {
+        if (!locked) {
             switch(state) {
                 case MANUAL:
                     motor.set(speed);
