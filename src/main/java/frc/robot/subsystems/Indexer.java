@@ -162,11 +162,11 @@ public class Indexer extends SnailSubsystem {
         }
         if (conveyorPID.getI() != SmartDashboard.getNumber("Indexer PID kI", INDEXER_PID[1])) {
             INDEXER_PID[1] = SmartDashboard.getNumber("Indexer PID kI", INDEXER_PID[1]);
-            conveyorPID.setP(INDEXER_PID[1]);
+            conveyorPID.setI(INDEXER_PID[1]);
         }
         if (conveyorPID.getD() != SmartDashboard.getNumber("Indexer PID kD", INDEXER_PID[2])) {
             INDEXER_PID[2] = SmartDashboard.getNumber("Indexer PID kD", INDEXER_PID[2]);
-            conveyorPID.setP(INDEXER_PID[2]);
+            conveyorPID.setD(INDEXER_PID[2]);
         }
         
         INDEXER_ADVANCE_SETPOINT = SmartDashboard.getNumber("Indexer Advance Setpoint", INDEXER_ADVANCE_SETPOINT);
