@@ -37,12 +37,13 @@ public class Elevator extends SnailSubsystem {
         motor.restoreFactoryDefaults();
         motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         motor.setIdleMode(IdleMode.kBrake);
+        motor.setInverted(true);
 
         followerMotor = new CANSparkMax(ELEVATOR_FOLLOWER_MOTOR_ID, MotorType.kBrushless);
         followerMotor.restoreFactoryDefaults();
         followerMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         followerMotor.setIdleMode(IdleMode.kBrake);
-        followerMotor.follow(motor, false);
+        followerMotor.follow(motor);
 
         encoder = motor.getEncoder();
 
