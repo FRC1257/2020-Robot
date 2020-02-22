@@ -1,6 +1,7 @@
 package frc.robot.commands.drivetrain;
 
 import static frc.robot.Constants.*;
+import static frc.robot.util.MathUtils.applyDeadband;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -31,14 +32,14 @@ public class ClosedLoopDriveCommand extends CommandBase {
     @Override
     public void execute() {
         if (controller.getAButton()) {
-            speedForward = -controller.getY(Hand.kLeft);
-            speedTurn = controller.getX(Hand.kLeft);
+            speedForward = -applyDeadband(controller.getY(Hand.kLeft));
+            speedTurn = applyDeadband(controller.getX(Hand.kLeft));
         } else if (controller.getBumper(Hand.kRight)) {
-            speedForward = -controller.getY(Hand.kRight);
-            speedTurn = controller.getX(Hand.kLeft);
+            speedForward = -applyDeadband(controller.getY(Hand.kRight));
+            speedTurn = applyDeadband(controller.getX(Hand.kLeft));
         } else if (controller.getBumper(Hand.kLeft)) {
-            speedForward = -controller.getY(Hand.kLeft);
-            speedTurn = controller.getX(Hand.kRight);
+            speedForward = -applyDeadband(controller.getY(Hand.kLeft));
+            speedTurn = applyDeadband(controller.getX(Hand.kRight));
         }
 
         drivetrain.closedLoopDrive(speedForward * DRIVE_MAX_VEL, 

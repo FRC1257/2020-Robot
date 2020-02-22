@@ -77,8 +77,8 @@ public class Drivetrain extends SnailSubsystem {
         backLeftMotor.restoreFactoryDefaults();
         backRightMotor.restoreFactoryDefaults();
 
-        frontLeftMotor.setIdleMode(IdleMode.kCoast);
-        frontRightMotor.setIdleMode(IdleMode.kCoast);
+        frontLeftMotor.setIdleMode(IdleMode.kBrake);
+        frontRightMotor.setIdleMode(IdleMode.kBrake);
         backLeftMotor.setIdleMode(IdleMode.kCoast);
         backRightMotor.setIdleMode(IdleMode.kCoast);
 
@@ -86,6 +86,8 @@ public class Drivetrain extends SnailSubsystem {
         frontRightMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         backLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         backRightMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+
+        frontRightMotor.setInverted(true);
 
         backLeftMotor.follow(frontLeftMotor);
         backRightMotor.follow(frontRightMotor);
@@ -277,6 +279,10 @@ public class Drivetrain extends SnailSubsystem {
     private double[] arcadeDrive(double speedForward, double speedTurn) {
         double forward = Math.copySign(speedForward * speedForward, speedForward);
         double turn = Math.copySign(speedTurn * speedTurn, speedTurn);
+
+        if (Math.abs(forward) < 0.02) forward = 0.0;
+        if (Math.abs(turn) < 0.02) turn = 0.0;
+
         double maxInput = Math.copySign(Math.max(Math.abs(forward), Math.abs(turn)), forward);
         
         double speedLeft;
@@ -405,6 +411,9 @@ public class Drivetrain extends SnailSubsystem {
 
         SmartDashboard.putNumber("Drive Dist Setpoint", distSetpoint);
         SmartDashboard.putNumber("Drive Angle Setpoint", angleSetpoint);
+
+        SmartDashboard.putBoolean("Drive Reversed", reversed);
+        SmartDashboard.putBoolean("Drive Slow Turn", slowTurning);
 
         SmartDashboard.putString("Drive State", state.name());
     }

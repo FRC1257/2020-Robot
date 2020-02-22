@@ -28,6 +28,7 @@ public class Intake extends SnailSubsystem {
      * 
      * EJECTING - THe power cells are ejected from the intake and taken out of the robot's control
      */
+
     public enum State {
         NEUTRAL,
         INTAKING,
@@ -59,10 +60,10 @@ public class Intake extends SnailSubsystem {
                 intakeMotor.set(INTAKE_EJECT_SPEED);
                 break;
         }
-        if(isReleased){
+        if (isReleased) {
             intakeReleaseServo.set(INTAKE_SERVO_RELEASE_SETPOINT);
         }
-        else{
+        else {
             intakeReleaseServo.set(0);
         }
     }
@@ -81,9 +82,9 @@ public class Intake extends SnailSubsystem {
      */
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Intake Intake Speed", INDEXER_CONVEYOR_INTAKE_SPEED);
-        SmartDashboard.putNumber("Intake Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
-        SmartDashboard.putNumber("Intake Eject Speed", INDEXER_CONVEYOR_EJECT_SPEED);
+        SmartDashboard.putNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
+        SmartDashboard.putNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
+        SmartDashboard.putNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);
     }
 
     /**
@@ -124,14 +125,14 @@ public class Intake extends SnailSubsystem {
     }
 
     /**
-    * toggle the servo to release the intake
+    * Toggle the servo to release the intake
     */
     public void toggleReleaseIntake() {
         isReleased = (!isReleased);
     }
 
     /**
-    * returns the state
+    * Returns the state
     */
     public State getState() {
         return state;

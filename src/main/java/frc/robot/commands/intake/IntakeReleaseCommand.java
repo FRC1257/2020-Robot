@@ -6,6 +6,7 @@ import frc.robot.subsystems.Intake;
 public class IntakeReleaseCommand extends CommandBase {
 
     private final Intake intake;
+    
     public IntakeReleaseCommand(Intake intake) {
         this.intake = intake;
         addRequirements(intake);

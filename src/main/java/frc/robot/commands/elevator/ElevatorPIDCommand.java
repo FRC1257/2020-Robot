@@ -3,11 +3,11 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
-public class PIDCommand extends CommandBase {
+public class ElevatorPIDCommand extends CommandBase {
 
     private final Elevator elevator;
 
-    public PIDCommand(Elevator elevator) {
+    public ElevatorPIDCommand(Elevator elevator) {
         this.elevator = elevator;
 
         addRequirements(elevator);
