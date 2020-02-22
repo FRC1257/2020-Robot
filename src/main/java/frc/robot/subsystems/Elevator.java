@@ -155,11 +155,11 @@ public class Elevator extends SnailSubsystem {
         }
         if (elevatorPID.getI() != SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1])) {
             ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1]);
-            elevatorPID.setP(ELEVATOR_PID[1]);
+            elevatorPID.setI(ELEVATOR_PID[1]);
         }
         if (elevatorPID.getD() != SmartDashboard.getNumber("Elevator PID kD", ELEVATOR_PID[2])) {
             ELEVATOR_PID[2] = SmartDashboard.getNumber( "Elevator PID kD", ELEVATOR_PID[2]);
-            elevatorPID.setP(ELEVATOR_PID[2]);
+            elevatorPID.setD(ELEVATOR_PID[2]);
         }
 
         ELEVATOR_VEL_PID_KP = SmartDashboard.getNumber("Elevator Vel kP", ELEVATOR_VEL_PID_KP);

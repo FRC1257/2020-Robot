@@ -451,11 +451,11 @@ public class Drivetrain extends SnailSubsystem {
         }
         if (distPID.getI() != SmartDashboard.getNumber("Drive PID Dist kI", DRIVE_DIST_PID[1])) {
             DRIVE_DIST_PID[1] = SmartDashboard.getNumber("Drive PID Dist kI", DRIVE_DIST_PID[1]);
-            distPID.setP(DRIVE_DIST_PID[1]);
+            distPID.setI(DRIVE_DIST_PID[1]);
         }
         if (distPID.getD() != SmartDashboard.getNumber("Drive PID Dist kD", DRIVE_DIST_PID[2])) {
             DRIVE_DIST_PID[2] = SmartDashboard.getNumber( "Drive PID Dist kD", DRIVE_DIST_PID[2]);
-            distPID.setP(DRIVE_DIST_PID[2]);
+            distPID.setD(DRIVE_DIST_PID[2]);
         }
 
         if (anglePID.getP() != SmartDashboard.getNumber("Drive PID Angle kP", DRIVE_ANGLE_PID[0])) {
@@ -464,11 +464,11 @@ public class Drivetrain extends SnailSubsystem {
         }
         if (anglePID.getI() != SmartDashboard.getNumber("Drive PID Angle kI", DRIVE_ANGLE_PID[1])) {
             DRIVE_ANGLE_PID[1] = SmartDashboard.getNumber("Drive PID Angle kI", DRIVE_ANGLE_PID[1]);
-            anglePID.setP(DRIVE_ANGLE_PID[1]);
+            anglePID.setI(DRIVE_ANGLE_PID[1]);
         }
         if (anglePID.getD() != SmartDashboard.getNumber("Drive PID Angle kD", DRIVE_ANGLE_PID[2])) {
             DRIVE_ANGLE_PID[2] = SmartDashboard.getNumber( "Drive PID Angle kD", DRIVE_ANGLE_PID[2]);
-            anglePID.setP(DRIVE_ANGLE_PID[2]);
+            anglePID.setD(DRIVE_ANGLE_PID[2]);
         }
 
         DRIVE_PROFILE_LEFT_POS_P = SmartDashboard.getNumber("Drive Profile Pos Left kP", DRIVE_PROFILE_LEFT_POS_P);
