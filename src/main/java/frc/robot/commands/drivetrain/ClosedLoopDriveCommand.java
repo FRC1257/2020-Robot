@@ -1,8 +1,9 @@
 package frc.robot.commands.drivetrain;
 
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+
+import java.util.function.DoubleSupplier;
 
 public class ClosedLoopDriveCommand extends CommandBase {
 

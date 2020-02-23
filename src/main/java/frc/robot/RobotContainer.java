@@ -1,23 +1,34 @@
 package frc.robot;
 
-import static frc.robot.Constants.*;
-import java.util.ArrayList;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.auto.*;
+import frc.robot.commands.drivetrain.ManualDriveCommand;
+import frc.robot.commands.drivetrain.ReverseDriveCommand;
+import frc.robot.commands.drivetrain.SlowTurnCommand;
+import frc.robot.commands.drivetrain.TurnAngleCommand;
+import frc.robot.commands.elevator.ManualElevatorCommand;
+import frc.robot.commands.elevator.ToggleElevatorLockCommand;
+import frc.robot.commands.indexer.IndexerLowerCommand;
+import frc.robot.commands.indexer.IndexerNeutralCommand;
+import frc.robot.commands.indexer.IndexerRaiseCommand;
+import frc.robot.commands.indexer.IndexerShootCommand;
+import frc.robot.commands.intake.IntakeEjectCommand;
+import frc.robot.commands.intake.IntakeIntakeCommand;
+import frc.robot.commands.intake.IntakeNeutralCommand;
+import frc.robot.commands.shooter.ShooterNeutralCommand;
+import frc.robot.commands.shooter.ShooterShootCommand;
+import frc.robot.subsystems.*;
 import frc.robot.util.Gyro;
 import frc.robot.util.SnailController;
-import frc.robot.commands.auto.*;
-import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.intake.*;
-import frc.robot.commands.indexer.*;
-import frc.robot.commands.shooter.*;
-import frc.robot.commands.elevator.*;
-import frc.robot.subsystems.*;
+
+import java.util.ArrayList;
+
+import static frc.robot.Constants.CONTROLLER_DRIVER_ID;
+import static frc.robot.Constants.CONTROLLER_OPERATOR_ID;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

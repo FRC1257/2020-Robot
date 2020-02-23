@@ -1,12 +1,11 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.*;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static frc.robot.Constants.*;
 
 /**
  * Subsystem to handle the intake mechanism

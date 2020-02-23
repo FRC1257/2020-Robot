@@ -1,8 +1,9 @@
 package frc.robot.commands.elevator;
 
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
+
+import java.util.function.DoubleSupplier;
 
 public class ManualElevatorCommand extends CommandBase {
 
