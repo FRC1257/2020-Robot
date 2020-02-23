@@ -15,9 +15,9 @@ import static frc.robot.Constants.*;
 
 public class Intake extends SnailSubsystem {
 
-    private CANSparkMax intakeMotor;
+    private final CANSparkMax intakeMotor;
 
-    private Servo intakeReleaseServo;
+    private final Servo intakeReleaseServo;
     private boolean isReleased;
 
     /**

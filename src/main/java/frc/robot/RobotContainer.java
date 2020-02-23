@@ -41,7 +41,7 @@ public class RobotContainer {
     private final SnailController driveController;
     private final SnailController operatorController;
     
-    private ArrayList<SnailSubsystem> subsystems;
+    private final ArrayList<SnailSubsystem> subsystems;
     private final Drivetrain drivetrain;
     private final Intake intake;
     private final Indexer indexer;
@@ -76,7 +76,7 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward,
             driveController::getDriveTurn));
         
-        subsystems = new ArrayList<SnailSubsystem>();
+        subsystems = new ArrayList<>();
         subsystems.add(intake);
         subsystems.add(indexer);
         subsystems.add(elevator);
@@ -140,8 +140,8 @@ public class RobotContainer {
     }
 
     public void configureAutoChoosers() {
-        autoPositionChooser = new SendableChooser<Constants.AutoPosition>();
-        autoGoalChooser = new SendableChooser<Constants.AutoGoal>();
+        autoPositionChooser = new SendableChooser<>();
+        autoGoalChooser = new SendableChooser<>();
 
         autoPositionChooser.setDefaultOption("Top Start", Constants.AutoPosition.TOP);
         autoPositionChooser.addOption("Middle Start", Constants.AutoPosition.MIDDLE);
@@ -168,7 +168,7 @@ public class RobotContainer {
     }
 
     public void setConstantTuning() {
-        subsystems.forEach((s) -> s.setConstantTuning());
+        subsystems.forEach(SnailSubsystem::setConstantTuning);
     }
 
     public void getConstantTuning() {

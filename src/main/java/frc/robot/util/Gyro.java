@@ -15,11 +15,11 @@ public class Gyro {
 
     private static Gyro instance = null;
 
-    private AHRS navx;
+    private final AHRS navx;
     private double resetRoll;
     private double resetPitch;
 
-    private ADXRS450_Gyro gyro;
+    private final ADXRS450_Gyro gyro;
 
     private Gyro() {
         navx = new AHRS(Port.kMXP);

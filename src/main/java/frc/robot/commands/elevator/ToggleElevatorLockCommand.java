@@ -5,7 +5,7 @@ import frc.robot.subsystems.Elevator;
 
 public class ToggleElevatorLockCommand extends InstantCommand {
 
-    public Elevator elevator;
+    public final Elevator elevator;
 
     public ToggleElevatorLockCommand(Elevator elevator) {
         // Use addRequirements() here to declare subsystem dependencies.

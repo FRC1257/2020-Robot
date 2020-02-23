@@ -22,13 +22,13 @@ public final class Constants {
     public static double INDEXER_DUMP_TIME = 2.0; // seconds
     public static double SERVO_RELEASE_TIME = 5.0; // seconds
 
-    public static enum AutoPosition {
+    public enum AutoPosition {
         TOP, 
         MIDDLE,
         BOTTOM
     }
 
-    public static enum AutoGoal {
+    public enum AutoGoal {
         DEFAULT,
         TRENCH,
         GEN_BOTTOM,

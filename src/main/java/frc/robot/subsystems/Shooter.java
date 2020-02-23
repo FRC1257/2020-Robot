@@ -12,11 +12,11 @@ import static frc.robot.Constants.*;
 
 public class Shooter extends SnailSubsystem {
 
-    private CANSparkMax shooterMotor;
-    private CANSparkMax followerMotor;
+    private final CANSparkMax shooterMotor;
+    private final CANSparkMax followerMotor;
 
-    private CANPIDController shooterPID;
-    private CANEncoder shooterEncoder;
+    private final CANPIDController shooterPID;
+    private final CANEncoder shooterEncoder;
     
     public enum State {
         NEUTRAL,

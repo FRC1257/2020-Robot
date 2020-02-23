@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static frc.robot.Constants.*;
 
 /**
- * Subsystem to handle the conveyer belt and the stop mechanism
+ * Subsystem to handle the conveyor belt and the stop mechanism
  * 
- * - Utilizes two NEO 550 motors attached to the conveyer
+ * - Utilizes two NEO 550 motors attached to the conveyor
  * 
  * - Utilizes one NEO 550 motor attached to the stop mechanism
  * 
@@ -22,13 +22,13 @@ import static frc.robot.Constants.*;
 
 public class Indexer extends SnailSubsystem {
 
-    private CANSparkMax conveyorMotorFront;
-    private CANSparkMax conveyorMotorBack;
+    private final CANSparkMax conveyorMotorFront;
+    private final CANSparkMax conveyorMotorBack;
     
-    private CANEncoder conveyorEncoder;
-    private CANPIDController conveyorPID;
+    private final CANEncoder conveyorEncoder;
+    private final CANPIDController conveyorPID;
 
-    private CANSparkMax stopMotor;
+    private final CANSparkMax stopMotor;
 
     private double currentPIDSetpoint;
 
@@ -146,10 +146,10 @@ public class Indexer extends SnailSubsystem {
         SmartDashboard.putNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
         SmartDashboard.putNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
 
-        SmartDashboard.putNumber("Indexer Conveyer Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyer Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
 
     /**
@@ -175,10 +175,10 @@ public class Indexer extends SnailSubsystem {
         INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
         INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
 
-        INDEXER_CONVEYOR_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyer Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
-        INDEXER_CONVEYOR_RAISE_SPEED = SmartDashboard.getNumber("Indexer Conveyer Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
-        INDEXER_CONVEYOR_LOWER_SPEED = SmartDashboard.getNumber("Indexer Conveyer Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
-        INDEXER_CONVEYOR_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyer Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
+        INDEXER_CONVEYOR_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyor Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
+        INDEXER_CONVEYOR_RAISE_SPEED = SmartDashboard.getNumber("Indexer Conveyor Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
+        INDEXER_CONVEYOR_LOWER_SPEED = SmartDashboard.getNumber("Indexer Conveyor Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
+        INDEXER_CONVEYOR_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyor Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
      
     /**
@@ -205,7 +205,7 @@ public class Indexer extends SnailSubsystem {
     }
 
     /**
-    * Move the the conveyer to the next position
+    * Move the the conveyor to the next position
     */
     public void advance() {
         setCurrentPIDSetpoint(INDEXER_ADVANCE_SETPOINT);

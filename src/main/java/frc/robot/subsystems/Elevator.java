@@ -13,12 +13,12 @@ import static frc.robot.Constants.*;
 
 public class Elevator extends SnailSubsystem {
   
-    private CANSparkMax motor;
-    private CANSparkMax followerMotor;
-    private CANPIDController elevatorPID;
-    private CANEncoder encoder;
+    private final CANSparkMax motor;
+    private final CANSparkMax followerMotor;
+    private final CANPIDController elevatorPID;
+    private final CANEncoder encoder;
 
-    private Servo servo;
+    private final Servo servo;
 
     private double currentPIDSetpoint;
 

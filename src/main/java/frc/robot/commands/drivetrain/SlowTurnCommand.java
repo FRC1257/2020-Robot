@@ -5,7 +5,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class SlowTurnCommand extends InstantCommand {
 
-    private Drivetrain drivetrain;
+    private final Drivetrain drivetrain;
 
     public SlowTurnCommand(Drivetrain drivetrain) {
         // Use addRequirements() here to declare subsystem dependencies.

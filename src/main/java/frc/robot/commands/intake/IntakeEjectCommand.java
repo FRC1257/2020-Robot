@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
 /**
- * Ejects the powercells from the robot
+ * Ejects the power cells from the robot
  */
 public class IntakeEjectCommand extends CommandBase {
 

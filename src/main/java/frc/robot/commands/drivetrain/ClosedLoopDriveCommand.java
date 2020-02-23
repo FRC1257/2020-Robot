@@ -5,6 +5,8 @@ import frc.robot.subsystems.Drivetrain;
 
 import java.util.function.DoubleSupplier;
 
+import static frc.robot.Constants.*;
+
 public class ClosedLoopDriveCommand extends CommandBase {
 
     private final Drivetrain drivetrain;
@@ -28,7 +30,8 @@ public class ClosedLoopDriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        drivetrain.closedLoopDrive(forwardSupplier.getAsDouble(), turnSupplier.getAsDouble());
+        drivetrain.closedLoopDrive(forwardSupplier.getAsDouble() * DRIVE_MAX_VEL,
+                turnSupplier.getAsDouble()* DRIVE_MAX_ROT);
     }
 
     // Called once the command ends or is interrupted.
