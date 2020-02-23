@@ -9,6 +9,7 @@ public class ShooterNeutralCommand extends CommandBase {
 
     public ShooterNeutralCommand(Shooter shooter) {
         this.shooter = shooter;
+
         addRequirements(shooter);
     }
 

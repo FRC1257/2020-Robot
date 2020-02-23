@@ -11,7 +11,8 @@ public class IntakeEjectCommand extends CommandBase {
     private final Intake intake;
 
     public IntakeEjectCommand(Intake intake) {
-        this.intake = intake;        
+        this.intake = intake;
+
         addRequirements(intake);
     }
 

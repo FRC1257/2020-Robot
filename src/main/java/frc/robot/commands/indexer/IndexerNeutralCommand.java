@@ -11,7 +11,8 @@ public class IndexerNeutralCommand extends CommandBase {
     private final Indexer indexer;
 
     public IndexerNeutralCommand(Indexer indexer) {
-        this.indexer = indexer;        
+        this.indexer = indexer;
+
         addRequirements(indexer);
     }
 

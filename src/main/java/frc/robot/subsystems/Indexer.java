@@ -127,8 +127,8 @@ public class Indexer extends SnailSubsystem {
         SmartDashboard.putNumber("Indexer PID Setpoint", currentPIDSetpoint);
         SmartDashboard.putNumber("Indexer Encoder", getEncoderValue());
 
-        SmartDashboard.putNumber("Indexer Top Conveyor Current", conveyorMotorFront.getOutputCurrent());
-        SmartDashboard.putNumber("Indexer Bottom Conveyor Current", conveyorMotorBack.getOutputCurrent());
+        SmartDashboard.putNumber("Indexer Front Conveyor Current", conveyorMotorFront.getOutputCurrent());
+        SmartDashboard.putNumber("Indexer Back Conveyor Current", conveyorMotorBack.getOutputCurrent());
         SmartDashboard.putNumber("Indexer Stop Motor Current", stopMotor.getOutputCurrent());
     }
 
@@ -203,13 +203,6 @@ public class Indexer extends SnailSubsystem {
         currentPIDSetpoint = value;
         state = State.PID;
     }
-
-    /**
-    * Move the the conveyor to the next position
-    */
-    public void advance() {
-        setCurrentPIDSetpoint(INDEXER_ADVANCE_SETPOINT);
-    }
     
     /**
     * Changes state to neutral
@@ -219,7 +212,7 @@ public class Indexer extends SnailSubsystem {
     }
 
     /**
-    * Changes state to shoot
+    * Changes state to shooting
     */
     public void shoot() {
         state = State.SHOOTING;
@@ -237,6 +230,13 @@ public class Indexer extends SnailSubsystem {
     */
     public void raise() {
         state = State.RAISING;
+    }
+
+    /**
+     * Move the the conveyor to the next position
+     */
+    public void advance() {
+        setCurrentPIDSetpoint(INDEXER_ADVANCE_SETPOINT);
     }
 
     /**

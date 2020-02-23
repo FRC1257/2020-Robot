@@ -15,7 +15,7 @@ public class ManualDriveCommand extends CommandBase {
         this.drivetrain = drivetrain;
         this.forwardSupplier = forwardSupplier;
         this.turnSupplier = turnSupplier;
-        // Use addRequirements() here to declare subsystem dependencies.
+
         addRequirements(drivetrain);
     }
 

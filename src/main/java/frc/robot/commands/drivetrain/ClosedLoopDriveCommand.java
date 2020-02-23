@@ -5,7 +5,8 @@ import frc.robot.subsystems.Drivetrain;
 
 import java.util.function.DoubleSupplier;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.DRIVE_MAX_ROT;
+import static frc.robot.Constants.DRIVE_MAX_VEL;
 
 public class ClosedLoopDriveCommand extends CommandBase {
 
@@ -17,7 +18,7 @@ public class ClosedLoopDriveCommand extends CommandBase {
         this.drivetrain = drivetrain;
         this.forwardSupplier = forwardSupplier;
         this.turnSupplier = turnSupplier;
-        // Use addRequirements() here to declare subsystem dependencies.
+
         addRequirements(drivetrain);
     }
 

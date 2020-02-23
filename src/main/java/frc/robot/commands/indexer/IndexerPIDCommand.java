@@ -13,7 +13,8 @@ public class IndexerPIDCommand extends CommandBase {
     private final Indexer indexer;
 
     public IndexerPIDCommand(Indexer indexer) {
-        this.indexer = indexer;        
+        this.indexer = indexer;
+
         addRequirements(indexer);
     }
 

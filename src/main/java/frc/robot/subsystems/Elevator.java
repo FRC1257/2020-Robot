@@ -90,6 +90,21 @@ public class Elevator extends SnailSubsystem {
         
         speed = 0;
     }
+
+    public void setElevatorSpeed(double speed) {
+        this.speed = speed;
+        state = State.MANUAL;
+    }
+
+    public void raise() {
+        encoder.setPosition(0);
+        currentPIDSetpoint = ELEVATOR_SETPOINT;
+        state = State.PID;
+    }
+
+    public void toggleLock() {
+        locked = !locked;
+    }
    
     @Override 
     public void outputValues() {
@@ -119,20 +134,5 @@ public class Elevator extends SnailSubsystem {
             ELEVATOR_PID[2] = SmartDashboard.getNumber( "Elevator PID kD", ELEVATOR_PID[2]);
             elevatorPID.setD(ELEVATOR_PID[2]);
         }
-    }
-    
-    public void toggleLock() {
-        locked = !locked;
-    }
-
-    public void setElevatorSpeed(double speed) {
-        this.speed = speed;
-        state = State.MANUAL;
-    }
-
-    public void raise() {
-        encoder.setPosition(0);
-        currentPIDSetpoint = ELEVATOR_SETPOINT;
-        state = State.PID;
     }
 }

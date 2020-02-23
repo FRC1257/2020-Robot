@@ -8,7 +8,6 @@ public class ToggleElevatorLockCommand extends InstantCommand {
     public final Elevator elevator;
 
     public ToggleElevatorLockCommand(Elevator elevator) {
-        // Use addRequirements() here to declare subsystem dependencies.
         this.elevator = elevator;
         
         addRequirements(elevator);

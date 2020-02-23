@@ -9,8 +9,10 @@ import frc.robot.subsystems.Intake;
 public class IntakeNeutralCommand extends CommandBase {
 
     private final Intake intake;
+
     public IntakeNeutralCommand(Intake intake) {
         this.intake = intake;
+
         addRequirements(intake);
     }
 

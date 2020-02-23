@@ -9,6 +9,7 @@ public class IntakeReleaseCommand extends CommandBase {
     
     public IntakeReleaseCommand(Intake intake) {
         this.intake = intake;
+
         addRequirements(intake);
     }
 

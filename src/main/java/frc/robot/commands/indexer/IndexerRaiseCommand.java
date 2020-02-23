@@ -11,7 +11,8 @@ public class IndexerRaiseCommand extends CommandBase {
     private final Indexer indexer;
 
     public IndexerRaiseCommand(Indexer indexer) {
-        this.indexer = indexer;        
+        this.indexer = indexer;
+
         addRequirements(indexer);
     }
 

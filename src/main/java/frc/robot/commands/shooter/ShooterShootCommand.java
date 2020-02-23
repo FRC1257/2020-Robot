@@ -9,6 +9,7 @@ public class ShooterShootCommand extends CommandBase {
 
     public ShooterShootCommand(Shooter shooter) {
         this.shooter = shooter;
+
         addRequirements(shooter);
     }
 
@@ -19,7 +20,7 @@ public class ShooterShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        shooter.shooting();
+        shooter.openLoopShooting();
     }
 
     @Override

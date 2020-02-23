@@ -9,6 +9,7 @@ public class ShooterPIDCommand extends CommandBase {
 
     public ShooterPIDCommand(Shooter shooter) {
         this.shooter = shooter;
+
         addRequirements(shooter);
     }
 
@@ -19,7 +20,7 @@ public class ShooterPIDCommand extends CommandBase {
 
     @Override
     public void execute() {
-        shooter.pid();
+        shooter.velocityPIDShooting();
     }
 
     @Override

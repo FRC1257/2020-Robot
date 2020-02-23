@@ -12,7 +12,7 @@ public class DriveDistanceCommand extends CommandBase {
     public DriveDistanceCommand(Drivetrain drivetrain, double dist) {
         this.drivetrain = drivetrain;
         this.dist = dist;
-        // Use addRequirements() here to declare subsystem dependencies.
+
         addRequirements(drivetrain);
     }
 

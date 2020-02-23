@@ -20,8 +20,8 @@ public class Shooter extends SnailSubsystem {
     
     public enum State {
         NEUTRAL,
-        SHOOTING,
-        PID
+        OPEN_LOOP,
+        VEL_PID
     }
     private State state = State.NEUTRAL;
 
@@ -35,7 +35,7 @@ public class Shooter extends SnailSubsystem {
         followerMotor.restoreFactoryDefaults();
         followerMotor.setIdleMode(IdleMode.kCoast);
         followerMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
-        // followerMotor.follow(shooterMotor, true); // follow with inverted
+        followerMotor.follow(shooterMotor, true); // follow with inverted
 
         shooterPID = shooterMotor.getPIDController();
         shooterEncoder = shooterMotor.getEncoder();
@@ -45,13 +45,13 @@ public class Shooter extends SnailSubsystem {
     public void periodic() {
         switch(state) {
             case NEUTRAL:
-                shooterMotor.set(NEUTRAL_SHOOTER_MOTOR_SPEED);
+                shooterMotor.set(SHOOTER_NEUTRAL_SPEED);
                 break;
-            case SHOOTING:
-                shooterMotor.set(SHOOTING_SHOOTER_MOTOR_SPEED);
+            case OPEN_LOOP:
+                shooterMotor.set(SHOOTER_OPEN_LOOP_SPEED);
                 break;
-            case PID:
-                shooterPID.setReference(SHOOTER_SETPOINT, ControlType.kVelocity);
+            case VEL_PID:
+                shooterPID.setReference(SHOOTER_VEL_SETPOINT, ControlType.kVelocity);
                 break;
         }
     }
@@ -60,12 +60,12 @@ public class Shooter extends SnailSubsystem {
         state = State.NEUTRAL;
     }
 
-    public void shooting() {
-        state = State.SHOOTING;
+    public void openLoopShooting() {
+        state = State.OPEN_LOOP;
     }
 
-    public void pid() {
-        state = State.PID;
+    public void velocityPIDShooting() {
+        state = State.VEL_PID;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Shooter extends SnailSubsystem {
         SmartDashboard.putNumber("Shooter Encoder Pos", shooterEncoder.getPosition());
         SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
 
-        boolean inTolerance = (SHOOTER_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_SETPOINT < 0.03;
+        boolean inTolerance = (SHOOTER_VEL_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_VEL_SETPOINT < 0.03;
         SmartDashboard.putBoolean("Shooter Ready", inTolerance);
 
         SmartDashboard.putNumber("Shooter Primary Output", shooterMotor.getAppliedOutput());
@@ -84,17 +84,17 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Shooter Shooting Speed", SHOOTING_SHOOTER_MOTOR_SPEED);
         SmartDashboard.putNumber("Shooter PID kP", SHOOTER_PIDF[0]);
         SmartDashboard.putNumber("Shooter PID kI", SHOOTER_PIDF[1]);
         SmartDashboard.putNumber("Shooter PID kD", SHOOTER_PIDF[2]);
         SmartDashboard.putNumber("Shooter PID kFF", SHOOTER_PIDF[3]);
-        SmartDashboard.putNumber("Shooter PID Setpoint", SHOOTER_SETPOINT);
+
+        SmartDashboard.putNumber("Shooter Open Loop Speed", SHOOTER_OPEN_LOOP_SPEED);
+        SmartDashboard.putNumber("Shooter Vel PID Setpoint", SHOOTER_VEL_SETPOINT);
     }
 
     @Override
     public void getConstantTuning() {
-        SHOOTING_SHOOTER_MOTOR_SPEED = SmartDashboard.getNumber("Shooter Shooting Speed", SHOOTING_SHOOTER_MOTOR_SPEED);
         if (shooterPID.getP() != SmartDashboard.getNumber("Shooter PID kP", 0)) {
             shooterPID.setP(SmartDashboard.getNumber("Shooter PID kP", 0));
         }
@@ -108,6 +108,7 @@ public class Shooter extends SnailSubsystem {
             shooterPID.setFF(SmartDashboard.getNumber("Shooter PID kFF", 0));
         }
 
-        SHOOTER_SETPOINT = SmartDashboard.getNumber("Shooter PID Setpoint", SHOOTER_SETPOINT);
+        SHOOTER_OPEN_LOOP_SPEED = SmartDashboard.getNumber("Shooter Open Loop Speed", SHOOTER_OPEN_LOOP_SPEED);
+        SHOOTER_VEL_SETPOINT = SmartDashboard.getNumber("Shooter Vel PID Setpoint", SHOOTER_VEL_SETPOINT);
     }
 }

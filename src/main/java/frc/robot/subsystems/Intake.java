@@ -27,7 +27,6 @@ public class Intake extends SnailSubsystem {
      * 
      * EJECTING - THe power cells are ejected from the intake and taken out of the robot's control
      */
-
     public enum State {
         NEUTRAL,
         INTAKING,
