@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.Timer;
 
 import static frc.robot.Constants.*;
 
@@ -24,10 +23,8 @@ public class Elevator extends SnailSubsystem {
     private final Servo servo;
 
     private ElevatorFeedforward feedforward;
-    private TrapezoidProfile profile;
-    private Timer profileTimer;
 
-    private double currentPIDSetpoint;
+    private double setpoint;
 
     public enum State {
         MANUAL,
@@ -59,9 +56,15 @@ public class Elevator extends SnailSubsystem {
         encoder.setVelocityConversionFactor(ELEVATOR_CONV_FACTOR / 60.0);
 
         elevatorPID = motor.getPIDController();
-        elevatorPID.setP(ELEVATOR_PID[0]);
-        elevatorPID.setI(ELEVATOR_PID[1]);
-        elevatorPID.setD(ELEVATOR_PID[2]);
+        elevatorPID.setP(ELEVATOR_PID[0], ELEVATOR_PID_SLOT_POS);
+        elevatorPID.setI(ELEVATOR_PID[1], ELEVATOR_PID_SLOT_POS);
+        elevatorPID.setD(ELEVATOR_PID[2], ELEVATOR_PID_SLOT_POS);
+
+        elevatorPID.setP(ELEVATOR_VEL_PIF[0], ELEVATOR_PID_SLOT_VEL);
+        elevatorPID.setI(ELEVATOR_VEL_PIF[1], ELEVATOR_PID_SLOT_VEL);
+        elevatorPID.setFF(ELEVATOR_VEL_PIF[2], ELEVATOR_PID_SLOT_VEL);
+        elevatorPID.setSmartMotionMaxVelocity(ELEVATOR_MAX_SPEED, ELEVATOR_PID_SLOT_VEL);
+        elevatorPID.setSmartMotionMaxAccel(ELEVATOR_MAX_ACC, ELEVATOR_PID_SLOT_VEL);
 
         servo = new Servo(ELEVATOR_BRAKE_SERVO_ID);
 
@@ -73,7 +76,7 @@ public class Elevator extends SnailSubsystem {
     private void reset() {
         speed = 0;
         encoder.setPosition(0);
-        currentPIDSetpoint = -1257;
+        setpoint = -1257;
         locked = false;
     }
 
@@ -83,41 +86,28 @@ public class Elevator extends SnailSubsystem {
             switch(state) {
                 case MANUAL:
                     motor.set(speed);
+                    setpoint = -1257;
                     break;
                 case PID:
-                    if (currentPIDSetpoint == -1257.0) {
+                    if (setpoint == -1257.0) {
                         break;
                     }
 
-                    elevatorPID.setReference(currentPIDSetpoint, ControlType.kPosition);
-
-                    if (Math.abs(encoder.getPosition() - currentPIDSetpoint) < ELEVATOR_PID_TOLERANCE) {
-                        state = State.MANUAL;
-                    }
+                    elevatorPID.setReference(setpoint, ControlType.kPosition, ELEVATOR_PID_SLOT_POS);
+                    setpoint = -1257;
                     break;
                 case CLOSED_LOOP:
-                    double error = speed - encoder.getVelocity();
-                    motor.setVoltage(error * ELEVATOR_VEL_PID_KP + feedforward.calculate(speed));
+                    elevatorPID.setReference(speed, ControlType.kVelocity, ELEVATOR_PID_SLOT_VEL,
+                            feedforward.calculate(0), CANPIDController.ArbFFUnits.kVoltage);
                     break;
                 case PROFILED:
-                    if (profile == null) {
+                    if (setpoint == -1257) {
                         state = defaultState;
                         break;
                     }
-                    TrapezoidProfile.State currentStateProf = profile.calculate(profileTimer.get());
 
-                    double positionError = currentStateProf.position - encoder.getPosition();
-                    double velocityError = currentStateProf.velocity - encoder.getVelocity();
-
-                    motor.setVoltage(velocityError * ELEVATOR_VEL_PID_KP + 
-                        feedforward.calculate(currentStateProf.velocity) + 
-                        positionError * ELEVATOR_PROFILE_POS_KP);
-
-                    if (profile.isFinished(profileTimer.get())) {
-                        state = defaultState;
-                        profileTimer.stop();
-                        profile = null;
-                    }
+                    elevatorPID.setReference(setpoint, ControlType.kSmartMotion, ELEVATOR_PID_SLOT_VEL,
+                            feedforward.calculate(0), CANPIDController.ArbFFUnits.kVoltage);
                     break;
             }
             servo.set(0.0);
@@ -145,18 +135,13 @@ public class Elevator extends SnailSubsystem {
 
     public void raise() {
         encoder.setPosition(0);
-        currentPIDSetpoint = ELEVATOR_SETPOINT;
+        setpoint = ELEVATOR_SETPOINT;
         state = State.PID;
     }
 
     public void raiseProfiled() {
         encoder.setPosition(0);
-        profile = new TrapezoidProfile(
-            new TrapezoidProfile.Constraints(DRIVE_PROFILE_MAX_VEL, DRIVE_PROFILE_MAX_ACC),
-            new TrapezoidProfile.State(ELEVATOR_SETPOINT, 0),
-            new TrapezoidProfile.State(0, 0));
-        profileTimer.reset();
-        profileTimer.start();
+        setpoint = ELEVATOR_SETPOINT;
         state = State.PROFILED;
     }
    
@@ -174,24 +159,43 @@ public class Elevator extends SnailSubsystem {
         SmartDashboard.putNumber("Elevator PID kI", ELEVATOR_PID[1]);
         SmartDashboard.putNumber("Elevator PID kD", ELEVATOR_PID[2]);
 
-        SmartDashboard.putNumber("Elevator Vel kP", ELEVATOR_VEL_PID_KP);
+        SmartDashboard.putNumber("Elevator Vel kP", ELEVATOR_VEL_PIF[0]);
+        SmartDashboard.putNumber("Elevator Vel kI", ELEVATOR_VEL_PIF[1]);
+        SmartDashboard.putNumber("Elevator Vel kFF", ELEVATOR_VEL_PIF[2]);
+
+        SmartDashboard.putNumber("Elevator PID Setpoint", ELEVATOR_SETPOINT);
     }
 
     @Override
     public void getConstantTuning() {
-        if (elevatorPID.getP() != SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0])) {
-            ELEVATOR_PID[0] = SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0]);
-            elevatorPID.setP(ELEVATOR_PID[0]);
+        ELEVATOR_PID[0] = SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0]);
+        ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1]);
+        ELEVATOR_PID[2] = SmartDashboard.getNumber("Elevator PID kD", ELEVATOR_PID[2]);
+
+        ELEVATOR_VEL_PIF[0] = SmartDashboard.getNumber("Elevator Vel kP", ELEVATOR_VEL_PIF[0]);
+        ELEVATOR_VEL_PIF[1] = SmartDashboard.getNumber("Elevator Vel kI", ELEVATOR_VEL_PIF[1]);
+        ELEVATOR_VEL_PIF[2] = SmartDashboard.getNumber("Elevator Vel kFF", ELEVATOR_VEL_PIF[2]);
+
+        ELEVATOR_SETPOINT = SmartDashboard.getNumber("Elevator PID Setpoint", ELEVATOR_SETPOINT);
+
+        if (elevatorPID.getP(ELEVATOR_PID_SLOT_POS) != ELEVATOR_PID[0]) {
+            elevatorPID.setP(ELEVATOR_PID[0], ELEVATOR_PID_SLOT_POS);
         }
-        if (elevatorPID.getI() != SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1])) {
-            ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1]);
-            elevatorPID.setI(ELEVATOR_PID[1]);
+        if (elevatorPID.getI(ELEVATOR_PID_SLOT_POS) != ELEVATOR_PID[1]) {
+            elevatorPID.setI(ELEVATOR_PID[1], ELEVATOR_PID_SLOT_POS);
         }
-        if (elevatorPID.getD() != SmartDashboard.getNumber("Elevator PID kD", ELEVATOR_PID[2])) {
-            ELEVATOR_PID[2] = SmartDashboard.getNumber( "Elevator PID kD", ELEVATOR_PID[2]);
-            elevatorPID.setD(ELEVATOR_PID[2]);
+        if (elevatorPID.getD(ELEVATOR_PID_SLOT_POS) != ELEVATOR_PID[2]) {
+            elevatorPID.setD(ELEVATOR_PID[2], ELEVATOR_PID_SLOT_POS);
         }
 
-        ELEVATOR_VEL_PID_KP = SmartDashboard.getNumber("Elevator Vel kP", ELEVATOR_VEL_PID_KP);
+        if (elevatorPID.getP(ELEVATOR_PID_SLOT_VEL) != ELEVATOR_VEL_PIF[0]) {
+            elevatorPID.setP(ELEVATOR_VEL_PIF[0], ELEVATOR_PID_SLOT_VEL);
+        }
+        if (elevatorPID.getI(ELEVATOR_PID_SLOT_VEL) != ELEVATOR_VEL_PIF[1]) {
+            elevatorPID.setI(ELEVATOR_VEL_PIF[1], ELEVATOR_PID_SLOT_VEL);
+        }
+        if (elevatorPID.getFF(ELEVATOR_PID_SLOT_VEL) != ELEVATOR_VEL_PIF[2]) {
+            elevatorPID.setFF(ELEVATOR_VEL_PIF[2], ELEVATOR_PID_SLOT_VEL);
+        }
     }
 }
