@@ -1,9 +1,9 @@
 package frc.robot.util;
 
-import com.kauailabs.navx.frc.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Wrapper class for the navX-MXP and ADXRS450_Gyro
@@ -15,11 +15,11 @@ public class Gyro {
 
     private static Gyro instance = null;
 
-    private AHRS navx;
+    private final AHRS navx;
     private double resetRoll;
     private double resetPitch;
 
-    private ADXRS450_Gyro gyro;
+    private final ADXRS450_Gyro gyro;
 
     private Gyro() {
         navx = new AHRS(Port.kMXP);

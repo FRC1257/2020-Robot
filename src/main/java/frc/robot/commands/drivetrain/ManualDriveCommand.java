@@ -1,23 +1,21 @@
 package frc.robot.commands.drivetrain;
 
-import static frc.robot.util.MathUtils.applyDeadband;
-
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+
+import java.util.function.DoubleSupplier;
 
 public class ManualDriveCommand extends CommandBase {
 
     private final Drivetrain drivetrain;
-    private final XboxController controller;
-    private double speedForward;
-    private double speedTurn;
+    private final DoubleSupplier forwardSupplier;
+    private final DoubleSupplier turnSupplier;
 
-    public ManualDriveCommand(Drivetrain drivetrain, XboxController controller) {
+    public ManualDriveCommand(Drivetrain drivetrain, DoubleSupplier forwardSupplier, DoubleSupplier turnSupplier) {
         this.drivetrain = drivetrain;
-        this.controller = controller;
-        // Use addRequirements() here to declare subsystem dependencies.
+        this.forwardSupplier = forwardSupplier;
+        this.turnSupplier = turnSupplier;
+
         addRequirements(drivetrain);
     }
 
@@ -30,18 +28,7 @@ public class ManualDriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (controller.getAButton()) {
-            speedForward = -applyDeadband(controller.getY(Hand.kLeft));
-            speedTurn = applyDeadband(controller.getX(Hand.kLeft));
-        } else if (controller.getBumper(Hand.kRight)) {
-            speedForward = -applyDeadband(controller.getY(Hand.kRight));
-            speedTurn = applyDeadband(controller.getX(Hand.kLeft));
-        } else if (controller.getBumper(Hand.kLeft)) {
-            speedForward = -applyDeadband(controller.getY(Hand.kLeft));
-            speedTurn = applyDeadband(controller.getX(Hand.kRight));
-        }
-
-        drivetrain.manualDrive(speedForward, speedTurn);
+        drivetrain.manualDrive(forwardSupplier.getAsDouble(), turnSupplier.getAsDouble());
     }
 
     // Called once the command ends or is interrupted.

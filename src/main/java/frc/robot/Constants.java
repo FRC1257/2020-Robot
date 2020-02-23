@@ -22,13 +22,13 @@ public final class Constants {
     public static double INDEXER_DUMP_TIME = 2.0; // seconds
     public static double SERVO_RELEASE_TIME = 5.0; // seconds
 
-    public static enum AutoPosition {
+    public enum AutoPosition {
         TOP, 
         MIDDLE,
         BOTTOM
     }
 
-    public static enum AutoGoal {
+    public enum AutoGoal {
         DEFAULT,
         TRENCH,
         GEN_BOTTOM,
@@ -39,8 +39,8 @@ public final class Constants {
     public final static int ELEVATOR_MOTOR_ID = 10;
     public final static int ELEVATOR_FOLLOWER_MOTOR_ID = 13;
     public final static int ELEVATOR_BRAKE_SERVO_ID = 1;
-    public final static double ELEVATOR_BRAKE_POSITION = 1.0;
 
+    public final static double ELEVATOR_BRAKE_POSITION = 1.0;
     public static final double[] ELEVATOR_PID = {0, 0, 0};
     public static final double ELEVATOR_SETPOINT = 100;
     public static final double ELEVATOR_PID_TOLERANCE = 1;
@@ -84,11 +84,12 @@ public final class Constants {
     // Shooter Constants
     public static int SHOOTER_MOTOR_ID = 11;
     public static int SHOOTER_FOLLOWER_MOTOR_ID = 12;
-    public static double NEUTRAL_SHOOTER_MOTOR_SPEED = 0;
-    public static double SHOOTING_SHOOTER_MOTOR_SPEED = 0.8;
+
+    public static double SHOOTER_NEUTRAL_SPEED = 0;
+    public static double SHOOTER_OPEN_LOOP_SPEED = 0.8;
 
     public static double[] SHOOTER_PIDF = {0.000001, 0.0, 0.0, 0.000180};
-    public static double SHOOTER_SETPOINT = 4500;
+    public static double SHOOTER_VEL_SETPOINT = 4500;
 
     // Drivetrain Constants
     public static int DRIVE_FRONT_LEFT = 1;

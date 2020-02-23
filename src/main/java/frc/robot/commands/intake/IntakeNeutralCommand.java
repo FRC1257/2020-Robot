@@ -4,13 +4,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
 /**
- * Keeps all powercells in a constant position
+ * Keeps all power cells in a constant position
  */
 public class IntakeNeutralCommand extends CommandBase {
 
     private final Intake intake;
+
     public IntakeNeutralCommand(Intake intake) {
         this.intake = intake;
+
         addRequirements(intake);
     }
 

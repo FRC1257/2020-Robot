@@ -1,28 +1,27 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.*;
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 
+import static frc.robot.Constants.*;
+
 public class Elevator extends SnailSubsystem {
   
-    private CANSparkMax motor;
-    private CANSparkMax followerMotor;
-    private CANPIDController elevatorPID;
-    private CANEncoder encoder;
+    private final CANSparkMax motor;
+    private final CANSparkMax followerMotor;
+    private final CANPIDController elevatorPID;
+    private final CANEncoder encoder;
 
-    private Servo servo;
+    private final Servo servo;
 
     private ElevatorFeedforward feedforward;
     private TrapezoidProfile profile;
@@ -129,6 +128,37 @@ public class Elevator extends SnailSubsystem {
         
         speed = 0;
     }
+    
+    public void toggleLock() {
+        locked = !locked;
+    }
+
+    public void setElevatorSpeed(double speed) {
+        this.speed = speed;
+        state = State.MANUAL;
+    }
+
+    public void setElevatorSpeedClosedLoop(double speed) {
+        this.speed = speed;
+        state = State.CLOSED_LOOP;
+    }
+
+    public void raise() {
+        encoder.setPosition(0);
+        currentPIDSetpoint = ELEVATOR_SETPOINT;
+        state = State.PID;
+    }
+
+    public void raiseProfiled() {
+        encoder.setPosition(0);
+        profile = new TrapezoidProfile(
+            new TrapezoidProfile.Constraints(DRIVE_PROFILE_MAX_VEL, DRIVE_PROFILE_MAX_ACC),
+            new TrapezoidProfile.State(ELEVATOR_SETPOINT, 0),
+            new TrapezoidProfile.State(0, 0));
+        profileTimer.reset();
+        profileTimer.start();
+        state = State.PROFILED;
+    }
    
     @Override 
     public void outputValues() {
@@ -163,36 +193,5 @@ public class Elevator extends SnailSubsystem {
         }
 
         ELEVATOR_VEL_PID_KP = SmartDashboard.getNumber("Elevator Vel kP", ELEVATOR_VEL_PID_KP);
-    }
-    
-    public void toggleLock() {
-        locked = !locked;
-    }
-
-    public void setElevatorSpeed(double speed) {
-        this.speed = speed;
-        state = State.MANUAL;
-    }
-
-    public void setElevatorSpeedClosedLoop(double speed) {
-        this.speed = speed;
-        state = State.CLOSED_LOOP;
-    }
-
-    public void raise() {
-        encoder.setPosition(0);
-        currentPIDSetpoint = ELEVATOR_SETPOINT;
-        state = State.PID;
-    }
-
-    public void raiseProfiled() {
-        encoder.setPosition(0);
-        profile = new TrapezoidProfile(
-            new TrapezoidProfile.Constraints(DRIVE_PROFILE_MAX_VEL, DRIVE_PROFILE_MAX_ACC),
-            new TrapezoidProfile.State(ELEVATOR_SETPOINT, 0),
-            new TrapezoidProfile.State(0, 0));
-        profileTimer.reset();
-        profileTimer.start();
-        state = State.PROFILED;
     }
 }

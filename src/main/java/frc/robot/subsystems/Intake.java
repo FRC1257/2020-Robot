@@ -1,12 +1,11 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.*;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static frc.robot.Constants.*;
 
 /**
  * Subsystem to handle the intake mechanism
@@ -16,9 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends SnailSubsystem {
 
-    private CANSparkMax intakeMotor;
+    private final CANSparkMax intakeMotor;
 
-    private Servo intakeReleaseServo;
+    private final Servo intakeReleaseServo;
     private boolean isReleased;
 
     /**
@@ -28,7 +27,6 @@ public class Intake extends SnailSubsystem {
      * 
      * EJECTING - THe power cells are ejected from the intake and taken out of the robot's control
      */
-
     public enum State {
         NEUTRAL,
         INTAKING,

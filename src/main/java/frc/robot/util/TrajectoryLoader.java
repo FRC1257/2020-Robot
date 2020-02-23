@@ -1,10 +1,5 @@
 package frc.robot.util;
 
-import static frc.robot.Constants.*;
-
-import java.io.IOException;
-import java.nio.file.Path;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -13,6 +8,11 @@ import edu.wpi.first.wpilibj.geometry.Transform2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+
+import java.io.IOException;
+import java.nio.file.Path;
+
+import static frc.robot.Constants.PI;
 
 public class TrajectoryLoader {
 

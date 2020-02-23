@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.*;
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -23,30 +21,32 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.util.Gyro;
 
+import static frc.robot.Constants.*;
+
 public class Drivetrain extends SnailSubsystem {
   
-    private CANSparkMax frontLeftMotor;
-    private CANSparkMax frontRightMotor;
-    private CANSparkMax backLeftMotor;
-    private CANSparkMax backRightMotor;
+    private final CANSparkMax frontLeftMotor;
+    private final CANSparkMax frontRightMotor;
+    private final CANSparkMax backLeftMotor;
+    private final CANSparkMax backRightMotor;
 
-    private CANEncoder leftEncoder;
-    private CANEncoder rightEncoder;
+    private final CANEncoder leftEncoder;
+    private final CANEncoder rightEncoder;
 
-    private SimpleMotorFeedforward feedforward;
-    private DifferentialDriveKinematics driveKinematics;
-    private DifferentialDriveOdometry driveOdometry;
+    private final SimpleMotorFeedforward feedforward;
+    private final DifferentialDriveKinematics driveKinematics;
+    private final DifferentialDriveOdometry driveOdometry;
 
-    private PIDController distPID;
-    private PIDController anglePID;
+    private final PIDController distPID;
+    private final PIDController anglePID;
     
     private double distSetpoint;
     private double angleSetpoint;
 
     private TrapezoidProfile distProfile;
-    private Timer pathTimer;
+    private final Timer pathTimer;
 
-    private RamseteController ramseteController;
+    private final RamseteController ramseteController;
     private Trajectory trajectory;
     private boolean reversedTrajectory;
 
@@ -58,7 +58,7 @@ public class Drivetrain extends SnailSubsystem {
         PROFILE_DIST,
         RAMSETE
     }
-    private State defaultState = State.MANUAL;
+    private final State defaultState = State.MANUAL;
     private State state = defaultState;
 
     private double speedForward;

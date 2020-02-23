@@ -14,7 +14,7 @@ public class DriveTrajectoryCommand extends CommandBase {
         this.drivetrain = drivetrain;
         this.trajectory = trajectory;
         this.reversed = reversed;
-        // Use addRequirements() here to declare subsystem dependencies.
+
         addRequirements(drivetrain);
     }
 
