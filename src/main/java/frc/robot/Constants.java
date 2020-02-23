@@ -42,14 +42,16 @@ public final class Constants {
 
     public static double ELEVATOR_SETPOINT = 100;
     public final static double ELEVATOR_BRAKE_POSITION = 1.0;
+    public final static double ELEVATOR_MAX_HEIGHT = 105;
     
     public static double ELEVATOR_KS = 0.0;
     public static double ELEVATOR_KG = 0.0;
     public static double ELEVATOR_KV = 0.0;
     public static double ELEVATOR_KA = 0.0;
 
-    public static double ELEVATOR_MAX_SPEED = 1.0; // u/s
-    public static double ELEVATOR_MAX_ACC = 1.0; // u/s^2
+    public static double ELEVATOR_MAX_VEL = 1.0; // u/s
+    public static double ELEVATOR_PROFILE_MAX_VEL = 1.0; // u/s
+    public static double ELEVATOR_PROFILE_MAX_ACC = 1.0; // u/s^2
     public static double ELEVATOR_CONV_FACTOR = 1 / 20.0;
 
     public static final int ELEVATOR_PID_SLOT_POS = 0;

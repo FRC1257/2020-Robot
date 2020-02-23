@@ -1,20 +1,20 @@
 package frc.robot.commands.elevator;
 
-import static frc.robot.Constants.*;
-
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
+
+import java.util.function.DoubleSupplier;
+
+import static frc.robot.Constants.ELEVATOR_MAX_VEL;
 
 public class ClosedLoopElevatorCommand extends CommandBase {
 
     private Elevator elevator;
-    private XboxController controller;
+    private DoubleSupplier speedSupplier;
 
-    public ClosedLoopElevatorCommand(Elevator elevator, XboxController controller) {
+    public ClosedLoopElevatorCommand(Elevator elevator, DoubleSupplier speedSupplier) {
         this.elevator = elevator;
-        this.controller = controller;
+        this.speedSupplier = speedSupplier;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class ClosedLoopElevatorCommand extends CommandBase {
 
     @Override
     public void execute() {
-        elevator.setElevatorSpeedClosedLoop((controller.getY(Hand.kLeft)) * ELEVATOR_VEL_PID_KP);
+        elevator.setElevatorSpeedClosedLoop(speedSupplier.getAsDouble() * ELEVATOR_MAX_VEL);
     }
 
     @Override

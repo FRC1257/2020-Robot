@@ -9,7 +9,6 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 
 import static frc.robot.Constants.*;
 
@@ -63,8 +62,8 @@ public class Elevator extends SnailSubsystem {
         elevatorPID.setP(ELEVATOR_VEL_PIF[0], ELEVATOR_PID_SLOT_VEL);
         elevatorPID.setI(ELEVATOR_VEL_PIF[1], ELEVATOR_PID_SLOT_VEL);
         elevatorPID.setFF(ELEVATOR_VEL_PIF[2], ELEVATOR_PID_SLOT_VEL);
-        elevatorPID.setSmartMotionMaxVelocity(ELEVATOR_MAX_SPEED, ELEVATOR_PID_SLOT_VEL);
-        elevatorPID.setSmartMotionMaxAccel(ELEVATOR_MAX_ACC, ELEVATOR_PID_SLOT_VEL);
+        elevatorPID.setSmartMotionMaxVelocity(ELEVATOR_PROFILE_MAX_VEL, ELEVATOR_PID_SLOT_VEL);
+        elevatorPID.setSmartMotionMaxAccel(ELEVATOR_PROFILE_MAX_ACC, ELEVATOR_PID_SLOT_VEL);
 
         servo = new Servo(ELEVATOR_BRAKE_SERVO_ID);
 
@@ -83,6 +82,13 @@ public class Elevator extends SnailSubsystem {
     @Override
     public void periodic() {
         if (!locked) {
+            if (speed > 0 && encoder.getPosition() >= ELEVATOR_MAX_HEIGHT) {
+                speed = 0;
+            }
+            if (speed < 0 && encoder.getPosition() <= 0) {
+                speed = 0;
+            }
+
             switch(state) {
                 case MANUAL:
                     motor.set(speed);
