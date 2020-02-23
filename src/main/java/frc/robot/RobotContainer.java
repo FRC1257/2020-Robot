@@ -2,17 +2,15 @@ package frc.robot;
 
 import static frc.robot.Constants.*;
 import java.util.ArrayList;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Gyro;
-import frc.robot.util.XboxTrigger;
+import frc.robot.util.SnailController;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.intake.*;
@@ -29,8 +27,8 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
 
-    private final XboxController driveController;
-    private final XboxController operatorController;
+    private final SnailController driveController;
+    private final SnailController operatorController;
     
     private ArrayList<SnailSubsystem> subsystems;
     private final Drivetrain drivetrain;
@@ -48,8 +46,8 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        driveController = new XboxController(CONTROLLER_DRIVER_ID);
-        operatorController = new XboxController(CONTROLLER_OPERATOR_ID);
+        driveController = new SnailController(CONTROLLER_DRIVER_ID);
+        operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
 
         intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
@@ -58,13 +56,14 @@ public class RobotContainer {
         indexer.setDefaultCommand(new IndexerNeutralCommand(indexer));
 
         elevator = new Elevator();
-        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController));
+        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY));
 
         shooter = new Shooter();
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));
         
         drivetrain = new Drivetrain();
-        drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController));
+        drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward,
+            driveController::getDriveTurn));
         
         subsystems = new ArrayList<SnailSubsystem>();
         subsystems.add(intake);
@@ -83,28 +82,28 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Drivetrain Bindings
-        (new JoystickButton(driveController, XboxController.Button.kY.value)).whenPressed(new ReverseDriveCommand(drivetrain));
-        (new JoystickButton(driveController, XboxController.Button.kStart.value)).whenPressed(new SlowTurnCommand(drivetrain));
-        (new JoystickButton(driveController, XboxController.Button.kB.value)).whileActiveOnce(new TurnAngleCommand(drivetrain, 90));
-        (new JoystickButton(driveController, XboxController.Button.kX.value)).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
+        driveController.getButton(Button.kY.value).whenPressed(new ReverseDriveCommand(drivetrain));
+        driveController.getButton(Button.kStart.value).whenPressed(new SlowTurnCommand(drivetrain));
+        driveController.getButton(Button.kB.value).whileActiveOnce(new TurnAngleCommand(drivetrain, 90));
+        driveController.getButton(Button.kX.value).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
 
         // Intake Bindings
-        (new JoystickButton(operatorController, Button.kA.value)).whileActiveOnce(new IntakeEjectCommand(intake));
-        (new JoystickButton(operatorController, Button.kB.value)).whileActiveOnce(new IntakeIntakeCommand(intake));
+        operatorController.getButton(Button.kA.value).whileActiveOnce(new IntakeEjectCommand(intake));
+        operatorController.getButton(Button.kB.value).whileActiveOnce(new IntakeIntakeCommand(intake));
 
         // Indexer Bindings
-        (new JoystickButton(operatorController, Button.kY.value)).whileActiveOnce(new IndexerRaiseCommand(indexer));
-        // (new JoystickButton(operatorController, Button.kY.value)).whenPressed(new IndexerPIDCommand(indexer));
-        (new JoystickButton(operatorController, Button.kX.value)).whileActiveOnce(new IndexerLowerCommand(indexer));
-        (new XboxTrigger(operatorController, Hand.kRight)).whileActiveOnce(new IndexerShootCommand(indexer));
+        operatorController.getButton(Button.kY.value).whileActiveOnce(new IndexerRaiseCommand(indexer));
+        // operatorController.getButton(Button.kY.value).whenPressed(new IndexerPIDCommand(indexer));
+        operatorController.getButton(Button.kX.value).whileActiveOnce(new IndexerLowerCommand(indexer));
+        operatorController.getTrigger(Hand.kRight).whileActiveOnce(new IndexerShootCommand(indexer));
 
-        // // Elevator Bindings
-        (new JoystickButton(operatorController, Button.kX.value)).whileActiveOnce(new ElevatorPIDCommand(elevator));
-        (new JoystickButton(operatorController, Button.kStart.value)).whenPressed(new ToggleElevatorLockCommand(elevator));
+        // Elevator Bindings
+        // operatorController.getButton(Button.kX.value).whileActiveOnce(new ElevatorPIDCommand(elevator));
+        operatorController.getButton(Button.kStart.value).whenPressed(new ToggleElevatorLockCommand(elevator));
 
         // Shooting Bindings
-        (new XboxTrigger(operatorController, Hand.kLeft)).whileActiveOnce(new ShooterShootCommand(shooter));
-        // (new XboxTrigger(operatorController, Hand.kRight)).whileActiveOnce(new ShooterPIDCommand(shooter));
+        operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
+        // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
     }
 
     public Command getAutoCommand() {
@@ -147,11 +146,11 @@ public class RobotContainer {
     }
 
     public void outputValues() {
-        if (outputCounter == subsystems.size()) {
-            Gyro.getInstance().outputValues();
+        if (outputCounter < subsystems.size()) {
+            subsystems.get(outputCounter).outputValues();
         }
         else {
-            subsystems.get(outputCounter).outputValues();
+            Gyro.getInstance().outputValues();
         }
 
         outputCounter = (outputCounter + 1) % (subsystems.size() + 1);

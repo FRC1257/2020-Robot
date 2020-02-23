@@ -1,20 +1,17 @@
 package frc.robot.commands.elevator;
 
-import static frc.robot.util.MathUtils.applyDeadband;
-
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
 public class ManualElevatorCommand extends CommandBase {
 
     private final Elevator elevator;
-    private final XboxController controller;
+    private final DoubleSupplier speedSupplier;
 
-    public ManualElevatorCommand(Elevator elevator, XboxController controller) {
+    public ManualElevatorCommand(Elevator elevator, DoubleSupplier speedSupplier) {
         this.elevator = elevator;
-        this.controller = controller;
+        this.speedSupplier = speedSupplier;
 
         addRequirements(elevator);
     }
@@ -26,7 +23,7 @@ public class ManualElevatorCommand extends CommandBase {
 
     @Override
     public void execute() {
-        elevator.setElevatorSpeed(applyDeadband(-controller.getY(Hand.kLeft)));
+        elevator.setElevatorSpeed(speedSupplier.getAsDouble());
     }
 
     @Override
