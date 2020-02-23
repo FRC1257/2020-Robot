@@ -157,19 +157,10 @@ public class Indexer extends SnailSubsystem {
      */
     @Override
     public void getConstantTuning() {
-        if (conveyorPID.getP() != SmartDashboard.getNumber("Indexer PID kP", INDEXER_PID[0])) {
-            INDEXER_PID[0] = SmartDashboard.getNumber("Indexer PID kP", INDEXER_PID[0]);
-            conveyorPID.setP(INDEXER_PID[0]);
-        }
-        if (conveyorPID.getI() != SmartDashboard.getNumber("Indexer PID kI", INDEXER_PID[1])) {
-            INDEXER_PID[1] = SmartDashboard.getNumber("Indexer PID kI", INDEXER_PID[1]);
-            conveyorPID.setI(INDEXER_PID[1]);
-        }
-        if (conveyorPID.getD() != SmartDashboard.getNumber("Indexer PID kD", INDEXER_PID[2])) {
-            INDEXER_PID[2] = SmartDashboard.getNumber("Indexer PID kD", INDEXER_PID[2]);
-            conveyorPID.setD(INDEXER_PID[2]);
-        }
-        
+        INDEXER_PID[0] = SmartDashboard.getNumber("Indexer PID kP", INDEXER_PID[0]);
+        INDEXER_PID[1] = SmartDashboard.getNumber("Indexer PID kI", INDEXER_PID[1]);
+        INDEXER_PID[2] = SmartDashboard.getNumber("Indexer PID kD", INDEXER_PID[2]);
+
         INDEXER_ADVANCE_SETPOINT = SmartDashboard.getNumber("Indexer Advance Setpoint", INDEXER_ADVANCE_SETPOINT);
 
         INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
@@ -179,7 +170,16 @@ public class Indexer extends SnailSubsystem {
         INDEXER_CONVEYOR_RAISE_SPEED = SmartDashboard.getNumber("Indexer Conveyor Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
         INDEXER_CONVEYOR_LOWER_SPEED = SmartDashboard.getNumber("Indexer Conveyor Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
         INDEXER_CONVEYOR_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyor Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
-    }
+
+        if (conveyorPID.getP() != INDEXER_PID[0]) {
+            conveyorPID.setP(INDEXER_PID[0]);
+        }
+        if (conveyorPID.getP() != INDEXER_PID[0]) {
+            conveyorPID.setP(INDEXER_PID[0]);
+        }
+        if (conveyorPID.getP() != INDEXER_PID[0]) {
+            conveyorPID.setP(INDEXER_PID[0]);
+        }}
      
     /**
      * Gets the position of the encoder

@@ -40,10 +40,24 @@ public final class Constants {
     public final static int ELEVATOR_FOLLOWER_MOTOR_ID = 13;
     public final static int ELEVATOR_BRAKE_SERVO_ID = 1;
 
+    public static double ELEVATOR_SETPOINT = 100;
     public final static double ELEVATOR_BRAKE_POSITION = 1.0;
+    public final static double ELEVATOR_MAX_HEIGHT = 105;
+    
+    public static double ELEVATOR_KS = 0.0;
+    public static double ELEVATOR_KG = 0.0;
+    public static double ELEVATOR_KV = 0.0;
+    public static double ELEVATOR_KA = 0.0;
+
+    public static double ELEVATOR_MAX_VEL = 1.0; // u/s
+    public static double ELEVATOR_PROFILE_MAX_VEL = 1.0; // u/s
+    public static double ELEVATOR_PROFILE_MAX_ACC = 1.0; // u/s^2
+    public static double ELEVATOR_CONV_FACTOR = 1 / 20.0;
+
+    public static final int ELEVATOR_PID_SLOT_POS = 0;
+    public static final int ELEVATOR_PID_SLOT_VEL = 1;
     public static final double[] ELEVATOR_PID = {0, 0, 0};
-    public static final double ELEVATOR_SETPOINT = 100;
-    public static final double ELEVATOR_PID_TOLERANCE = 1;
+    public static final double[] ELEVATOR_VEL_PIF = {0.1, 0.0, 0.001};
 
     // Indexer Constants
     public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 7;
@@ -92,8 +106,11 @@ public final class Constants {
 
     public static double DRIVE_REDUCE_TURNING_CONSTANT = 0.8;
 
+    public static int DRIVE_PID_SLOT_VEL = 0;
     public static double DRIVE_LEFT_VEL_PID_P = 0.1;
+    public static double DRIVE_LEFT_VEL_PID_I = 0.0;
     public static double DRIVE_RIGHT_VEL_PID_P = 0.1;
+    public static double DRIVE_RIGHT_VEL_PID_I = 0.0;
     public static double DRIVE_MAX_VEL = 3.0; // m/s
     public static double DRIVE_MAX_ROT = 1.0; // rad/s
 
