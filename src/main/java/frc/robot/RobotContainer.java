@@ -19,6 +19,7 @@ import frc.robot.commands.indexer.IndexerShootCommand;
 import frc.robot.commands.intake.IntakeEjectCommand;
 import frc.robot.commands.intake.IntakeIntakeCommand;
 import frc.robot.commands.intake.IntakeNeutralCommand;
+import frc.robot.commands.intake.IntakeReleaseCommand;
 import frc.robot.commands.shooter.ShooterNeutralCommand;
 import frc.robot.commands.shooter.ShooterShootCommand;
 import frc.robot.subsystems.*;
@@ -67,7 +68,7 @@ public class RobotContainer {
         indexer.setDefaultCommand(new IndexerNeutralCommand(indexer));
 
         elevator = new Elevator();
-        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY));
+        // elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY));
 
         shooter = new Shooter();
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));
@@ -99,6 +100,7 @@ public class RobotContainer {
         driveController.getButton(Button.kX.value).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
 
         // Intake Bindings
+        operatorController.getButton(Button.kBack.value).whileHeld(new IntakeReleaseCommand(intake));
         operatorController.getButton(Button.kA.value).whileActiveOnce(new IntakeEjectCommand(intake));
         operatorController.getButton(Button.kB.value).whileActiveOnce(new IntakeIntakeCommand(intake));
 
@@ -110,7 +112,7 @@ public class RobotContainer {
 
         // Elevator Bindings
         // operatorController.getButton(Button.kX.value).whileActiveOnce(new ElevatorPIDCommand(elevator));
-        operatorController.getButton(Button.kStart.value).whenPressed(new ToggleElevatorLockCommand(elevator));
+        // operatorController.getButton(Button.kStart.value).whenPressed(new ToggleElevatorLockCommand(elevator));
 
         // Shooting Bindings
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));

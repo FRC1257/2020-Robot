@@ -15,12 +15,12 @@ public class IntakeReleaseCommand extends CommandBase {
 
     @Override
     public void initialize() {
-
+        intake.toggleReleaseIntake();
     }
 
     @Override
     public void execute() {
-        intake.toggleReleaseIntake();
+
     }
 
     @Override
