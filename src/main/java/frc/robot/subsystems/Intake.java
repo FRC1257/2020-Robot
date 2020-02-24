@@ -37,6 +37,7 @@ public class Intake extends SnailSubsystem {
 
     public Intake() {
         intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
+        intakeMotor.restoreFactoryDefaults();
         intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
         intakeReleaseServo = new Servo(INTAKE_SERVO_ID);
         isReleased = false;
