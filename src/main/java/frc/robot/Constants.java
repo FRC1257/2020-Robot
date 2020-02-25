@@ -103,6 +103,7 @@ public final class Constants {
 
     public static double DRIVE_TRACK_WIDTH_M = 1.0; // m
     public static double DRIVE_WHEEL_DIAM_M = 0.1524; // m
+    public static double DRIVE_GEARBOX_REDUCTION = 10.71;
 
     public static double DRIVE_REDUCE_TURNING_CONSTANT = 0.8;
 
@@ -121,9 +122,9 @@ public final class Constants {
     public static double[] DRIVE_ANGLE_PID = {0.1, 0.0, 0.0};
     public static double DRIVE_ANGLE_PID_TOLERANCE = 0.1;
 
-    public static double DRIVE_KS = 0.0;
-    public static double DRIVE_KV = 0.0;
-    public static double DRIVE_KA = 0.0;
+    public static double DRIVE_KS = 0.144;
+    public static double DRIVE_KV = 2.83;
+    public static double DRIVE_KA = 0.47;
 
     public static double DRIVE_PROFILE_MAX_VEL = 3.0; // m/s
     public static double DRIVE_PROFILE_MAX_ACC = 5.0; // m/s^2

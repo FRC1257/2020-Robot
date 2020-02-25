@@ -99,10 +99,10 @@ public class Drivetrain extends SnailSubsystem {
 
         leftEncoder = new CANEncoder(frontLeftMotor);
         rightEncoder = new CANEncoder(frontRightMotor);
-        leftEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M);
-        rightEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M);
-        leftEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0);
-        rightEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0);
+        leftEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / DRIVE_GEARBOX_REDUCTION);
+        rightEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / DRIVE_GEARBOX_REDUCTION);
+        leftEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0 / DRIVE_GEARBOX_REDUCTION);
+        rightEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0 / DRIVE_GEARBOX_REDUCTION);
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
 
