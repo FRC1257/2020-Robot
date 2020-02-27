@@ -58,6 +58,7 @@ public class Indexer extends SnailSubsystem {
         conveyorMotorFront.restoreFactoryDefaults();
         conveyorMotorFront.setIdleMode(IdleMode.kBrake);
         conveyorMotorFront.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        conveyorMotorFront.setInverted(true);
         conveyorEncoder = conveyorMotorFront.getEncoder();
         conveyorPID = conveyorMotorFront.getPIDController();
 
@@ -65,7 +66,7 @@ public class Indexer extends SnailSubsystem {
         conveyorMotorBack.restoreFactoryDefaults();
         conveyorMotorBack.setIdleMode(IdleMode.kBrake);
         conveyorMotorBack.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-        conveyorMotorBack.follow(conveyorMotorFront, true);
+        conveyorMotorBack.follow(conveyorMotorFront, false);
 
         conveyorPID.setP(INDEXER_PID[0]);
         conveyorPID.setI(INDEXER_PID[1]);
