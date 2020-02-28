@@ -3,9 +3,13 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.*;
@@ -31,6 +35,11 @@ public class Indexer extends SnailSubsystem {
     private final CANSparkMax stopMotor;
 
     private double currentPIDSetpoint;
+
+    private DigitalInput bottomBreakbeam;
+    private ColorSensorV3 colorSensor;
+    private LinearFilter filter;
+    private double lastFilteredDist;
 
     /**
      * NEUTRAL - The position of each of the power cells is maintained
@@ -77,7 +86,14 @@ public class Indexer extends SnailSubsystem {
         stopMotor.setIdleMode(IdleMode.kBrake);
         stopMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
+        bottomBreakbeam = new DigitalInput(INDEXER_BOTTOM_BREAKBEAM_ID);
+        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+        filter = LinearFilter.movingAverage(INDEXER_TOP_SENSOR_NUM_AVG);
+    }
+
+    public void reset() {
         currentPIDSetpoint = -1257.0;
+        lastFilteredDist = 0;
     }
     
     /**
@@ -116,6 +132,8 @@ public class Indexer extends SnailSubsystem {
                 }
                 break;
         }
+
+        updateDistance();
     }
 
     /**
@@ -241,10 +259,24 @@ public class Indexer extends SnailSubsystem {
     }
 
     /**
+     * Updates the filter for the color sensor distance
+     */
+    private void updateDistance() {
+        lastFilteredDist = filter.calculate(colorSensor.getProximity());
+    }
+
+    /**
+     * Returns whether or not the color sensor detects a ball at the top
+     */
+    public boolean ballAtTop() {
+        return lastFilteredDist > INDEXER_TOP_BALL_PROXIMITY;
+    }
+
+    /**
      * Returns whether or not the indexer is free to move
      */
     public boolean canMove() {
-        return true;
+        return bottomBreakbeam.get() && !ballAtTop();
     }
 
     /**

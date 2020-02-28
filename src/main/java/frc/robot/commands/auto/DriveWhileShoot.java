@@ -22,7 +22,7 @@ public class DriveWhileShoot extends ParallelDeadlineGroup {
         super(new SequentialCommandGroup(
                 new ResetAutoPositionCommand(drivetrain, TrajectoryLoader.getInitialPoseReversed(trajectory)),
                 new DriveTrajectoryCommand(drivetrain, trajectory, true),
-                (new IndexerShootCommand(indexer)).withTimeout(INDEXER_DUMP_TIME)),
+                (new IndexerShootCommand(indexer, shooter, () -> true)).withTimeout(INDEXER_DUMP_TIME)),
             new ShooterPIDCommand(shooter),
             new IntakeReleaseCommand(intake).withTimeout(SERVO_RELEASE_TIME)
         );

@@ -63,6 +63,7 @@ public final class Constants {
     public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 7;
     public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 8;
     public static int INDEXER_STOP_MOTOR_ID = 5;
+    public static int INDEXER_BOTTOM_BREAKBEAM_ID = 1;
 
     public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYOR_LOWER_SPEED = 0.5;
@@ -75,6 +76,9 @@ public final class Constants {
     public static double[] INDEXER_PID = {0, 0, 0};
     public static double INDEXER_ADVANCE_SETPOINT = 10.0;
     public static double INDEXER_PID_TOLERANCE = 0.5;
+
+    public static int INDEXER_TOP_SENSOR_NUM_AVG = 5;
+    public static double INDEXER_TOP_BALL_PROXIMITY = 300;
 
     // Intake Constants
     public static int INTAKE_MOTOR_ID = 9;
