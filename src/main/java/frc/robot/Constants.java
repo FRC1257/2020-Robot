@@ -77,7 +77,7 @@ public final class Constants {
     public static double INDEXER_ADVANCE_SETPOINT = 10.0;
     public static double INDEXER_PID_TOLERANCE = 0.5;
 
-    public static int INDEXER_TOP_SENSOR_NUM_AVG = 5;
+    public static int INDEXER_TOP_SENSOR_NUM_MED = 5;
     public static double INDEXER_TOP_BALL_PROXIMITY = 300;
 
     // Intake Constants

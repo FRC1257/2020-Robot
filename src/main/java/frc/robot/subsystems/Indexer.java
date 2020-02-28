@@ -10,6 +10,7 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.LinearFilter;
+import edu.wpi.first.wpilibj.MedianFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.*;
@@ -38,7 +39,7 @@ public class Indexer extends SnailSubsystem {
 
     private DigitalInput bottomBreakbeam;
     private ColorSensorV3 colorSensor;
-    private LinearFilter filter;
+    private MedianFilter filter;
     private double lastFilteredDist;
 
     /**
@@ -88,7 +89,7 @@ public class Indexer extends SnailSubsystem {
 
         bottomBreakbeam = new DigitalInput(INDEXER_BOTTOM_BREAKBEAM_ID);
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
-        filter = LinearFilter.movingAverage(INDEXER_TOP_SENSOR_NUM_AVG);
+        filter = new MedianFilter(INDEXER_TOP_SENSOR_NUM_MED);
     }
 
     public void reset() {
