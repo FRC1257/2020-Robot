@@ -1,7 +1,9 @@
 package frc.robot.commands.indexer;
 
+import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Shooter;
 
 /**
  * - Moves the power cells to the shooter via the conveyor belt 
@@ -11,9 +13,13 @@ import frc.robot.subsystems.Indexer;
 public class IndexerShootCommand extends CommandBase {
 
     private final Indexer indexer;
+    private final Shooter shooter;
+    private final BooleanSupplier override;
 
-    public IndexerShootCommand(Indexer indexer) {
+    public IndexerShootCommand(Indexer indexer, Shooter shooter, BooleanSupplier override) {
         this.indexer = indexer;
+        this.shooter = shooter;
+        this.override = override;
 
         addRequirements(indexer);
     }
@@ -25,7 +31,12 @@ public class IndexerShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-        indexer.shoot();
+        if (shooter.withinTolerance() || override.getAsBoolean()) {
+            indexer.shoot();
+        }
+        else {
+            indexer.neutral();
+        }
     }
 
     @Override

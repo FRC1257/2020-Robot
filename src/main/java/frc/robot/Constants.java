@@ -94,6 +94,7 @@ public final class Constants {
 
     public static double[] SHOOTER_PIDF = {0.000001, 0.0, 0.0, 0.000180};
     public static double SHOOTER_VEL_SETPOINT = 4500;
+    public static double SHOOTER_PERCENT_TOLERANCE = 3; // in %
 
     // Drivetrain Constants
     public static int DRIVE_FRONT_LEFT = 1;

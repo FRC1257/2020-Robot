@@ -108,7 +108,8 @@ public class RobotContainer {
         operatorController.getButton(Button.kY.value).whileActiveOnce(new IndexerRaiseCommand(indexer));
         // operatorController.getButton(Button.kY.value).whenPressed(new IndexerPIDCommand(indexer));
         operatorController.getButton(Button.kX.value).whileActiveOnce(new IndexerLowerCommand(indexer));
-        operatorController.getTrigger(Hand.kRight).whileActiveOnce(new IndexerShootCommand(indexer));
+        operatorController.getTrigger(Hand.kRight).whileActiveOnce(new IndexerShootCommand(indexer, shooter,
+            () -> operatorController.getBumper(Hand.kRight)));
 
         // Elevator Bindings
         // operatorController.getButton(Button.kX.value).whileActiveOnce(new ElevatorPIDCommand(elevator));

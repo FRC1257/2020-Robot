@@ -68,13 +68,16 @@ public class Shooter extends SnailSubsystem {
         state = State.VEL_PID;
     }
 
+    public boolean withinTolerance() {
+        return (SHOOTER_VEL_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_VEL_SETPOINT < 0.03;
+    }
+
     @Override
     public void outputValues() {
         SmartDashboard.putNumber("Shooter Encoder Pos", shooterEncoder.getPosition());
         SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
 
-        boolean inTolerance = (SHOOTER_VEL_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_VEL_SETPOINT < 0.03;
-        SmartDashboard.putBoolean("Shooter Ready", inTolerance);
+        SmartDashboard.putBoolean("Shooter Within Tolerance", withinTolerance());
 
         SmartDashboard.putNumber("Shooter Primary Output", shooterMotor.getAppliedOutput());
         SmartDashboard.putNumber("Shooter Secondary Output", followerMotor.getAppliedOutput());
