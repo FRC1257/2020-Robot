@@ -65,12 +65,12 @@ public final class Constants {
     public static int INDEXER_STOP_MOTOR_ID = 5;
 
     public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
-    public static double INDEXER_CONVEYOR_LOWER_SPEED = -0.5;
-    public static double INDEXER_CONVEYOR_RAISE_SPEED = 0.75;
-    public static double INDEXER_CONVEYOR_SHOOT_SPEED = 0.5;
+    public static double INDEXER_CONVEYOR_LOWER_SPEED = 0.5;
+    public static double INDEXER_CONVEYOR_RAISE_SPEED = -0.75;
+    public static double INDEXER_CONVEYOR_SHOOT_SPEED = -0.5;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
-    public static double INDEXER_STOP_SHOOT_SPEED = -0.5;
+    public static double INDEXER_STOP_SHOOT_SPEED = -1.0;
 
     public static double[] INDEXER_PID = {0, 0, 0};
     public static double INDEXER_ADVANCE_SETPOINT = 10.0;
@@ -90,7 +90,7 @@ public final class Constants {
     public static int SHOOTER_FOLLOWER_MOTOR_ID = 12;
 
     public static double SHOOTER_NEUTRAL_SPEED = 0;
-    public static double SHOOTER_OPEN_LOOP_SPEED = 0.8;
+    public static double SHOOTER_OPEN_LOOP_SPEED = 0.9;
 
     public static double[] SHOOTER_PIDF = {0.000001, 0.0, 0.0, 0.000180};
     public static double SHOOTER_VEL_SETPOINT = 4500;

@@ -405,14 +405,14 @@ public class Drivetrain extends SnailSubsystem {
     public void outputValues() {
         SmartDashboard.putNumber("Drive Left Encoder Pos (m)", leftEncoder.getPosition());
         SmartDashboard.putNumber("Drive Right Encoder Pos (m)", rightEncoder.getPosition());
-        SmartDashboard.putNumber("Drive Left Encoder Vel (m/s)", leftEncoder.getVelocity());
-        SmartDashboard.putNumber("Drive Right Encoder Vel (m/s)", rightEncoder.getVelocity());
+        SmartDashboard.putNumber("Drive Left Encoder Vel (mps)", leftEncoder.getVelocity());
+        SmartDashboard.putNumber("Drive Right Encoder Vel (mps)", rightEncoder.getVelocity());
 
         if (distProfile != null) {
             SmartDashboard.putNumber("Drive Profile Time Left", distProfile.timeLeftUntil(pathTimer.get()));
             TrapezoidProfile.State currentState = distProfile.calculate(pathTimer.get());
             SmartDashboard.putNumber("Drive Profile Pos (m)", currentState.position);
-            SmartDashboard.putNumber("Drive Profile Vel (m/s)", currentState.velocity);
+            SmartDashboard.putNumber("Drive Profile Vel (mps)", currentState.velocity);
         }
         if (trajectory != null) {
             SmartDashboard.putNumber("Trajectory Time Left", trajectory.getTotalTimeSeconds() - pathTimer.get());
