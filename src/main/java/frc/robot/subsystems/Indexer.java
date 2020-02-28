@@ -241,6 +241,13 @@ public class Indexer extends SnailSubsystem {
     }
 
     /**
+     * Returns whether or not the indexer is free to move
+     */
+    public boolean canMove() {
+        return true;
+    }
+
+    /**
     * Returns the state
     */
     public State getState() {
