@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.auto.*;
+import frc.robot.commands.auto.trajectory.*;
+import frc.robot.commands.drivetrain.DriveDistanceCommand;
 import frc.robot.commands.drivetrain.ManualDriveCommand;
 import frc.robot.commands.drivetrain.ReverseDriveCommand;
 import frc.robot.commands.drivetrain.SlowTurnCommand;
@@ -138,7 +139,7 @@ public class RobotContainer {
                 else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
             case DEFAULT:
             default:
-                return new DriveBaselineAuto(drivetrain);
+                return new DriveDistanceCommand(drivetrain, 2);
         }
     }
 
