@@ -6,9 +6,18 @@ import frc.robot.subsystems.Drivetrain;
 
 public class ResetAutoPositionCommand extends InstantCommand {
 
+    private Drivetrain drivetrain;
+    private Pose2d pose;
+
     public ResetAutoPositionCommand(Drivetrain drivetrain, Pose2d pose) {
-        drivetrain.setRobotPose(pose);
-        // Use addRequirements() here to declare subsystem dependencies.
+        this.drivetrain = drivetrain;
+        this.pose = pose;
+        
         addRequirements(drivetrain);
+    }
+
+    @Override
+    public void initialize() {
+        drivetrain.setRobotPose(pose);
     }
 }

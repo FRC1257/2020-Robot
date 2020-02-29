@@ -22,6 +22,11 @@ public final class Constants {
     public static double INDEXER_DUMP_TIME = 2.0; // seconds
     public static double SERVO_RELEASE_TIME = 5.0; // seconds
 
+    public enum AutoType {
+        HARDCODE,
+        TRAJECTORY
+    }
+
     public enum AutoPosition {
         TOP, 
         MIDDLE,
