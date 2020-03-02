@@ -26,7 +26,7 @@ public class EjectCellCommand extends CommandBase {
 
     @Override
     public void execute() {
-        intake.intake();
+        intake.eject();
         indexer.lower();
     }
 
