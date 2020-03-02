@@ -48,7 +48,7 @@ public class Elevator extends SnailSubsystem {
         followerMotor.restoreFactoryDefaults();
         followerMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         followerMotor.setIdleMode(IdleMode.kBrake);
-        followerMotor.follow(motor);
+        followerMotor.follow(motor, false);
 
         encoder = motor.getEncoder();
         encoder.setPositionConversionFactor(ELEVATOR_CONV_FACTOR);
@@ -156,6 +156,7 @@ public class Elevator extends SnailSubsystem {
         SmartDashboard.putNumber("Elevator Position", encoder.getPosition());
         SmartDashboard.putNumber("Elevator Velocity", encoder.getVelocity());
         SmartDashboard.putNumber("Elevator Current", motor.getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Temperature", motor.getMotorTemperature());
         SmartDashboard.putBoolean("Elevator Locked", locked);
     }
 

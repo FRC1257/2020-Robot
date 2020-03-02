@@ -146,6 +146,10 @@ public class Indexer extends SnailSubsystem {
         SmartDashboard.putNumber("Indexer PID Setpoint", currentPIDSetpoint);
         SmartDashboard.putNumber("Indexer Encoder", getEncoderValue());
 
+        SmartDashboard.putNumber("Indexer Color Sensor", lastFilteredDist);
+        SmartDashboard.putBoolean("Indexer Breakbeam", bottomBreakbeam.get());
+        SmartDashboard.putBoolean("Indexer Can Move", canMove());
+
         SmartDashboard.putNumber("Indexer Front Conveyor Current", conveyorMotorFront.getOutputCurrent());
         SmartDashboard.putNumber("Indexer Back Conveyor Current", conveyorMotorBack.getOutputCurrent());
         SmartDashboard.putNumber("Indexer Stop Motor Current", stopMotor.getOutputCurrent());

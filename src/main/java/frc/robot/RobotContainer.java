@@ -13,6 +13,7 @@ import frc.robot.commands.drivetrain.ReverseDriveCommand;
 import frc.robot.commands.drivetrain.SlowTurnCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.commands.elevator.ManualElevatorCommand;
+import frc.robot.commands.elevator.ElevatorPIDCommand;
 import frc.robot.commands.elevator.ToggleElevatorLockCommand;
 import frc.robot.commands.indexer.IndexerLowerCommand;
 import frc.robot.commands.indexer.IndexerNeutralCommand;
@@ -71,7 +72,7 @@ public class RobotContainer {
         indexer.setDefaultCommand(new IndexerNeutralCommand(indexer));
 
         elevator = new Elevator();
-        // elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY));
+        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY));
 
         shooter = new Shooter();
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));
@@ -116,7 +117,7 @@ public class RobotContainer {
 
         // Elevator Bindings
         // operatorController.getButton(Button.kX.value).whileActiveOnce(new ElevatorPIDCommand(elevator));
-        // operatorController.getButton(Button.kStart.value).whenPressed(new ToggleElevatorLockCommand(elevator));
+        operatorController.getButton(Button.kStart.value).whenPressed(new ToggleElevatorLockCommand(elevator));
 
         // Shooting Bindings
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));

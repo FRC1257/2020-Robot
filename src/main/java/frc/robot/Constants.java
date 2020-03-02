@@ -47,7 +47,7 @@ public final class Constants {
 
     public static double ELEVATOR_SETPOINT = 100;
     public final static double ELEVATOR_BRAKE_POSITION = 1.0;
-    public final static double ELEVATOR_MAX_HEIGHT = 105;
+    public final static double ELEVATOR_MAX_HEIGHT = 1000;
     
     public static double ELEVATOR_KS = 0.0;
     public static double ELEVATOR_KG = 0.0;
@@ -68,7 +68,7 @@ public final class Constants {
     public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 7;
     public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 8;
     public static int INDEXER_STOP_MOTOR_ID = 5;
-    public static int INDEXER_BOTTOM_BREAKBEAM_ID = 1;
+    public static int INDEXER_BOTTOM_BREAKBEAM_ID = 0;
 
     public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYOR_LOWER_SPEED = 0.5;
@@ -89,7 +89,7 @@ public final class Constants {
     public static int INTAKE_MOTOR_ID = 9;
     public static int INTAKE_SERVO_ID = 0;
 
-    public static double INTAKE_SERVO_RELEASE_SETPOINT = 1.0;
+    public static double INTAKE_SERVO_RELEASE_SETPOINT = -0.5;
     public static double INTAKE_NEUTRAL_SPEED = 0.0;
     public static double INTAKE_INTAKE_SPEED = -0.8;
     public static double INTAKE_EJECT_SPEED = 0.8;
