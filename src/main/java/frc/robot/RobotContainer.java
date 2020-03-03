@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.auto.hardcode.*;
+import frc.robot.commands.auto.segmented.*;
 import frc.robot.commands.auto.trajectory.*;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
 import frc.robot.commands.drivetrain.ManualDriveCommand;
@@ -129,7 +129,7 @@ public class RobotContainer {
         autoPositionChooser = new SendableChooser<>();
         autoGoalChooser = new SendableChooser<>();
 
-        autoTypeChooser.setDefaultOption("Hard Coded", Constants.AutoType.HARDCODE);
+        autoTypeChooser.setDefaultOption("Segmented", Constants.AutoType.SEGMENTED);
         autoTypeChooser.addOption("Trajectory", Constants.AutoType.TRAJECTORY);
 
         autoPositionChooser.setDefaultOption("Top Start", Constants.AutoPosition.TOP);
@@ -151,14 +151,14 @@ public class RobotContainer {
         Constants.AutoPosition position = autoPositionChooser.getSelected();
         Constants.AutoGoal goal = autoGoalChooser.getSelected();
 
-        if (type == Constants.AutoType.HARDCODE) {
+        if (type == Constants.AutoType.SEGMENTED) {
             switch (position) {
                 case TOP:
-                    return new HCTopAuto(drivetrain, indexer, shooter, intake);
+                    return new SegTopAuto(drivetrain, indexer, shooter, intake);
                 case MIDDLE:
-                    return new HCMiddleAuto(drivetrain, indexer, shooter, intake);
+                    return new SegMiddleAuto(drivetrain, indexer, shooter, intake);
                 case BOTTOM:
-                    return new HCBottomAuto(drivetrain, indexer, shooter, intake);
+                    return new SegBottomAuto(drivetrain, indexer, shooter, intake);
             }
         }
 

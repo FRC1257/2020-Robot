@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.hardcode;
+package frc.robot.commands.auto.segmented;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
@@ -8,15 +8,14 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class HCMiddleAuto extends SequentialCommandGroup {
+public class SegMiddleAuto extends SequentialCommandGroup {
 
-    public HCMiddleAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
+    public SegMiddleAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
         
         addCommands(new TurnAngleCommand(drivetrain, 36.6),
             new DriveDistanceCommand(drivetrain, 2.85),
             new TurnAngleCommand(drivetrain, -36.6),
-            new DriveDistanceCommand(drivetrain, 1.0),
-            new PrepareAndShoot(drivetrain, indexer, shooter, intake),
+            new PrepareAndShoot(drivetrain, indexer, shooter, intake, 1.0),
             new DriveDistanceCommand(drivetrain, -5.652)
         );
     }

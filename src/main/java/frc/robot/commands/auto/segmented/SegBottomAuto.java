@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.hardcode;
+package frc.robot.commands.auto.segmented;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
@@ -8,15 +8,14 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class HCBottomAuto extends SequentialCommandGroup {
+public class SegBottomAuto extends SequentialCommandGroup {
 
-    public HCBottomAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
+    public SegBottomAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
 
         addCommands(new TurnAngleCommand(drivetrain, 54.9), 
             new DriveDistanceCommand(drivetrain, 3.97),
             new TurnAngleCommand(drivetrain, -54.9),
-            new DriveDistanceCommand(drivetrain, 1.0),
-            new PrepareAndShoot(drivetrain, indexer, shooter, intake),
+            new PrepareAndShoot(drivetrain, indexer, shooter, intake, 1.0),
             new DriveDistanceCommand(drivetrain, -5.652)
         );
     }
