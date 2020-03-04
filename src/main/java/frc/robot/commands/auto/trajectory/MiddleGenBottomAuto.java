@@ -16,7 +16,7 @@ public class MiddleGenBottomAuto extends SequentialCommandGroup {
         Trajectory midGenBottom1 = TrajectoryLoader.loadTrajectoryFromFile("Middle-Gen-Bottom-1.wpilib.json");
         Trajectory midGenBottom2 = TrajectoryLoader.loadTrajectoryFromFile("Middle-Gen-Bottom-2.wpilib.json");
 
-        addCommands(new DriveWhileShoot(drivetrain, indexer, shooter, midGenBottom1, intake),
+        addCommands(new TrajDriveAndShoot(drivetrain, indexer, shooter, midGenBottom1, intake),
             new DriveTrajectoryCommand(drivetrain, midGenBottom2, false));
     }
 }

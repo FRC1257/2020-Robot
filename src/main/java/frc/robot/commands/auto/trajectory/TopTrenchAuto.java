@@ -16,7 +16,7 @@ public class TopTrenchAuto extends SequentialCommandGroup {
         Trajectory topTrench1 = TrajectoryLoader.loadTrajectoryFromFile("Top-Trench-1.wpilib.json");
         Trajectory topTrench2 = TrajectoryLoader.loadTrajectoryFromFile("Top-Trench-2.wpilib.json");
 
-        addCommands(new DriveWhileShoot(drivetrain, indexer, shooter, topTrench1, intake), 
+        addCommands(new TrajDriveAndShoot(drivetrain, indexer, shooter, topTrench1, intake), 
             new DriveTrajectoryCommand(drivetrain, topTrench2, true));
     }
 

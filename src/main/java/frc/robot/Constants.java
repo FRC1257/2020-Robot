@@ -69,7 +69,8 @@ public final class Constants {
     public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 7;
     public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 8;
     public static int INDEXER_STOP_MOTOR_ID = 5;
-    public static int INDEXER_BOTTOM_BREAKBEAM_ID = 0;
+    public static int INDEXER_BOTTOM_BREAKBEAM_FRONT_ID = 0;
+    public static int INDEXER_BOTTOM_BREAKBEAM_BACK_ID = 1;
 
     public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYOR_LOWER_SPEED = 0.5;
@@ -90,7 +91,7 @@ public final class Constants {
     public static int INTAKE_MOTOR_ID = 9;
     public static int INTAKE_SERVO_ID = 0;
 
-    public static double INTAKE_SERVO_RELEASE_SETPOINT = -0.5;
+    public static double INTAKE_SERVO_RELEASE_SETPOINT = 0.7;
     public static double INTAKE_NEUTRAL_SPEED = 0.0;
     public static double INTAKE_INTAKE_SPEED = -0.8;
     public static double INTAKE_EJECT_SPEED = 0.8;

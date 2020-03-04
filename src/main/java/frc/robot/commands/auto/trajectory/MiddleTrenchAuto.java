@@ -16,7 +16,7 @@ public class MiddleTrenchAuto extends SequentialCommandGroup {
         Trajectory midTrench1 = TrajectoryLoader.loadTrajectoryFromFile("Middle-Trench-1.wpilib.json");
         Trajectory midTrench2 = TrajectoryLoader.loadTrajectoryFromFile("Middle-Trench-2.wpilib.json");
 
-        addCommands(new DriveWhileShoot(drivetrain, indexer, shooter, midTrench1, intake),
+        addCommands(new TrajDriveAndShoot(drivetrain, indexer, shooter, midTrench1, intake),
             new DriveTrajectoryCommand(drivetrain, midTrench2, false));
     }
 

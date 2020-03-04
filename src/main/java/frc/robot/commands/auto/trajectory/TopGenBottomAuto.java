@@ -16,7 +16,7 @@ public class TopGenBottomAuto extends SequentialCommandGroup {
         Trajectory topGenBottom1 = TrajectoryLoader.loadTrajectoryFromFile("Top-Gen-Bottom-1.wpilib.json");
         Trajectory topGenBottom2 = TrajectoryLoader.loadTrajectoryFromFile("Top-Gen-Bottom-2.wpilib.json");
 
-        addCommands(new DriveWhileShoot(drivetrain, indexer, shooter, topGenBottom1, intake),
+        addCommands(new TrajDriveAndShoot(drivetrain, indexer, shooter, topGenBottom1, intake),
             new DriveTrajectoryCommand(drivetrain, topGenBottom2, false));
     }
 }

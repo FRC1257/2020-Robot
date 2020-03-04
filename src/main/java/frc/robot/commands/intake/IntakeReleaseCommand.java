@@ -1,9 +1,9 @@
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Intake;
 
-public class IntakeReleaseCommand extends CommandBase {
+public class IntakeReleaseCommand extends InstantCommand {
 
     private final Intake intake;
     
@@ -17,20 +17,4 @@ public class IntakeReleaseCommand extends CommandBase {
     public void initialize() {
         intake.toggleReleaseIntake();
     }
-
-    @Override
-    public void execute() {
-
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        intake.toggleReleaseIntake();
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
-    
 }

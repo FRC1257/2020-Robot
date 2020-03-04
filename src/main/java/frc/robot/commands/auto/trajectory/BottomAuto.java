@@ -15,6 +15,6 @@ public class BottomAuto extends SequentialCommandGroup {
         Trajectory bottomTrajectory = TrajectoryLoader.loadTrajectoryFromFile("Bottom.wpilib.json");
 
         addCommands(
-            new DriveWhileShoot(drivetrain, indexer, shooter, bottomTrajectory, intake));
+            new TrajDriveAndShoot(drivetrain, indexer, shooter, bottomTrajectory, intake));
     }
 }

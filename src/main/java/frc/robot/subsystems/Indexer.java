@@ -36,7 +36,8 @@ public class Indexer extends SnailSubsystem {
 
     private double currentPIDSetpoint;
 
-    private DigitalInput bottomBreakbeam;
+    private DigitalInput bottomFrontBreakbeam;
+    private DigitalInput bottomBackBreakbeam;
     private ColorSensorV3 colorSensor;
     private MedianFilter filter;
     private double lastFilteredDist;
@@ -86,7 +87,8 @@ public class Indexer extends SnailSubsystem {
         stopMotor.setIdleMode(IdleMode.kBrake);
         stopMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
-        bottomBreakbeam = new DigitalInput(INDEXER_BOTTOM_BREAKBEAM_ID);
+        bottomFrontBreakbeam = new DigitalInput(INDEXER_BOTTOM_BREAKBEAM_FRONT_ID);
+        bottomBackBreakbeam = new DigitalInput(INDEXER_BOTTOM_BREAKBEAM_BACK_ID);
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
         filter = new MedianFilter(INDEXER_TOP_SENSOR_NUM_MED);
     }
@@ -147,7 +149,8 @@ public class Indexer extends SnailSubsystem {
         SmartDashboard.putNumber("Indexer Encoder", getEncoderValue());
 
         SmartDashboard.putNumber("Indexer Color Sensor", lastFilteredDist);
-        SmartDashboard.putBoolean("Indexer Breakbeam", bottomBreakbeam.get());
+        SmartDashboard.putBoolean("Indexer Breakbeam Front", bottomFrontBreakbeam.get());
+        SmartDashboard.putBoolean("Indexer Breakbeam Back", bottomBackBreakbeam.get());
         SmartDashboard.putBoolean("Indexer Can Move", canMove());
 
         SmartDashboard.putNumber("Indexer Front Conveyor Current", conveyorMotorFront.getOutputCurrent());
@@ -277,10 +280,17 @@ public class Indexer extends SnailSubsystem {
     }
 
     /**
+     * Returns whether or not the breakbeam sensors detect a ball at the bottom
+     */
+    public boolean ballAtBot() {
+        return !bottomBackBreakbeam.get() || !bottomFrontBreakbeam.get();
+    }
+
+    /**
      * Returns whether or not the indexer is free to move
      */
     public boolean canMove() {
-        return bottomBreakbeam.get() && !ballAtTop();
+        return ballAtBot() && !ballAtTop();
     }
 
     /**

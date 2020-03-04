@@ -175,9 +175,7 @@ public class RobotContainer {
                 case GEN_BOTTOM:
                     if (position == Constants.AutoPosition.TOP) return new TopGenBottomAuto(drivetrain, indexer, shooter, intake);
                     else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
-                case DEFAULT:
-                default:
-                    return new DriveDistanceCommand(drivetrain, 2); // kept this in as a safety 
+                case DEFAULT: // will go to drive distance command
             }
         }
 
