@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,8 +37,9 @@ public class Intake extends SnailSubsystem {
     State state = State.NEUTRAL;
 
     public Intake() {
-        intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushed);
+        intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
         intakeMotor.restoreFactoryDefaults();
+        intakeMotor.setIdleMode(IdleMode.kBrake);
         intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
         intakeReleaseServo = new Servo(INTAKE_SERVO_ID);
         isReleased = false;

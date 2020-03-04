@@ -2,7 +2,9 @@ package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.util.Limelight;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class ManualDriveCommand extends CommandBase {
@@ -10,11 +12,16 @@ public class ManualDriveCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private final DoubleSupplier forwardSupplier;
     private final DoubleSupplier turnSupplier;
+    private final BooleanSupplier visionSupplier;
+    private final boolean useVision;
 
-    public ManualDriveCommand(Drivetrain drivetrain, DoubleSupplier forwardSupplier, DoubleSupplier turnSupplier) {
+    public ManualDriveCommand(Drivetrain drivetrain, DoubleSupplier forwardSupplier, DoubleSupplier turnSupplier,
+        BooleanSupplier visionSupplier, boolean useVision) {
         this.drivetrain = drivetrain;
         this.forwardSupplier = forwardSupplier;
         this.turnSupplier = turnSupplier;
+        this.visionSupplier = visionSupplier;
+        this.useVision = useVision;
 
         addRequirements(drivetrain);
     }
@@ -28,7 +35,11 @@ public class ManualDriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        drivetrain.manualDrive(forwardSupplier.getAsDouble(), turnSupplier.getAsDouble());
+        double visionAdd = 0;
+        if (useVision && visionSupplier.getAsBoolean()) {
+            visionAdd = Limelight.getVisionAdd();
+        }
+        drivetrain.manualDrive(forwardSupplier.getAsDouble(), turnSupplier.getAsDouble() + visionAdd);
     }
 
     // Called once the command ends or is interrupted.

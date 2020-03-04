@@ -73,9 +73,9 @@ public final class Constants {
     public static int INDEXER_BOTTOM_BREAKBEAM_BACK_ID = 1;
 
     public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
-    public static double INDEXER_CONVEYOR_LOWER_SPEED = 0.5;
-    public static double INDEXER_CONVEYOR_RAISE_SPEED = -0.75;
-    public static double INDEXER_CONVEYOR_SHOOT_SPEED = -0.5;
+    public static double INDEXER_CONVEYOR_LOWER_SPEED = 0.4;
+    public static double INDEXER_CONVEYOR_RAISE_SPEED = -0.4;
+    public static double INDEXER_CONVEYOR_SHOOT_SPEED = -0.7;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = -1.0;
@@ -85,7 +85,7 @@ public final class Constants {
     public static double INDEXER_PID_TOLERANCE = 0.5;
 
     public static int INDEXER_TOP_SENSOR_NUM_MED = 5;
-    public static double INDEXER_TOP_BALL_PROXIMITY = 300;
+    public static double INDEXER_TOP_BALL_PROXIMITY = 175;
 
     // Intake Constants
     public static int INTAKE_MOTOR_ID = 9;
@@ -93,8 +93,8 @@ public final class Constants {
 
     public static double INTAKE_SERVO_RELEASE_SETPOINT = 0.7;
     public static double INTAKE_NEUTRAL_SPEED = 0.0;
-    public static double INTAKE_INTAKE_SPEED = -0.8;
-    public static double INTAKE_EJECT_SPEED = 0.8;
+    public static double INTAKE_INTAKE_SPEED = -0.6;
+    public static double INTAKE_EJECT_SPEED = 0.6;
 
     // Shooter Constants
     public static int SHOOTER_MOTOR_ID = 11;
@@ -106,6 +106,10 @@ public final class Constants {
     public static double[] SHOOTER_PIDF = {0.000001, 0.0, 0.0, 0.000180};
     public static double SHOOTER_VEL_SETPOINT = 4500;
     public static double SHOOTER_PERCENT_TOLERANCE = 3; // in %
+
+    // Vision Constants
+    public static double VISION_FEEDFORWARD = 0;
+    public static double VISION_KP = 0.1;
 
     // Drivetrain Constants
     public static int DRIVE_FRONT_LEFT = 1;

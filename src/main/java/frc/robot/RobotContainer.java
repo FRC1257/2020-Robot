@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.EjectCellCommand;
+import frc.robot.commands.IntakeCellCommand;
 import frc.robot.commands.auto.segmented.*;
 import frc.robot.commands.auto.trajectory.*;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
@@ -79,7 +81,7 @@ public class RobotContainer {
         
         drivetrain = new Drivetrain();
         drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward,
-            driveController::getDriveTurn));
+            driveController::getDriveTurn, () -> driveController.getTrigger(Hand.kRight).get(), false));
         
         subsystems = new ArrayList<>();
         subsystems.add(intake);
@@ -109,9 +111,9 @@ public class RobotContainer {
         operatorController.getButton(Button.kB.value).whileActiveOnce(new IntakeIntakeCommand(intake));
 
         // Indexer Bindings
-        operatorController.getButton(Button.kY.value).whileActiveOnce(new IndexerRaiseCommand(indexer));
+        operatorController.getButton(Button.kY.value).whileActiveOnce(new IntakeCellCommand(intake, indexer));
         // operatorController.getButton(Button.kY.value).whenPressed(new IndexerPIDCommand(indexer));
-        operatorController.getButton(Button.kX.value).whileActiveOnce(new IndexerLowerCommand(indexer));
+        operatorController.getButton(Button.kX.value).whileActiveOnce(new EjectCellCommand(intake, indexer));
         operatorController.getTrigger(Hand.kRight).whileActiveOnce(new IndexerShootCommand(indexer, shooter,
             () -> operatorController.getBumper(Hand.kRight)));
 

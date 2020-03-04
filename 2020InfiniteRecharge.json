@@ -454,6 +454,32 @@
               "Visuals/Show tick mark ring": true,
               "Visuals/Counter clockwise": false
             }
+          },
+          "0,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///LiveWindow/Ungrouped/DigitalInput[1]/Value",
+              "_title": "Ungrouped/DigitalInput[1]/Value",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "1,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///LiveWindow/Ungrouped/DigitalInput[0]/Value",
+              "_title": "Ungrouped/DigitalInput[0]/Value",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -624,12 +650,24 @@
           }
         }
       }
+    },
+    {
+      "title": "Tab 5",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {}
+      }
     }
   ],
   "windowGeometry": {
     "x": -6.666666507720947,
-    "y": 1.3333333730697632,
+    "y": 0.0,
     "width": 1292.0,
-    "height": 685.3333129882812
+    "height": 686.6666870117188
   }
 }
