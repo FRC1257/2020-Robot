@@ -20,3 +20,4 @@ Our code is written in Java and the 2020 WPILib command-based framework.
 
 - REV Robotics
 - Kauai Labs navX-MXP
+- REV Color Sensor v3
