@@ -104,6 +104,11 @@ public class Indexer extends SnailSubsystem {
             case NEUTRAL:
                 conveyorMotorFront.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+
+                // automatically index once it sees a ball
+                if (ballAtBot()) {
+                    state = State.CELL_RAISING;
+                }
                 break;
             case SHOOTING:
                 conveyorMotorFront.set(INDEXER_CONVEYOR_SHOOT_SPEED);
@@ -119,9 +124,10 @@ public class Indexer extends SnailSubsystem {
                 conveyorMotorFront.set(INDEXER_CONVEYOR_LOWER_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
+
             // automatic indexing
             case CELL_RAISING:
-                if(!ballAtBot()) {
+                if (!ballAtBot()) {
                     state = State.CELL_RETURNING;
                 }
                 else {
@@ -130,7 +136,7 @@ public class Indexer extends SnailSubsystem {
                 }
                 break;
             case CELL_RETURNING:
-                if(ballAtBot()) {
+                if (ballAtBot()) {
                     state = State.CELL_NUDGING;
                 }
                 else {
@@ -139,7 +145,7 @@ public class Indexer extends SnailSubsystem {
                 }
                 break;
             case CELL_NUDGING:
-                if(!ballAtBot()) {
+                if (!ballAtBot()) {
                     state = State.NEUTRAL;
                 }
                 else {
