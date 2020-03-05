@@ -29,6 +29,8 @@ public class Indexer extends SnailSubsystem {
     private final CANSparkMax conveyorMotorBack;
     private final CANSparkMax stopMotor;
 
+    private double topSpeed;
+
     private DigitalInput bottomFrontBreakbeam;
     private DigitalInput bottomBackBreakbeam;
     private ColorSensorV3 colorSensor;
@@ -99,6 +101,7 @@ public class Indexer extends SnailSubsystem {
     public void reset() {
         state = State.NEUTRAL;
         lastFilteredDist = 0;
+        topSpeed = 0;
     }
 
     /**
@@ -110,7 +113,7 @@ public class Indexer extends SnailSubsystem {
 
         switch(state) {
             case NEUTRAL:
-                conveyorMotorFrontTop.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
+                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
 
                 // automatically index once it sees a ball
@@ -120,16 +123,17 @@ public class Indexer extends SnailSubsystem {
                 break;
             case SHOOTING:
                 conveyorMotorFrontTop.set(INDEXER_CONVEYOR_SHOOT_SPEED);
+                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
             case RAISING:
                 if (canMove() || override) {
-                    conveyorMotorFrontTop.set(INDEXER_CONVEYOR_RAISE_SPEED);
+                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_RAISE_SPEED);
                 }
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case LOWERING:
-                conveyorMotorFrontTop.set(INDEXER_CONVEYOR_LOWER_SPEED);
+                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_LOWER_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
 
@@ -170,11 +174,17 @@ public class Indexer extends SnailSubsystem {
                 }
                 break;
         }
+
+        conveyorMotorFrontTop.set(topSpeed);
     }
 
     @Override
     public void periodic() {
 
+    }
+
+    public void setTopSpeed(double topSpeed) {
+        this.topSpeed = topSpeed;
     }
 
     /**

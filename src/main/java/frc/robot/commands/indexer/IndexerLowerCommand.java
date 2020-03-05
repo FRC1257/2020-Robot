@@ -1,5 +1,7 @@
 package frc.robot.commands.indexer;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
 
@@ -10,9 +12,11 @@ import frc.robot.subsystems.Indexer;
 public class IndexerLowerCommand extends CommandBase {
 
     private final Indexer indexer;
+    private final DoubleSupplier topSpeedSupplier;
 
-    public IndexerLowerCommand(Indexer indexer) {
+    public IndexerLowerCommand(Indexer indexer, DoubleSupplier topSpeedSupplier) {
         this.indexer = indexer;
+        this.topSpeedSupplier = topSpeedSupplier;
 
         addRequirements(indexer);
     }
@@ -25,6 +29,7 @@ public class IndexerLowerCommand extends CommandBase {
     @Override
     public void execute() {
         indexer.lower();
+        indexer.setTopSpeed(topSpeedSupplier.getAsDouble());
     }
 
     @Override

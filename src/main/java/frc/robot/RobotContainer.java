@@ -33,6 +33,7 @@ import frc.robot.util.Limelight;
 import frc.robot.util.SnailController;
 
 import java.util.ArrayList;
+import java.util.function.DoubleSupplier;
 
 import static frc.robot.Constants.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.CONTROLLER_OPERATOR_ID;
@@ -52,6 +53,7 @@ public class RobotContainer {
     private final Drivetrain drivetrain;
     private final Intake intake;
     private final Indexer indexer;
+    private final DoubleSupplier indexerTopSupplier;
     private final Elevator elevator;
     private final Shooter shooter;
 
@@ -72,7 +74,8 @@ public class RobotContainer {
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
         
         indexer = new Indexer();
-        indexer.setDefaultCommand(new IndexerNeutralCommand(indexer));
+        indexerTopSupplier = operatorController::getRightY;
+        indexer.setDefaultCommand(new IndexerNeutralCommand(indexer, indexerTopSupplier));
 
         elevator = new Elevator();
         elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY));
@@ -113,8 +116,8 @@ public class RobotContainer {
                 () -> operatorController.getBumper(Hand.kLeft)));
 
         // Indexer Bindings
-        operatorController.getButton(Button.kY.value).whileActiveOnce(new IndexerRaiseCommand(indexer));
-        operatorController.getButton(Button.kX.value).whileActiveOnce(new IndexerLowerCommand(indexer));
+        operatorController.getButton(Button.kY.value).whileActiveOnce(new IndexerRaiseCommand(indexer, indexerTopSupplier));
+        operatorController.getButton(Button.kX.value).whileActiveOnce(new IndexerLowerCommand(indexer, indexerTopSupplier));
         operatorController.getTrigger(Hand.kRight).whileActiveOnce(new IndexerShootCommand(indexer, shooter,
                 () -> operatorController.getBumper(Hand.kRight)));
 
