@@ -66,8 +66,10 @@ public final class Constants {
     public static final double[] ELEVATOR_VEL_PIF = {0.1, 0.0, 0.001};
 
     // Indexer Constants
-    public static int INDEXER_CONVEYOR_TOP_MOTOR_ID = 7;
-    public static int INDEXER_CONVEYOR_BOTTOM_MOTOR_ID = 8;
+    public static int INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID = 7;
+    public static int INDEXER_CONVEYOR_BACK_MOTOR_ID = 7;
+    public static int INDEXER_CONVEYOR_FRONT_BOTTOM_MOTOR_ID = 8;
+    
     public static int INDEXER_STOP_MOTOR_ID = 5;
     public static int INDEXER_BOTTOM_BREAKBEAM_FRONT_ID = 0;
     public static int INDEXER_BOTTOM_BREAKBEAM_BACK_ID = 1;
