@@ -418,9 +418,6 @@ public class Drivetrain extends SnailSubsystem {
             SmartDashboard.putNumber("Trajectory Time Left", trajectory.getTotalTimeSeconds() - pathTimer.get());
         }
 
-        SmartDashboard.putNumber("Drive Dist Setpoint", distSetpoint);
-        SmartDashboard.putNumber("Drive Angle Setpoint", angleSetpoint);
-
         SmartDashboard.putBoolean("Drive Reversed", reversed);
         SmartDashboard.putBoolean("Drive Slow Turn", slowTurning);
 

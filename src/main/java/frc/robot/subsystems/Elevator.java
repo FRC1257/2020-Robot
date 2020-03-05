@@ -6,7 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
-import edu.wpi.first.wpilibj.Servo;
+// import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,7 +19,7 @@ public class Elevator extends SnailSubsystem {
     private final CANPIDController elevatorPID;
     private final CANEncoder encoder;
 
-    private final Servo servo;
+    // private final Servo servo;
 
     private ElevatorFeedforward feedforward;
 
@@ -65,7 +65,7 @@ public class Elevator extends SnailSubsystem {
         elevatorPID.setSmartMotionMaxVelocity(ELEVATOR_PROFILE_MAX_VEL, ELEVATOR_PID_SLOT_VEL);
         elevatorPID.setSmartMotionMaxAccel(ELEVATOR_PROFILE_MAX_ACC, ELEVATOR_PID_SLOT_VEL);
 
-        servo = new Servo(ELEVATOR_BRAKE_SERVO_ID);
+        // servo = new Servo(ELEVATOR_BRAKE_SERVO_ID);
 
         feedforward = new ElevatorFeedforward(ELEVATOR_KS, ELEVATOR_KG, ELEVATOR_KV, ELEVATOR_KA);
 
@@ -81,7 +81,7 @@ public class Elevator extends SnailSubsystem {
 
     @Override
     public void periodic() {
-        if (!locked) {
+        // if (!locked) {
             if (speed > 0 && encoder.getPosition() >= ELEVATOR_MAX_HEIGHT) {
                 speed = 0;
             }
@@ -116,11 +116,11 @@ public class Elevator extends SnailSubsystem {
                             feedforward.calculate(0), CANPIDController.ArbFFUnits.kVoltage);
                     break;
             }
-            servo.set(0.0);
-        }
-        else {
-            servo.set(ELEVATOR_BRAKE_POSITION);
-        }
+            // servo.set(0.0);
+        // }
+        // else {
+            // servo.set(ELEVATOR_BRAKE_POSITION);
+        // }
         
         speed = 0;
     }
