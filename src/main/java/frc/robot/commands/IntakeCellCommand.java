@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * Intakes the power cells into the intake and raise the indexer while available
  */
@@ -11,10 +13,12 @@ public class IntakeCellCommand extends CommandBase {
 
     private final Intake intake;
     private final Indexer indexer;
+    private final BooleanSupplier booleanSupplier;
 
-    public IntakeCellCommand(Intake intake, Indexer indexer) {
+    public IntakeCellCommand(Intake intake, Indexer indexer, BooleanSupplier booleanSupplier) {
         this.intake = intake;
         this.indexer = indexer;
+        this.booleanSupplier = booleanSupplier;
 
         addRequirements(intake, indexer);
     }
@@ -27,10 +31,8 @@ public class IntakeCellCommand extends CommandBase {
     @Override
     public void execute() {
         intake.intake();
-        
-        if (indexer.canMove()) {
-            indexer.raise();
-        }
+        indexer.setOverride(booleanSupplier.getAsBoolean());
+        indexer.raise();
     }
 
     @Override

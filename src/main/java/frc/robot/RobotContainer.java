@@ -106,20 +106,20 @@ public class RobotContainer {
         driveController.getButton(Button.kX.value).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
 
         // Intake Bindings
-        operatorController.getButton(Button.kBack.value).whileHeld(new IntakeReleaseCommand(intake));
-        operatorController.getButton(Button.kA.value).whileActiveOnce(new IntakeEjectCommand(intake));
-        operatorController.getButton(Button.kB.value).whileActiveOnce(new IntakeIntakeCommand(intake));
+        operatorController.getButton(Button.kBack.value).whenPressed(new IntakeReleaseCommand(intake));
+        operatorController.getButton(Button.kA.value).whileActiveOnce(new EjectCellCommand(intake, indexer));
+        operatorController.getButton(Button.kB.value).whileActiveOnce(new IntakeCellCommand(intake, indexer,
+                () -> operatorController.getBumper(Hand.kLeft)));
 
         // Indexer Bindings
-        operatorController.getButton(Button.kY.value).whileActiveOnce(new IntakeCellCommand(intake, indexer));
-        // operatorController.getButton(Button.kY.value).whenPressed(new IndexerPIDCommand(indexer));
-        operatorController.getButton(Button.kX.value).whileActiveOnce(new EjectCellCommand(intake, indexer));
+        operatorController.getButton(Button.kY.value).whileActiveOnce(new IndexerRaiseCommand(indexer));
+        operatorController.getButton(Button.kX.value).whileActiveOnce(new IndexerLowerCommand(indexer));
         operatorController.getTrigger(Hand.kRight).whileActiveOnce(new IndexerShootCommand(indexer, shooter,
-            () -> operatorController.getBumper(Hand.kRight)));
+                () -> operatorController.getBumper(Hand.kRight)));
 
         // Elevator Bindings
-        // operatorController.getButton(Button.kX.value).whileActiveOnce(new ElevatorPIDCommand(elevator));
-        operatorController.getButton(Button.kStart.value).whenPressed(new ToggleElevatorLockCommand(elevator));
+        // operatorController.getButton(Button.kStart.value).whileActiveOnce(new ElevatorPIDCommand(elevator));
+        // operatorController.getButton(Button.kStart.value).whenPressed(new ToggleElevatorLockCommand(elevator));
 
         // Shooting Bindings
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));

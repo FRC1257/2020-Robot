@@ -10,6 +10,7 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.MedianFilter;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.*;
@@ -41,6 +42,9 @@ public class Indexer extends SnailSubsystem {
     private ColorSensorV3 colorSensor;
     private MedianFilter filter;
     private double lastFilteredDist;
+    private boolean override;
+
+    private Notifier looper;
 
     /**
      * NEUTRAL - The position of each of the power cells is maintained
@@ -57,9 +61,12 @@ public class Indexer extends SnailSubsystem {
     public enum State {
         NEUTRAL,
         PID,
-        SHOOTING,
-        RAISING,
-        LOWERING
+        SHOOTING, // manual
+        RAISING,  // manual
+        LOWERING, // manual
+        CELL_RAISING,   // cell was just detected and the indexer should now be rising up
+        CELL_RETURNING, // cell has just left breakbeam and is being put back in
+        CELL_NUDGING    // cell has reentered breakbeam and is being nudged up
     }
     State state = State.NEUTRAL;
 
@@ -91,29 +98,38 @@ public class Indexer extends SnailSubsystem {
         bottomBackBreakbeam = new DigitalInput(INDEXER_BOTTOM_BREAKBEAM_BACK_ID);
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
         filter = new MedianFilter(INDEXER_TOP_SENSOR_NUM_MED);
+
+        looper = new Notifier(this::updateNotifier);
+        looper.startPeriodic(INDEXER_LOOPER_PERIOD);
+
+        reset();
     }
 
-    public void reset() {
+    private void reset() {
         currentPIDSetpoint = -1257.0;
         lastFilteredDist = 0;
     }
-    
+
     /**
      * Update motor outputs according to the current state
+     * This method is called within a notifier to achieve a much faster refresh rate and in a separate thread
      */
-    @Override
-    public void periodic() {
+    private void updateNotifier() {
+        updateDistance();
+
         switch(state) {
-            case NEUTRAL: 
+            case NEUTRAL:
                 conveyorMotorFront.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
-                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                
+                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case SHOOTING:
                 conveyorMotorFront.set(INDEXER_CONVEYOR_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
             case RAISING:
-                conveyorMotorFront.set(INDEXER_CONVEYOR_RAISE_SPEED);
+                if (canMove() || override) {
+                    conveyorMotorFront.set(INDEXER_CONVEYOR_RAISE_SPEED);
+                }
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case LOWERING:
@@ -121,21 +137,52 @@ public class Indexer extends SnailSubsystem {
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case PID:
-                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);                  
+                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 if (currentPIDSetpoint == -1257.0) {
                     state = State.NEUTRAL;
                     break;
                 }
-                
+
                 conveyorPID.setReference(currentPIDSetpoint, ControlType.kPosition);
 
                 if (Math.abs(conveyorEncoder.getPosition() - currentPIDSetpoint) < INDEXER_PID_TOLERANCE) {
                     state = State.NEUTRAL;
                 }
                 break;
-        }
 
-        updateDistance();
+            // automatic indexing
+            case CELL_RAISING:
+                if(!ballAtBot()) {
+                    state = State.CELL_RETURNING;
+                }
+                else {
+                    conveyorMotorFront.set(INDEXER_CONVEYOR_RAISE_SPEED);
+                    stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                }
+                break;
+            case CELL_RETURNING:
+                if(ballAtBot()) {
+                    state = State.CELL_NUDGING;
+                }
+                else {
+                    conveyorMotorFront.set(INDEXER_CONVEYOR_RETURN_SPEED);
+                    stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                }
+                break;
+            case CELL_NUDGING:
+                if(!ballAtBot()) {
+                    state = State.NEUTRAL;
+                }
+                else {
+                    conveyorMotorFront.set(INDEXER_CONVEYOR_NUDGE_SPEED);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void periodic() {
+
     }
 
     /**
@@ -206,7 +253,7 @@ public class Indexer extends SnailSubsystem {
         if (conveyorPID.getP() != INDEXER_PID[0]) {
             conveyorPID.setP(INDEXER_PID[0]);
         }}
-     
+
     /**
      * Gets the position of the encoder
      */
@@ -231,10 +278,12 @@ public class Indexer extends SnailSubsystem {
     }
     
     /**
-    * Changes state to neutral
+    * Changes state to neutral if not automatically indexing at the moment
     */
     public void neutral() {
-        state = State.NEUTRAL;
+        if(state != State.CELL_RAISING && state != State.CELL_RETURNING && state != State.CELL_NUDGING) {
+            state = State.NEUTRAL;
+        }
     }
 
     /**
@@ -291,6 +340,13 @@ public class Indexer extends SnailSubsystem {
      */
     public boolean canMove() {
         return ballAtBot() && !ballAtTop();
+    }
+
+    /**
+     * Sets up the override for the sensors
+     */
+    public void setOverride(boolean override) {
+        this.override = override;
     }
 
     /**

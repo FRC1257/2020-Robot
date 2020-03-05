@@ -23,6 +23,7 @@ public class IndexerRaiseCommand extends CommandBase {
 
     @Override
     public void execute() {
+        indexer.setOverride(true);
         indexer.raise();
     }
 

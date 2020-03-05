@@ -75,6 +75,8 @@ public final class Constants {
     public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYOR_LOWER_SPEED = 0.4;
     public static double INDEXER_CONVEYOR_RAISE_SPEED = -0.4;
+    public static double INDEXER_CONVEYOR_RETURN_SPEED = 0.2;
+    public static double INDEXER_CONVEYOR_NUDGE_SPEED = -0.2;
     public static double INDEXER_CONVEYOR_SHOOT_SPEED = -0.7;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
@@ -84,8 +86,9 @@ public final class Constants {
     public static double INDEXER_ADVANCE_SETPOINT = 10.0;
     public static double INDEXER_PID_TOLERANCE = 0.5;
 
-    public static int INDEXER_TOP_SENSOR_NUM_MED = 5;
+    public static int INDEXER_TOP_SENSOR_NUM_MED = 1;
     public static double INDEXER_TOP_BALL_PROXIMITY = 175;
+    public static double INDEXER_LOOPER_PERIOD = 1 / 200.0; // 200 hz
 
     // Intake Constants
     public static int INTAKE_MOTOR_ID = 9;
