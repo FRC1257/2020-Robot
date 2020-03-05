@@ -82,10 +82,6 @@ public final class Constants {
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = -1.0;
 
-    public static double[] INDEXER_PID = {0, 0, 0};
-    public static double INDEXER_ADVANCE_SETPOINT = 10.0;
-    public static double INDEXER_PID_TOLERANCE = 0.5;
-
     public static int INDEXER_TOP_SENSOR_NUM_MED = 1;
     public static double INDEXER_TOP_BALL_PROXIMITY = 175;
     public static double INDEXER_LOOPER_PERIOD = 1 / 200.0; // 200 hz
