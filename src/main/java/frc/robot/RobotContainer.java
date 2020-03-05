@@ -75,7 +75,8 @@ public class RobotContainer {
         indexer.setDefaultCommand(new IndexerNeutralCommand(indexer));
 
         elevator = new Elevator();
-        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY));
+        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY,
+            operatorController::getStartButton));
 
         shooter = new Shooter();
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));

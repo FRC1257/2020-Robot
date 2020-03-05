@@ -36,6 +36,7 @@ public class Elevator extends SnailSubsystem {
     private State state = defaultState;
     private double speed;
     private boolean locked;
+    private boolean override;
 
     public Elevator() {
         motor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
@@ -77,15 +78,16 @@ public class Elevator extends SnailSubsystem {
         encoder.setPosition(0);
         setpoint = -1257;
         locked = false;
+        override = false;
     }
 
     @Override
     public void periodic() {
         // if (!locked) {
-            if (speed > 0 && encoder.getPosition() >= ELEVATOR_MAX_HEIGHT) {
+            if (speed > 0 && encoder.getPosition() >= ELEVATOR_MAX_HEIGHT && !override) {
                 speed = 0;
             }
-            if (speed < 0 && encoder.getPosition() <= 0) {
+            if (speed < 0 && encoder.getPosition() <= 0 && !override) {
                 speed = 0;
             }
 
@@ -149,6 +151,10 @@ public class Elevator extends SnailSubsystem {
         encoder.setPosition(0);
         setpoint = ELEVATOR_SETPOINT;
         state = State.PROFILED;
+    }
+
+    public void setOverride(boolean override) {
+        this.override = override;
     }
    
     @Override 

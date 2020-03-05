@@ -3,16 +3,19 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class ManualElevatorCommand extends CommandBase {
 
     private final Elevator elevator;
     private final DoubleSupplier speedSupplier;
+    private final BooleanSupplier overrideSupplier;
 
-    public ManualElevatorCommand(Elevator elevator, DoubleSupplier speedSupplier) {
+    public ManualElevatorCommand(Elevator elevator, DoubleSupplier speedSupplier, BooleanSupplier overrideSupplier) {
         this.elevator = elevator;
         this.speedSupplier = speedSupplier;
+        this.overrideSupplier = overrideSupplier;
 
         addRequirements(elevator);
     }
@@ -24,6 +27,7 @@ public class ManualElevatorCommand extends CommandBase {
 
     @Override
     public void execute() {
+        elevator.setOverride(overrideSupplier.getAsBoolean());
         elevator.setElevatorSpeed(speedSupplier.getAsDouble());
     }
 
