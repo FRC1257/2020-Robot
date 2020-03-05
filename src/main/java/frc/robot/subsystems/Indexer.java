@@ -24,9 +24,12 @@ import static frc.robot.Constants.*;
 
 public class Indexer extends SnailSubsystem {
 
-    private final CANSparkMax conveyorMotorFront;
+    private final CANSparkMax conveyorMotorFrontBottom;
+    private final CANSparkMax conveyorMotorFrontTop;
     private final CANSparkMax conveyorMotorBack;
     private final CANSparkMax stopMotor;
+
+    private double topSpeed;
 
     private DigitalInput bottomFrontBreakbeam;
     private DigitalInput bottomBackBreakbeam;
@@ -61,17 +64,23 @@ public class Indexer extends SnailSubsystem {
     State state = State.NEUTRAL;
 
     public Indexer() {
-        conveyorMotorFront = new CANSparkMax(INDEXER_CONVEYOR_TOP_MOTOR_ID, MotorType.kBrushless);
-        conveyorMotorFront.restoreFactoryDefaults();
-        conveyorMotorFront.setIdleMode(IdleMode.kBrake);
-        conveyorMotorFront.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-        conveyorMotorFront.setInverted(true);
+        conveyorMotorFrontBottom = new CANSparkMax(INDEXER_CONVEYOR_FRONT_BOTTOM_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorFrontBottom.restoreFactoryDefaults();
+        conveyorMotorFrontBottom.setIdleMode(IdleMode.kBrake);
+        conveyorMotorFrontBottom.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        conveyorMotorFrontBottom.setInverted(true);
 
-        conveyorMotorBack = new CANSparkMax(INDEXER_CONVEYOR_BOTTOM_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorFrontTop = new CANSparkMax(INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorFrontTop.restoreFactoryDefaults();
+        conveyorMotorFrontTop.setIdleMode(IdleMode.kBrake);
+        conveyorMotorFrontTop.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        conveyorMotorFrontTop.setInverted(true);
+
+        conveyorMotorBack = new CANSparkMax(INDEXER_CONVEYOR_BACK_MOTOR_ID, MotorType.kBrushless);
         conveyorMotorBack.restoreFactoryDefaults();
         conveyorMotorBack.setIdleMode(IdleMode.kBrake);
         conveyorMotorBack.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-        conveyorMotorBack.follow(conveyorMotorFront, false);
+        conveyorMotorBack.follow(conveyorMotorFrontTop, false);
 
         stopMotor = new CANSparkMax(INDEXER_STOP_MOTOR_ID, MotorType.kBrushless);
         stopMotor.restoreFactoryDefaults();
@@ -92,6 +101,7 @@ public class Indexer extends SnailSubsystem {
     public void reset() {
         state = State.NEUTRAL;
         lastFilteredDist = 0;
+        topSpeed = 0;
     }
 
     /**
@@ -103,7 +113,7 @@ public class Indexer extends SnailSubsystem {
 
         switch(state) {
             case NEUTRAL:
-                conveyorMotorFront.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
+                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
 
                 // automatically index once it sees a ball
@@ -112,17 +122,18 @@ public class Indexer extends SnailSubsystem {
                 // }
                 break;
             case SHOOTING:
-                conveyorMotorFront.set(INDEXER_CONVEYOR_SHOOT_SPEED);
+                conveyorMotorFrontTop.set(INDEXER_CONVEYOR_SHOOT_SPEED);
+                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
             case RAISING:
                 if (canMove() || override) {
-                    conveyorMotorFront.set(INDEXER_CONVEYOR_RAISE_SPEED);
+                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_RAISE_SPEED);
                 }
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case LOWERING:
-                conveyorMotorFront.set(INDEXER_CONVEYOR_LOWER_SPEED);
+                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_LOWER_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 break;
 
@@ -132,7 +143,7 @@ public class Indexer extends SnailSubsystem {
                     state = State.CELL_RETURNING;
                 }
                 else {
-                    conveyorMotorFront.set(INDEXER_CONVEYOR_RAISE_SPEED);
+                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_RAISE_SPEED);
                     stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 }
                 if(ballAtTop()) {
@@ -144,7 +155,7 @@ public class Indexer extends SnailSubsystem {
                     state = State.CELL_NUDGING;
                 }
                 else {
-                    conveyorMotorFront.set(INDEXER_CONVEYOR_RETURN_SPEED);
+                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_RETURN_SPEED);
                     stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 }
                 if(ballAtTop()) {
@@ -156,18 +167,24 @@ public class Indexer extends SnailSubsystem {
                     state = State.NEUTRAL;
                 }
                 else {
-                    conveyorMotorFront.set(INDEXER_CONVEYOR_NUDGE_SPEED);
+                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_NUDGE_SPEED);
                 }
                 if(ballAtTop()) {
                     state = State.NEUTRAL;
                 }
                 break;
         }
+
+        conveyorMotorFrontTop.set(topSpeed);
     }
 
     @Override
     public void periodic() {
 
+    }
+
+    public void setTopSpeed(double topSpeed) {
+        this.topSpeed = topSpeed;
     }
 
     /**
@@ -184,8 +201,9 @@ public class Indexer extends SnailSubsystem {
             canMove()
         });
 
-        SmartDashboard.putNumberArray("Indexer Currents (Front, Back, Stop)", new double[] {
-            conveyorMotorFront.getOutputCurrent(),
+        SmartDashboard.putNumberArray("Indexer Currents (Front Top,Front Bottom, Back, Stop)", new double[] {
+            conveyorMotorFrontBottom.getOutputCurrent(),
+            conveyorMotorFrontTop.getOutputCurrent(),
             conveyorMotorBack.getOutputCurrent(),
             stopMotor.getOutputCurrent()
         });
