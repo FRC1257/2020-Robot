@@ -29,6 +29,7 @@ import frc.robot.commands.shooter.ShooterNeutralCommand;
 import frc.robot.commands.shooter.ShooterShootCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.Gyro;
+import frc.robot.util.Limelight;
 import frc.robot.util.SnailController;
 
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class RobotContainer {
         
         drivetrain = new Drivetrain();
         drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward,
-            driveController::getDriveTurn, () -> driveController.getTrigger(Hand.kRight).get(), false));
+            driveController::getDriveTurn, () -> driveController.getTrigger(Hand.kRight).get(), true));
         
         subsystems = new ArrayList<>();
         subsystems.add(intake);
@@ -197,11 +198,15 @@ public class RobotContainer {
 
     public void setConstantTuning() {
         subsystems.forEach(SnailSubsystem::setConstantTuning);
+        Limelight.setConstantTuning();
     }
 
     public void getConstantTuning() {
         if (outputCounter < subsystems.size()) {
             subsystems.get(outputCounter).getConstantTuning();
+        }
+        if(outputCounter == 0) {
+            Limelight.getConstantTuning();
         }
     }
 

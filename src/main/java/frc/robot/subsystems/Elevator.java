@@ -153,10 +153,13 @@ public class Elevator extends SnailSubsystem {
    
     @Override 
     public void outputValues() {
-        SmartDashboard.putNumber("Elevator Position", encoder.getPosition());
-        SmartDashboard.putNumber("Elevator Velocity", encoder.getVelocity());
-        SmartDashboard.putNumber("Elevator Current", motor.getOutputCurrent());
-        SmartDashboard.putNumber("Elevator Temperature", motor.getMotorTemperature());
+        SmartDashboard.putNumberArray("Elevator Stats (pos, vel, curr, temp)", new double[] {
+            encoder.getPosition(),
+            encoder.getVelocity(),
+            motor.getOutputCurrent(),
+            motor.getMotorTemperature()
+        });
+
         SmartDashboard.putBoolean("Elevator Locked", locked);
     }
 

@@ -4,6 +4,7 @@ import static frc.robot.Constants.*;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Limelight {
 
@@ -38,5 +39,15 @@ public class Limelight {
 
     public static double getTargetArea() {
         return table.getEntry("ta").getDouble(0.0);
+    }
+
+    public static void setConstantTuning() {
+        SmartDashboard.putNumber("Vision Feedforward", VISION_FEEDFORWARD);
+        SmartDashboard.putNumber("Vision kP", VISION_KP);
+    }
+
+    public static void getConstantTuning() {
+        VISION_FEEDFORWARD = SmartDashboard.getNumber("Vision Feedforward", VISION_FEEDFORWARD);
+        VISION_KP = SmartDashboard.getNumber("Vision kP", VISION_KP);
     }
 }

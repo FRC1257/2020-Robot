@@ -178,13 +178,17 @@ public class Indexer extends SnailSubsystem {
         SmartDashboard.putString("Indexer State", state.name());
 
         SmartDashboard.putNumber("Indexer Color Sensor", lastFilteredDist);
-        SmartDashboard.putBoolean("Indexer Breakbeam Front", bottomFrontBreakbeam.get());
-        SmartDashboard.putBoolean("Indexer Breakbeam Back", bottomBackBreakbeam.get());
-        SmartDashboard.putBoolean("Indexer Can Move", canMove());
+        SmartDashboard.putBooleanArray("Indexer Booleans (Front BB, Back BB, Move)", new boolean[] {
+            bottomFrontBreakbeam.get(),
+            bottomBackBreakbeam.get(),
+            canMove()
+        });
 
-        SmartDashboard.putNumber("Indexer Front Conveyor Current", conveyorMotorFront.getOutputCurrent());
-        SmartDashboard.putNumber("Indexer Back Conveyor Current", conveyorMotorBack.getOutputCurrent());
-        SmartDashboard.putNumber("Indexer Stop Motor Current", stopMotor.getOutputCurrent());
+        SmartDashboard.putNumberArray("Indexer Currents (Front, Back, Stop)", new double[] {
+            conveyorMotorFront.getOutputCurrent(),
+            conveyorMotorBack.getOutputCurrent(),
+            stopMotor.getOutputCurrent()
+        });
     }
 
     /**

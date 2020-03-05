@@ -403,25 +403,22 @@ public class Drivetrain extends SnailSubsystem {
 
     @Override
     public void outputValues() {
-        SmartDashboard.putNumber("Drive Left Encoder Pos (m)", leftEncoder.getPosition());
-        SmartDashboard.putNumber("Drive Right Encoder Pos (m)", rightEncoder.getPosition());
-        SmartDashboard.putNumber("Drive Left Encoder Vel (mps)", leftEncoder.getVelocity());
-        SmartDashboard.putNumber("Drive Right Encoder Vel (mps)", rightEncoder.getVelocity());
+        // if (distProfile != null) {
+        //     SmartDashboard.putNumber("Drive Profile Time Left", distProfile.timeLeftUntil(pathTimer.get()));
+        //     TrapezoidProfile.State currentState = distProfile.calculate(pathTimer.get());
+        //     SmartDashboard.putNumber("Drive Profile Pos (m)", currentState.position);
+        //     SmartDashboard.putNumber("Drive Profile Vel (mps)", currentState.velocity);
+        // }
+        // if (trajectory != null) {
+        //     SmartDashboard.putNumber("Trajectory Time Left", trajectory.getTotalTimeSeconds() - pathTimer.get());
+        // }
 
-        if (distProfile != null) {
-            SmartDashboard.putNumber("Drive Profile Time Left", distProfile.timeLeftUntil(pathTimer.get()));
-            TrapezoidProfile.State currentState = distProfile.calculate(pathTimer.get());
-            SmartDashboard.putNumber("Drive Profile Pos (m)", currentState.position);
-            SmartDashboard.putNumber("Drive Profile Vel (mps)", currentState.velocity);
-        }
-        if (trajectory != null) {
-            SmartDashboard.putNumber("Trajectory Time Left", trajectory.getTotalTimeSeconds() - pathTimer.get());
-        }
+        SmartDashboard.putNumberArray("Drive Encoders (Lp, Rp, Lv, Rv)", new double[] {
+            leftEncoder.getPosition(), rightEncoder.getPosition(),
+            leftEncoder.getVelocity(), rightEncoder.getVelocity()
+        });
 
-        SmartDashboard.putBoolean("Drive Reversed", reversed);
-        SmartDashboard.putBoolean("Drive Slow Turn", slowTurning);
-
-        SmartDashboard.putString("Drive State", state.name());
+        SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {reversed, slowTurning});
     }
 
     @Override
