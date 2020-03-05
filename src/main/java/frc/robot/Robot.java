@@ -27,6 +27,8 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) {
             autoCommand.schedule();
         }
+
+        robotContainer.resetIndexer();
     }
 
     @Override
@@ -34,6 +36,8 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) {
             autoCommand.cancel();
         }
+
+        robotContainer.resetIndexer();
     }
 
     public void testInit() {

@@ -74,9 +74,9 @@ public final class Constants {
 
     public static double INDEXER_CONVEYOR_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_CONVEYOR_LOWER_SPEED = 0.4;
-    public static double INDEXER_CONVEYOR_RAISE_SPEED = -0.4;
+    public static double INDEXER_CONVEYOR_RAISE_SPEED = -0.8;
     public static double INDEXER_CONVEYOR_RETURN_SPEED = 0.2;
-    public static double INDEXER_CONVEYOR_NUDGE_SPEED = -0.2;
+    public static double INDEXER_CONVEYOR_NUDGE_SPEED = -0.3;
     public static double INDEXER_CONVEYOR_SHOOT_SPEED = -0.7;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;

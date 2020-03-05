@@ -204,4 +204,8 @@ public class RobotContainer {
             subsystems.get(outputCounter).getConstantTuning();
         }
     }
+
+    public void resetIndexer() {
+        indexer.reset();
+    }
 }

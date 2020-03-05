@@ -89,7 +89,8 @@ public class Indexer extends SnailSubsystem {
         reset();
     }
 
-    private void reset() {
+    public void reset() {
+        state = State.NEUTRAL;
         lastFilteredDist = 0;
     }
 
@@ -106,9 +107,9 @@ public class Indexer extends SnailSubsystem {
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
 
                 // automatically index once it sees a ball
-                if (ballAtBot()) {
-                    state = State.CELL_RAISING;
-                }
+                // if (ballAtBot()) {
+                //     state = State.CELL_RAISING;
+                // }
                 break;
             case SHOOTING:
                 conveyorMotorFront.set(INDEXER_CONVEYOR_SHOOT_SPEED);
@@ -134,6 +135,9 @@ public class Indexer extends SnailSubsystem {
                     conveyorMotorFront.set(INDEXER_CONVEYOR_RAISE_SPEED);
                     stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 }
+                if(ballAtTop()) {
+                    state = State.NEUTRAL;
+                }
                 break;
             case CELL_RETURNING:
                 if (ballAtBot()) {
@@ -143,6 +147,9 @@ public class Indexer extends SnailSubsystem {
                     conveyorMotorFront.set(INDEXER_CONVEYOR_RETURN_SPEED);
                     stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
                 }
+                if(ballAtTop()) {
+                    state = State.NEUTRAL;
+                }
                 break;
             case CELL_NUDGING:
                 if (!ballAtBot()) {
@@ -150,6 +157,9 @@ public class Indexer extends SnailSubsystem {
                 }
                 else {
                     conveyorMotorFront.set(INDEXER_CONVEYOR_NUDGE_SPEED);
+                }
+                if(ballAtTop()) {
+                    state = State.NEUTRAL;
                 }
                 break;
         }
@@ -258,7 +268,7 @@ public class Indexer extends SnailSubsystem {
      * Returns whether or not the breakbeam sensors detect a ball at the bottom
      */
     public boolean ballAtBot() {
-        return !bottomBackBreakbeam.get() || !bottomFrontBreakbeam.get();
+        return !bottomBackBreakbeam.get();// || !bottomFrontBreakbeam.get();
     }
 
     /**
