@@ -27,12 +27,14 @@ public class IndexerRaiseCommand extends CommandBase {
 
     @Override
     public void execute() {
+        indexer.setOverride(true);
         indexer.raise();
         indexer.setTopSpeed(topSpeedSupplier.getAsDouble());
     }
 
     @Override
     public void end(boolean interrupted) {
+        indexer.setOverride(false);
         indexer.neutral();
     }
 

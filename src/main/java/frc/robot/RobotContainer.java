@@ -26,6 +26,7 @@ import frc.robot.commands.intake.IntakeIntakeCommand;
 import frc.robot.commands.intake.IntakeNeutralCommand;
 import frc.robot.commands.intake.IntakeReleaseCommand;
 import frc.robot.commands.shooter.ShooterNeutralCommand;
+import frc.robot.commands.shooter.ShooterPIDCommand;
 import frc.robot.commands.shooter.ShooterShootCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.Gyro;
@@ -74,11 +75,11 @@ public class RobotContainer {
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
         
         indexer = new Indexer();
-        indexerTopSupplier = operatorController::getRightY;
+        indexerTopSupplier = operatorController::getLeftY;
         indexer.setDefaultCommand(new IndexerNeutralCommand(indexer, indexerTopSupplier));
 
         elevator = new Elevator();
-        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getLeftY,
+        elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getRightY,
             operatorController::getStartButton));
 
         shooter = new Shooter();
@@ -127,8 +128,8 @@ public class RobotContainer {
         // operatorController.getButton(Button.kStart.value).whenPressed(new ToggleElevatorLockCommand(elevator));
 
         // Shooting Bindings
-        operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
-        // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
+        // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
+        operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
     }
 
     public void configureAutoChoosers() {
@@ -154,37 +155,37 @@ public class RobotContainer {
     }
 
     public Command getAutoCommand() {
-        Constants.AutoType type = autoTypeChooser.getSelected();
-        Constants.AutoPosition position = autoPositionChooser.getSelected();
-        Constants.AutoGoal goal = autoGoalChooser.getSelected();
+        // Constants.AutoType type = autoTypeChooser.getSelected();
+        // Constants.AutoPosition position = autoPositionChooser.getSelected();
+        // Constants.AutoGoal goal = autoGoalChooser.getSelected();
 
-        if (type == Constants.AutoType.SEGMENTED) {
-            switch (position) {
-                case TOP:
-                    return new SegTopAuto(drivetrain, indexer, shooter, intake);
-                case MIDDLE:
-                    return new SegMiddleAuto(drivetrain, indexer, shooter, intake);
-                case BOTTOM:
-                    return new SegBottomAuto(drivetrain, indexer, shooter, intake);
-            }
-        }
+        // if (type == Constants.AutoType.SEGMENTED) {
+        //     switch (position) {
+        //         case TOP:
+        //             return new SegTopAuto(drivetrain, indexer, shooter, intake);
+        //         case MIDDLE:
+        //             return new SegMiddleAuto(drivetrain, indexer, shooter, intake);
+        //         case BOTTOM:
+        //             return new SegBottomAuto(drivetrain, indexer, shooter, intake);
+        //     }
+        // }
 
-        if (type == Constants.AutoType.TRAJECTORY) {
-            if (position == Constants.AutoPosition.BOTTOM) return new BottomAuto(drivetrain, indexer, shooter, intake);
+        // if (type == Constants.AutoType.TRAJECTORY) {
+        //     if (position == Constants.AutoPosition.BOTTOM) return new BottomAuto(drivetrain, indexer, shooter, intake);
 
-            switch (goal) {
-                case TRENCH:
-                    if (position == Constants.AutoPosition.TOP) return new TopTrenchAuto(drivetrain, indexer, shooter, intake);
-                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleTrenchAuto(drivetrain, indexer, shooter, intake);
-                case GEN_TOP: 
-                    if (position == Constants.AutoPosition.TOP) return new TopGenTopAuto(drivetrain, indexer, shooter, intake);
-                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenTopAuto(drivetrain, indexer, shooter, intake);
-                case GEN_BOTTOM:
-                    if (position == Constants.AutoPosition.TOP) return new TopGenBottomAuto(drivetrain, indexer, shooter, intake);
-                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
-                case DEFAULT: // will go to drive distance command
-            }
-        }
+        //     switch (goal) {
+        //         case TRENCH:
+        //             if (position == Constants.AutoPosition.TOP) return new TopTrenchAuto(drivetrain, indexer, shooter, intake);
+        //             else if (position == Constants.AutoPosition.MIDDLE) return new MiddleTrenchAuto(drivetrain, indexer, shooter, intake);
+        //         case GEN_TOP: 
+        //             if (position == Constants.AutoPosition.TOP) return new TopGenTopAuto(drivetrain, indexer, shooter, intake);
+        //             else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenTopAuto(drivetrain, indexer, shooter, intake);
+        //         case GEN_BOTTOM:
+        //             if (position == Constants.AutoPosition.TOP) return new TopGenBottomAuto(drivetrain, indexer, shooter, intake);
+        //             else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
+        //         case DEFAULT: // will go to drive distance command
+        //     }
+        // }
 
         return new DriveDistanceCommand(drivetrain, 2);
     }

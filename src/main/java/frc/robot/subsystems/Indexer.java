@@ -80,7 +80,7 @@ public class Indexer extends SnailSubsystem {
         conveyorMotorBack.restoreFactoryDefaults();
         conveyorMotorBack.setIdleMode(IdleMode.kBrake);
         conveyorMotorBack.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-        conveyorMotorBack.follow(conveyorMotorFrontTop, false);
+        conveyorMotorBack.follow(conveyorMotorFrontTop, true);
 
         stopMotor = new CANSparkMax(INDEXER_STOP_MOTOR_ID, MotorType.kBrushless);
         stopMotor.restoreFactoryDefaults();
@@ -122,7 +122,7 @@ public class Indexer extends SnailSubsystem {
                 // }
                 break;
             case SHOOTING:
-                conveyorMotorFrontTop.set(INDEXER_CONVEYOR_SHOOT_SPEED);
+                conveyorMotorFrontTop.set(-INDEXER_CONVEYOR_SHOOT_SPEED);
                 conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_SHOOT_SPEED);
                 stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
                 break;
@@ -175,7 +175,7 @@ public class Indexer extends SnailSubsystem {
                 break;
         }
 
-        conveyorMotorFrontTop.set(topSpeed);
+        if(state != State.SHOOTING) conveyorMotorFrontTop.set(topSpeed);
     }
 
     @Override

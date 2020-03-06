@@ -21,7 +21,8 @@ public class Shooter extends SnailSubsystem {
     public enum State {
         NEUTRAL,
         OPEN_LOOP,
-        VEL_PID
+        VEL_PID,
+        BACKING
     }
     private State state = State.NEUTRAL;
 
@@ -38,6 +39,10 @@ public class Shooter extends SnailSubsystem {
         followerMotor.follow(shooterMotor, true); // follow with inverted
 
         shooterPID = shooterMotor.getPIDController();
+        shooterPID.setP(SHOOTER_PIDF[0]);
+        shooterPID.setI(SHOOTER_PIDF[1]);
+        shooterPID.setD(SHOOTER_PIDF[2]);
+        shooterPID.setFF(SHOOTER_PIDF[3]);
         shooterEncoder = shooterMotor.getEncoder();
     }
 
@@ -52,6 +57,9 @@ public class Shooter extends SnailSubsystem {
                 break;
             case VEL_PID:
                 shooterPID.setReference(SHOOTER_VEL_SETPOINT, ControlType.kVelocity);
+                break;
+            case BACKING:
+                shooterMotor.set(SHOOTER_BACK_SPEED);
                 break;
         }
     }
@@ -68,6 +76,10 @@ public class Shooter extends SnailSubsystem {
         state = State.VEL_PID;
     }
 
+    public void backing() {
+        state = State.BACKING;
+    }
+
     public boolean withinTolerance() {
         return (SHOOTER_VEL_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_VEL_SETPOINT < 0.03;
     }
@@ -76,6 +88,7 @@ public class Shooter extends SnailSubsystem {
     public void outputValues() {
         SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
         SmartDashboard.putBoolean("Shooter Within Tolerance", withinTolerance());
+        SmartDashboard.putString("Shooter State", state.name());
 
         SmartDashboard.putNumberArray("Shooter Currents",
             new double[] {shooterMotor.getOutputCurrent(), followerMotor.getOutputCurrent()});

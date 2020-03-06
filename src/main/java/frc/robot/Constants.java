@@ -66,7 +66,7 @@ public final class Constants {
     public static final double[] ELEVATOR_VEL_PIF = {0.1, 0.0, 0.001};
 
     // Indexer Constants
-    public static int INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID = 7;
+    public static int INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID = 6;
     public static int INDEXER_CONVEYOR_BACK_MOTOR_ID = 7;
     public static int INDEXER_CONVEYOR_FRONT_BOTTOM_MOTOR_ID = 8;
     
@@ -79,7 +79,7 @@ public final class Constants {
     public static double INDEXER_CONVEYOR_RAISE_SPEED = -0.8;
     public static double INDEXER_CONVEYOR_RETURN_SPEED = 0.2;
     public static double INDEXER_CONVEYOR_NUDGE_SPEED = -0.3;
-    public static double INDEXER_CONVEYOR_SHOOT_SPEED = -0.7;
+    public static double INDEXER_CONVEYOR_SHOOT_SPEED = -0.5;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = -1.0;
@@ -103,10 +103,11 @@ public final class Constants {
 
     public static double SHOOTER_NEUTRAL_SPEED = 0;
     public static double SHOOTER_OPEN_LOOP_SPEED = 0.9;
+    public static double SHOOTER_BACK_SPEED = -0.2;
 
-    public static double[] SHOOTER_PIDF = {0.000001, 0.0, 0.0, 0.000180};
-    public static double SHOOTER_VEL_SETPOINT = 4500;
-    public static double SHOOTER_PERCENT_TOLERANCE = 3; // in %
+    public static double[] SHOOTER_PIDF = {0.00001, 0.0, 0.0, 0.000176};
+    public static double SHOOTER_VEL_SETPOINT = 4000;
+    public static double SHOOTER_PERCENT_TOLERANCE = 5; // in %
 
     // Vision Constants
     public static double VISION_FEEDFORWARD = 0;

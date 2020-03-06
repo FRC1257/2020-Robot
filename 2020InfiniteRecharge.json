@@ -1,7 +1,7 @@
 {
   "tabPane": [
     {
-      "title": "Tab 4",
+      "title": "Tab 3",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -10,41 +10,59 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "0,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Indexer Front Conveyor Current",
-              "_title": "/SmartDashboard/Indexer Front Conveyor Current"
-            }
-          },
-          "0,1": {
+          "4,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Indexer Back Conveyor Current",
-              "_title": "/SmartDashboard/Indexer Back Conveyor Current"
+              "_source0": "network_table:///SmartDashboard/Shooter Encoder Vel",
+              "_title": "SmartDashboard/Shooter Encoder Vel"
             }
           },
-          "2,0": {
+          "4,1": {
             "size": [
-              3,
-              4
+              1,
+              1
             ],
             "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Indexer Back Conveyor Current",
-              "_title": "SmartDashboard/Indexer Back Conveyor Current",
-              "Graph/Visible time": 30.0,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter State",
+              "_title": "SmartDashboard/Shooter State"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter PID kFF",
+              "_title": "SmartDashboard/Shooter PID kFF"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter PID kP",
+              "_title": "SmartDashboard/Shooter PID kP"
+            }
+          },
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter Vel PID Setpoint",
+              "_title": "SmartDashboard/Shooter Vel PID Setpoint"
             }
           },
           "5,0": {
@@ -54,19 +72,20 @@
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Indexer Front Conveyor Current",
-              "_title": "SmartDashboard/Indexer Front Conveyor Current",
+              "_source0": "network_table:///SmartDashboard/Shooter Encoder Vel",
+              "_title": "SmartDashboard/Shooter Encoder Vel",
               "Graph/Visible time": 30.0,
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0
+              "Y-axis/Lower bound": -1.0,
+              "Visible data/SmartDashboard/Shooter Encoder Vel": true
             }
           }
         }
       }
     },
     {
-      "title": "Tab 5",
+      "title": "Tab 2",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -82,8 +101,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elevator Position",
-              "_title": "/SmartDashboard/Elevator Position"
+              "_source0": "network_table:///SmartDashboard/Drive PID Dist kP",
+              "_title": "SmartDashboard/Drive PID Dist kP"
             }
           },
           "4,0": {
@@ -93,71 +112,49 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Indexer Front Conveyor Current",
-              "_title": "/SmartDashboard/Indexer Front Conveyor Current"
+              "_source0": "network_table:///SmartDashboard/Drive PID Dist kI",
+              "_title": "SmartDashboard/Drive PID Dist kI"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive PID Dist kD",
+              "_title": "SmartDashboard/Drive PID Dist kD"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive PID Maintain Angle kP",
+              "_title": "SmartDashboard/Drive PID Maintain Angle kP"
             }
           },
           "3,1": {
             "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Indexer Breakbeam Front",
-              "_title": "/SmartDashboard/Indexer Breakbeam Front",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "4,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Indexer Breakbeam Back",
-              "_title": "/SmartDashboard/Indexer Breakbeam Back",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "3,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Indexer Color Sensor",
-              "_title": "/SmartDashboard/Indexer Color Sensor"
-            }
-          },
-          "0,0": {
-            "size": [
-              3,
-              3
+              2,
+              2
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Indexer Color Sensor",
-              "_title": "SmartDashboard/Indexer Color Sensor",
+              "_source0": "network_table:///SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)",
+              "_title": "SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)",
               "Graph/Visible time": 30.0,
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0
-            }
-          },
-          "4,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Intake Motor Current",
-              "_title": "/SmartDashboard/Intake Motor Current"
+              "Y-axis/Lower bound": -1.0,
+              "Visible data/SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)[0]": true,
+              "Visible data/SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)[1]": true,
+              "Visible data/SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)[2]": true,
+              "Visible data/SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)[3]": true
             }
           }
         }
