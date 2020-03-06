@@ -18,6 +18,7 @@ public class Gyro {
     private final AHRS navx;
     private double resetRoll;
     private double resetPitch;
+    private double resetYaw;
 
     private final ADXRS450_Gyro gyro;
 
@@ -36,8 +37,8 @@ public class Gyro {
      * @return The angle in degrees limited to the range -180 to 180.
      */
     public double getYawAngle() {
-        double angle = navx.getAngle();
-        while(angle < -180) angle += 360;
+        double angle = navx.getAngle() - resetYaw;
+        while(angle <= -180) angle += 360;
         while(angle > 180) angle -= 360;
 
         return angle;
@@ -74,14 +75,16 @@ public class Gyro {
      * Sets the current yaw angle to "0".
      */
     public void zeroYawAngle() {
-        navx.setAngleAdjustment(-navx.getAngle());
+        // navx.setAngleAdjustment(-navx.getAngle());
+        resetYaw = navx.getAngle();
     }
 
     /**
      * Sets the current yaw angle to angle.
      */
     public void setYawAngle(double angle) {
-        navx.setAngleAdjustment(angle - navx.getAngle());
+        // navx.setAngleAdjustment(angle - navx.getAngle());
+        resetYaw = navx.getAngle() - angle;
     }
 
     /**

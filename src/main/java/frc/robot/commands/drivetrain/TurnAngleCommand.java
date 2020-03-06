@@ -31,7 +31,7 @@ public class TurnAngleCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
+        drivetrain.endTurn();
     }
 
     // Returns true when the command should end.

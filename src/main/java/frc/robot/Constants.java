@@ -49,7 +49,7 @@ public final class Constants {
 
     public static double ELEVATOR_SETPOINT = 100;
     public final static double ELEVATOR_BRAKE_POSITION = 1.0;
-    public final static double ELEVATOR_MAX_HEIGHT = 1000;
+    public final static double ELEVATOR_MAX_HEIGHT = 4.0;
     
     public static double ELEVATOR_KS = 0.0;
     public static double ELEVATOR_KG = 0.0;
@@ -83,7 +83,7 @@ public final class Constants {
     public static double INDEXER_CONVEYOR_SHOOT_SPEED = -0.5;
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
-    public static double INDEXER_STOP_SHOOT_SPEED = -1.0;
+    public static double INDEXER_STOP_SHOOT_SPEED = 0.2;
 
     public static int INDEXER_TOP_SENSOR_NUM_MED = 1;
     public static double INDEXER_TOP_BALL_PROXIMITY = 175;
@@ -124,22 +124,24 @@ public final class Constants {
     public static double DRIVE_WHEEL_DIAM_M = 0.1524; // m
     public static double DRIVE_GEARBOX_REDUCTION = 10.71;
 
-    public static double DRIVE_REDUCE_TURNING_CONSTANT = 0.8;
+    public static double DRIVE_REDUCE_TURNING_CONSTANT = 0.45;
 
     public static int DRIVE_PID_SLOT_VEL = 0;
-    public static double DRIVE_LEFT_VEL_PID_P = 0.1;
+    public static double DRIVE_LEFT_VEL_PID_P = 0.25;
     public static double DRIVE_LEFT_VEL_PID_I = 0.0;
-    public static double DRIVE_RIGHT_VEL_PID_P = 0.1;
+    public static double DRIVE_LEFT_VEL_PID_F = 0.25;
+    public static double DRIVE_RIGHT_VEL_PID_P = 0.25;
     public static double DRIVE_RIGHT_VEL_PID_I = 0.0;
-    public static double DRIVE_MAX_VEL = 3.0; // m/s
-    public static double DRIVE_MAX_ROT = 1.0; // rad/s
+    public static double DRIVE_RIGHT_VEL_PID_F = 0.25;
+    public static double DRIVE_MAX_VEL = 3.5; // m/s
+    public static double DRIVE_MAX_ROT = 3.0; // rad/s
 
     public static double[] DRIVE_DIST_PID = {0.6, 0.0, 0.0};
     public static double DRIVE_DIST_PID_TOLERANCE = 0.05;
     public static double DRIVE_MAINTAIN_ANGLE_PID_P = 0.1;
 
-    public static double[] DRIVE_ANGLE_PID = {0.1, 0.0, 0.0};
-    public static double DRIVE_ANGLE_PID_TOLERANCE = 0.05;
+    public static double[] DRIVE_ANGLE_PID = {0.028500, 0.0, 0.0037500};
+    public static double DRIVE_ANGLE_PID_TOLERANCE = 0.075;
 
     public static double DRIVE_KS = 0.144;
     public static double DRIVE_KV = 2.83;

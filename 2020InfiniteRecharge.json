@@ -10,75 +10,82 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "4,0": {
+          "3,0": {
             "size": [
-              1,
-              1
+              2,
+              2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter Encoder Vel",
-              "_title": "SmartDashboard/Shooter Encoder Vel"
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[1]",
+              "_title": "SmartDashboard/SendableChooser[1]"
             }
           },
-          "4,1": {
+          "6,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter State",
-              "_title": "SmartDashboard/Shooter State"
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle kD",
+              "_title": "SmartDashboard/Drive PID Angle kD"
             }
           },
-          "3,2": {
+          "7,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter PID kFF",
-              "_title": "SmartDashboard/Shooter PID kFF"
-            }
-          },
-          "3,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter PID kP",
-              "_title": "SmartDashboard/Shooter PID kP"
-            }
-          },
-          "4,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter Vel PID Setpoint",
-              "_title": "SmartDashboard/Shooter Vel PID Setpoint"
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle kI",
+              "_title": "SmartDashboard/Drive PID Angle kI"
             }
           },
           "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle kP",
+              "_title": "SmartDashboard/Drive PID Angle kP"
+            }
+          },
+          "0,0": {
             "size": [
               3,
               4
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Shooter Encoder Vel",
-              "_title": "SmartDashboard/Shooter Encoder Vel",
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle",
+              "_title": "SmartDashboard/Drive PID Angle",
               "Graph/Visible time": 30.0,
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Visible data/SmartDashboard/Shooter Encoder Vel": true
+              "Visible data/SmartDashboard/Drive PID Angle[0]": true,
+              "Visible data/SmartDashboard/Drive PID Angle[1]": true
+            }
+          },
+          "5,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle",
+              "_title": "SmartDashboard/Drive PID Angle",
+              "Graph/Visible time": 30.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Visible data/SmartDashboard/Drive PID Angle[0]": true,
+              "Visible data/SmartDashboard/Drive PID Angle[1]": true
             }
           }
         }
@@ -127,6 +134,23 @@
               "_title": "SmartDashboard/Drive PID Dist kD"
             }
           },
+          "3,1": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Drive PID Dist",
+              "_title": "SmartDashboard/Drive PID Dist",
+              "Graph/Visible time": 30.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Visible data/SmartDashboard/Drive PID Dist[0]": true,
+              "Visible data/SmartDashboard/Drive PID Dist[1]": true
+            }
+          },
           "6,0": {
             "size": [
               1,
@@ -136,25 +160,6 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Drive PID Maintain Angle kP",
               "_title": "SmartDashboard/Drive PID Maintain Angle kP"
-            }
-          },
-          "3,1": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)",
-              "_title": "SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)",
-              "Graph/Visible time": 30.0,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Visible data/SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)[0]": true,
-              "Visible data/SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)[1]": true,
-              "Visible data/SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)[2]": true,
-              "Visible data/SmartDashboard/Drive Encoders (Lp, Rp, Lv, Rv)[3]": true
             }
           }
         }

@@ -10,6 +10,7 @@ import frc.robot.commands.EjectCellCommand;
 import frc.robot.commands.IntakeCellCommand;
 import frc.robot.commands.auto.segmented.*;
 import frc.robot.commands.auto.trajectory.*;
+import frc.robot.commands.drivetrain.ClosedLoopDriveCommand;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
 import frc.robot.commands.drivetrain.ManualDriveCommand;
 import frc.robot.commands.drivetrain.ReverseDriveCommand;
@@ -88,7 +89,9 @@ public class RobotContainer {
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));
         
         drivetrain = new Drivetrain();
-        drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward,
+        // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward,
+        //     driveController::getDriveTurn, () -> driveController.getTrigger(Hand.kRight).get(), true));
+        drivetrain.setDefaultCommand(new ClosedLoopDriveCommand(drivetrain, driveController::getDriveForward,
             driveController::getDriveTurn, () -> driveController.getTrigger(Hand.kRight).get(), true));
         
         subsystems = new ArrayList<>();
@@ -110,8 +113,10 @@ public class RobotContainer {
         // Drivetrain Bindings
         driveController.getButton(Button.kY.value).whenPressed(new ReverseDriveCommand(drivetrain));
         driveController.getButton(Button.kStart.value).whenPressed(new SlowTurnCommand(drivetrain));
-        driveController.getButton(Button.kB.value).whileActiveOnce(new TurnAngleCommand(drivetrain, 90));
-        driveController.getButton(Button.kX.value).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
+        // driveController.getButton(Button.kB.value).whileActiveOnce(new TurnAngleCommand(drivetrain, 90));
+        // driveController.getButton(Button.kX.value).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
+        driveController.getButton(Button.kB.value).whileActiveOnce(new DriveDistanceCommand(drivetrain, -1.5));
+        driveController.getButton(Button.kX.value).whileActiveOnce(new DriveDistanceCommand(drivetrain, 1.5));
 
         // Intake Bindings
         operatorController.getButton(Button.kStart.value).whenPressed(new IntakeReleaseCommand(intake));
@@ -133,6 +138,8 @@ public class RobotContainer {
         // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
         operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new ShooterBackCommand(shooter));
+        
+
     }
 
     public void configureAutoChoosers() {

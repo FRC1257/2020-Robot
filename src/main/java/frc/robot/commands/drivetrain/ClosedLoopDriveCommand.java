@@ -1,5 +1,6 @@
 package frc.robot.commands.drivetrain;
 
+import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Limelight;
@@ -17,6 +18,7 @@ public class ClosedLoopDriveCommand extends CommandBase {
     private final DoubleSupplier turnSupplier;
     private final BooleanSupplier visionSupplier;
     private final boolean useVision;
+    private final SlewRateLimiter limiter;
 
     public ClosedLoopDriveCommand(Drivetrain drivetrain, DoubleSupplier forwardSupplier, DoubleSupplier turnSupplier,
         BooleanSupplier visionSupplier, boolean useVision) {
@@ -25,6 +27,7 @@ public class ClosedLoopDriveCommand extends CommandBase {
         this.turnSupplier = turnSupplier;
         this.visionSupplier = visionSupplier;
         this.useVision = useVision;
+        this.limiter = new SlewRateLimiter(1.25);
 
         addRequirements(drivetrain);
     }
@@ -32,7 +35,7 @@ public class ClosedLoopDriveCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -47,8 +50,8 @@ public class ClosedLoopDriveCommand extends CommandBase {
         if (rot > 1.0) rot = 1.0;
         if (rot < -1.0) rot = -1.0;
 
-        drivetrain.closedLoopDrive(forwardSupplier.getAsDouble() * DRIVE_MAX_VEL,
-            rot * DRIVE_MAX_ROT);
+        drivetrain.closedLoopDrive(limiter.calculate(forwardSupplier.getAsDouble()) * DRIVE_MAX_VEL,
+            -rot * DRIVE_MAX_ROT);
     }
 
     // Called once the command ends or is interrupted.
