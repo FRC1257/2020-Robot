@@ -175,7 +175,10 @@ public class Indexer extends SnailSubsystem {
                 break;
         }
 
-        if(state != State.SHOOTING) conveyorMotorFrontTop.set(topSpeed);
+        if(state != State.SHOOTING) {
+            if(topSpeed > 0 && ballAtTop()) topSpeed = 0;
+            conveyorMotorFrontTop.set(topSpeed);
+        }
     }
 
     @Override

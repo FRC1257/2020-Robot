@@ -25,6 +25,7 @@ import frc.robot.commands.intake.IntakeEjectCommand;
 import frc.robot.commands.intake.IntakeIntakeCommand;
 import frc.robot.commands.intake.IntakeNeutralCommand;
 import frc.robot.commands.intake.IntakeReleaseCommand;
+import frc.robot.commands.shooter.ShooterBackCommand;
 import frc.robot.commands.shooter.ShooterNeutralCommand;
 import frc.robot.commands.shooter.ShooterPIDCommand;
 import frc.robot.commands.shooter.ShooterShootCommand;
@@ -80,7 +81,7 @@ public class RobotContainer {
 
         elevator = new Elevator();
         elevator.setDefaultCommand(new ManualElevatorCommand(elevator, operatorController::getRightY,
-            operatorController::getStartButton));
+            operatorController::getBackButton));
 
         shooter = new Shooter();
         shooter.setDefaultCommand(new ShooterNeutralCommand(shooter));
@@ -112,7 +113,7 @@ public class RobotContainer {
         driveController.getButton(Button.kX.value).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
 
         // Intake Bindings
-        operatorController.getButton(Button.kBack.value).whenPressed(new IntakeReleaseCommand(intake));
+        operatorController.getButton(Button.kStart.value).whenPressed(new IntakeReleaseCommand(intake));
         operatorController.getButton(Button.kA.value).whileActiveOnce(new EjectCellCommand(intake, indexer));
         operatorController.getButton(Button.kB.value).whileActiveOnce(new IntakeCellCommand(intake, indexer,
                 () -> operatorController.getBumper(Hand.kLeft)));
@@ -130,6 +131,7 @@ public class RobotContainer {
         // Shooting Bindings
         // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
+        operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new ShooterBackCommand(shooter));
     }
 
     public void configureAutoChoosers() {

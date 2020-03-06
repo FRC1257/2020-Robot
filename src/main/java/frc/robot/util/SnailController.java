@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class SnailController extends XboxController {
 
@@ -15,6 +16,35 @@ public class SnailController extends XboxController {
 
     public XboxTrigger getTrigger(Hand hand) {
         return new XboxTrigger(this, hand);
+    }
+
+    public enum DPad {
+        UP,
+        RIGHT,
+        DOWN,
+        LEFT
+    }
+
+    public Trigger getDPad(DPad dpad) {
+        int angle;
+        switch(dpad) {
+            case UP:
+                angle = 0;
+                break;
+            case RIGHT:
+                angle = 90;
+                break;
+            case DOWN:
+                angle = 180;
+                break;
+            case LEFT:
+                angle = 270;
+                break;
+            default:
+                angle = 0;
+        }
+
+        return new Trigger(() -> (this.getPOV() == angle));
     }
 
     public double getLeftY() {

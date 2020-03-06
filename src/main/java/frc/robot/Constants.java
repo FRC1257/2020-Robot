@@ -107,7 +107,7 @@ public final class Constants {
 
     public static double[] SHOOTER_PIDF = {0.00001, 0.0, 0.0, 0.000176};
     public static double SHOOTER_VEL_SETPOINT = 4000;
-    public static double SHOOTER_PERCENT_TOLERANCE = 5; // in %
+    public static double SHOOTER_PERCENT_TOLERANCE = 0.05;
 
     // Vision Constants
     public static double VISION_FEEDFORWARD = 0;
@@ -133,12 +133,12 @@ public final class Constants {
     public static double DRIVE_MAX_VEL = 3.0; // m/s
     public static double DRIVE_MAX_ROT = 1.0; // rad/s
 
-    public static double[] DRIVE_DIST_PID = {0.1, 0.0, 0.0};
-    public static double DRIVE_DIST_PID_TOLERANCE = 0.1;
+    public static double[] DRIVE_DIST_PID = {0.6, 0.0, 0.0};
+    public static double DRIVE_DIST_PID_TOLERANCE = 0.05;
     public static double DRIVE_MAINTAIN_ANGLE_PID_P = 0.1;
 
     public static double[] DRIVE_ANGLE_PID = {0.1, 0.0, 0.0};
-    public static double DRIVE_ANGLE_PID_TOLERANCE = 0.1;
+    public static double DRIVE_ANGLE_PID_TOLERANCE = 0.05;
 
     public static double DRIVE_KS = 0.144;
     public static double DRIVE_KV = 2.83;

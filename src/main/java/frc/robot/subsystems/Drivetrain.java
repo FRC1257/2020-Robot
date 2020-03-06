@@ -419,6 +419,15 @@ public class Drivetrain extends SnailSubsystem {
         });
 
         SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {reversed, slowTurning});
+
+        SmartDashboard.putNumberArray("Drive PID Dist", new double[] {
+                getAverageEncoderPosition(),
+                distSetpoint
+        });
+        SmartDashboard.putNumberArray("Drive PID Angle", new double[] {
+                Gyro.getInstance().getRobotAngle(),
+                angleSetpoint
+        });
     }
 
     @Override

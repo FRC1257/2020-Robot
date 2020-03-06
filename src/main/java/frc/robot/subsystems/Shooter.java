@@ -76,12 +76,12 @@ public class Shooter extends SnailSubsystem {
         state = State.VEL_PID;
     }
 
-    public void backing() {
+    public void back() {
         state = State.BACKING;
     }
 
     public boolean withinTolerance() {
-        return (SHOOTER_VEL_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_VEL_SETPOINT < 0.03;
+        return (SHOOTER_VEL_SETPOINT - shooterEncoder.getVelocity()) / SHOOTER_VEL_SETPOINT < SHOOTER_PERCENT_TOLERANCE;
     }
 
     @Override
