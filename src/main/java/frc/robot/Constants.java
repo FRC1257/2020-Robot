@@ -19,7 +19,8 @@ public final class Constants {
     public static int NEO_550_CURRENT_LIMIT = 25;
     
     // Autonomous Constants
-    public static double AUTO_WALL_FLUSH_TIME = 2.0; // seconds
+    public static double SEC_PER_M = 1.0; // seconds / m for auto
+    public static double TURN_ANGLE_TIME = 1.5;
     public static double INDEXER_DUMP_TIME = 2.0; // seconds
     public static double SERVO_RELEASE_TIME = 5.0; // seconds
 

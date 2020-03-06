@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.EjectCellCommand;
 import frc.robot.commands.IntakeCellCommand;
 import frc.robot.commands.auto.segmented.*;
@@ -157,9 +158,9 @@ public class RobotContainer {
     }
 
     public Command getAutoCommand() {
-        // Constants.AutoType type = autoTypeChooser.getSelected();
-        // Constants.AutoPosition position = autoPositionChooser.getSelected();
-        // Constants.AutoGoal goal = autoGoalChooser.getSelected();
+         Constants.AutoType type = autoTypeChooser.getSelected();
+         Constants.AutoPosition position = autoPositionChooser.getSelected();
+         Constants.AutoGoal goal = autoGoalChooser.getSelected();
 
         // if (type == Constants.AutoType.SEGMENTED) {
         //     switch (position) {
@@ -189,7 +190,16 @@ public class RobotContainer {
         //     }
         // }
 
-        return new DriveDistanceCommand(drivetrain, 2);
+//        return new DriveDistanceCommand(drivetrain, 2);
+
+        switch(position) {
+            case MIDDLE:
+                return new TurnAngleCommand(drivetrain, 90);
+            case BOTTOM:
+                return new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 2);
+            default:
+                return new DriveDistanceCommand(drivetrain, 2); // default and top
+        }
     }
 
     public void outputValues() {
