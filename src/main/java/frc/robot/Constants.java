@@ -84,6 +84,7 @@ public final class Constants {
 
     public static double INDEXER_STOP_NEUTRAL_SPEED = 0.0;
     public static double INDEXER_STOP_SHOOT_SPEED = -1.0;
+    public static double INDEXER_STOP_BACK_SPEED = 1.0;
 
     public static int INDEXER_TOP_SENSOR_NUM_MED = 1;
     public static double INDEXER_TOP_BALL_PROXIMITY = 175;

@@ -57,6 +57,7 @@ public class Indexer extends SnailSubsystem {
         SHOOTING, // manual
         RAISING,  // manual
         LOWERING, // manual
+        BACK,
         CELL_RAISING,   // cell was just detected and the indexer should now be rising up
         CELL_RETURNING, // cell has just left breakbeam and is being put back in
         CELL_NUDGING    // cell has reentered breakbeam and is being nudged up
@@ -135,6 +136,10 @@ public class Indexer extends SnailSubsystem {
             case LOWERING:
                 conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_LOWER_SPEED);
                 stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                break;
+            case BACK:
+                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
+                stopMotor.set(INDEXER_STOP_BACK_SPEED);
                 break;
 
             // automatic indexing
@@ -274,6 +279,13 @@ public class Indexer extends SnailSubsystem {
     public void raise() {
         state = State.RAISING;
     }
+    /**
+    * Changes state to back
+    */
+    public void back() {
+        state = State.BACK;
+    }
+
 
     /**
      * Updates the filter for the color sensor distance
