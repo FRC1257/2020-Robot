@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -137,8 +138,7 @@ public class RobotContainer {
         // Shooting Bindings
         // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
-        operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new ShooterBackCommand(shooter,indexer));
-        
+        operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new ShooterBackCommand(shooter,indexer));        
 
     }
 
@@ -158,6 +158,10 @@ public class RobotContainer {
         autoGoalChooser.addOption("Trench", Constants.AutoGoal.TRENCH);
         autoGoalChooser.addOption("Generator Top", Constants.AutoGoal.GEN_TOP);
         autoGoalChooser.addOption("Generator Bottom", Constants.AutoGoal.GEN_BOTTOM);
+
+        SendableRegistry.setName(autoTypeChooser, "Auto Type");
+        SendableRegistry.setName(autoPositionChooser, "Auto Start Position");
+        SendableRegistry.setName(autoGoalChooser, "Auto Goal");
 
         SmartDashboard.putData(autoTypeChooser);
         SmartDashboard.putData(autoPositionChooser);

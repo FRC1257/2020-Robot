@@ -38,14 +38,11 @@ public class Robot extends TimedRobot {
         }
 
         robotContainer.resetIndexer();
-    }
-
-    public void testInit() {
         robotContainer.setConstantTuning();
     }
 
-    @Override
-    public void testPeriodic() {
+    @Override 
+    public void teleopPeriodic() {
         robotContainer.getConstantTuning();
     }
 }
