@@ -18,8 +18,6 @@ public class ShooterBackCommand extends CommandBase {
 
         addRequirements(shooter);
         addRequirements(indexer);
-
-
     }
 
     @Override

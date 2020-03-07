@@ -1,5 +1,7 @@
 package frc.robot.commands.drivetrain;
 
+import static frc.robot.Constants.DRIVE_SLEW_RATE_LIMITER;
+
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -27,7 +29,7 @@ public class ClosedLoopDriveCommand extends CommandBase {
         this.turnSupplier = turnSupplier;
         this.visionSupplier = visionSupplier;
         this.useVision = useVision;
-        this.limiter = new SlewRateLimiter(1.25);
+        this.limiter = new SlewRateLimiter(DRIVE_SLEW_RATE_LIMITER);
 
         addRequirements(drivetrain);
     }

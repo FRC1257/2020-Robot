@@ -5,32 +5,24 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.EjectCellCommand;
 import frc.robot.commands.IntakeCellCommand;
 import frc.robot.commands.auto.segmented.*;
-import frc.robot.commands.auto.trajectory.*;
 import frc.robot.commands.drivetrain.ClosedLoopDriveCommand;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
-import frc.robot.commands.drivetrain.ManualDriveCommand;
 import frc.robot.commands.drivetrain.ReverseDriveCommand;
 import frc.robot.commands.drivetrain.SlowTurnCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.commands.elevator.ManualElevatorCommand;
-import frc.robot.commands.elevator.ElevatorPIDCommand;
-import frc.robot.commands.elevator.ToggleElevatorLockCommand;
 import frc.robot.commands.indexer.IndexerLowerCommand;
 import frc.robot.commands.indexer.IndexerNeutralCommand;
 import frc.robot.commands.indexer.IndexerRaiseCommand;
 import frc.robot.commands.indexer.IndexerShootCommand;
-import frc.robot.commands.intake.IntakeEjectCommand;
-import frc.robot.commands.intake.IntakeIntakeCommand;
 import frc.robot.commands.intake.IntakeNeutralCommand;
 import frc.robot.commands.intake.IntakeReleaseCommand;
 import frc.robot.commands.shooter.ShooterBackCommand;
 import frc.robot.commands.shooter.ShooterNeutralCommand;
 import frc.robot.commands.shooter.ShooterPIDCommand;
-import frc.robot.commands.shooter.ShooterShootCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.Gyro;
 import frc.robot.util.Limelight;
@@ -104,6 +96,8 @@ public class RobotContainer {
         configureAutoChoosers();
         configureButtonBindings();
         outputCounter = 0;
+
+        SmartDashboard.putBoolean("Testing", false);
     }
 
     /**
@@ -138,8 +132,6 @@ public class RobotContainer {
         // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
         operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new ShooterBackCommand(shooter,indexer));
-        
-
     }
 
     public void configureAutoChoosers() {
@@ -210,27 +202,38 @@ public class RobotContainer {
     }
 
     public void outputValues() {
-        if (outputCounter < subsystems.size()) {
-            subsystems.get(outputCounter).outputValues();
-        }
-        else {
-            Gyro.getInstance().outputValues();
+        if(outputCounter % 3 == 0) {
+            if (outputCounter / 3 < subsystems.size()) {
+                subsystems.get(outputCounter / 3).outputValues();
+            }
+            else {
+                Gyro.getInstance().outputValues();
+            }
         }
 
-        outputCounter = (outputCounter + 1) % (subsystems.size() + 1);
+        outputCounter = (outputCounter + 1) % ((subsystems.size() + 2) * 3);
     }
 
     public void setConstantTuning() {
-        subsystems.forEach(SnailSubsystem::setConstantTuning);
+        if(outputCounter % 3 == 0) {
+            if (outputCounter / 3 < subsystems.size()) {
+                subsystems.get(outputCounter / 3).getConstantTuning();
+            }
+            else {
+                Gyro.getInstance().outputValues();
+            }
+        }
         Limelight.setConstantTuning();
     }
 
     public void getConstantTuning() {
-        if (outputCounter < subsystems.size()) {
-            subsystems.get(outputCounter).getConstantTuning();
-        }
-        if(outputCounter == 0) {
-            Limelight.getConstantTuning();
+        if(outputCounter % 3 == 0) {
+            if (outputCounter / 3 < subsystems.size()) {
+                subsystems.get(outputCounter).getConstantTuning();
+            }
+            else {
+                Limelight.getConstantTuning();
+            }
         }
     }
 

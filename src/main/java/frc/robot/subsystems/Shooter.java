@@ -86,10 +86,12 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void outputValues() {
-        SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
+        if(SmartDashboard.getBoolean("Testing", false)) {
+            SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
+            SmartDashboard.putString("Shooter State", state.name());
+        }
+        
         SmartDashboard.putBoolean("Shooter Within Tolerance", withinTolerance());
-        SmartDashboard.putString("Shooter State", state.name());
-
         SmartDashboard.putNumberArray("Shooter Currents",
             new double[] {shooterMotor.getOutputCurrent(), followerMotor.getOutputCurrent()});
     }

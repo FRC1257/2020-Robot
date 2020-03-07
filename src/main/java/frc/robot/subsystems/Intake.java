@@ -74,7 +74,6 @@ public class Intake extends SnailSubsystem {
      */
     @Override
     public void outputValues() {
-        // SmartDashboard.putString("Intake State", state.name());
         SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
     }
 

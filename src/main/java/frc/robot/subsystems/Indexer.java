@@ -200,21 +200,23 @@ public class Indexer extends SnailSubsystem {
      */
     @Override
     public void outputValues() {
-        SmartDashboard.putString("Indexer State", state.name());
-
-        SmartDashboard.putNumber("Indexer Color Sensor", lastFilteredDist);
         SmartDashboard.putBooleanArray("Indexer Booleans (Front BB, Back BB, Move)", new boolean[] {
             bottomFrontBreakbeam.get(),
             bottomBackBreakbeam.get(),
             canMove()
         });
-
-        SmartDashboard.putNumberArray("Indexer Currents (Front Top,Front Bottom, Back, Stop)", new double[] {
+        
+        SmartDashboard.putNumberArray("Indexer Currents (Front Top, Front Bottom, Back, Stop)", new double[] {
             conveyorMotorFrontBottom.getOutputCurrent(),
             conveyorMotorFrontTop.getOutputCurrent(),
             conveyorMotorBack.getOutputCurrent(),
             stopMotor.getOutputCurrent()
         });
+
+        if(SmartDashboard.getBoolean("Testing", false)) {
+            SmartDashboard.putString("Indexer State", state.name());
+            SmartDashboard.putNumber("Indexer Color Sensor", lastFilteredDist);
+        }
     }
 
     /**
@@ -279,13 +281,13 @@ public class Indexer extends SnailSubsystem {
     public void raise() {
         state = State.RAISING;
     }
+
     /**
     * Changes state to back
     */
     public void back() {
         state = State.BACK;
     }
-
 
     /**
      * Updates the filter for the color sensor distance

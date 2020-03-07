@@ -126,27 +126,23 @@ public final class Constants {
     public static double DRIVE_GEARBOX_REDUCTION = 10.71;
 
     public static double DRIVE_REDUCE_TURNING_CONSTANT = 0.45;
+    public static double DRIVE_SLEW_RATE_LIMITER = 1.25;
 
     public static int DRIVE_PID_SLOT_VEL = 0;
     public static double DRIVE_LEFT_VEL_PID_P = 0.25;
-    public static double DRIVE_LEFT_VEL_PID_I = 0.0;
     public static double DRIVE_LEFT_VEL_PID_F = 0.25;
     public static double DRIVE_RIGHT_VEL_PID_P = 0.25;
-    public static double DRIVE_RIGHT_VEL_PID_I = 0.0;
     public static double DRIVE_RIGHT_VEL_PID_F = 0.25;
     public static double DRIVE_MAX_VEL = 3.5; // m/s
     public static double DRIVE_MAX_ROT = 3.0; // rad/s
 
     public static double[] DRIVE_DIST_PID = {0.6, 0.0, 0.0};
-    public static double DRIVE_DIST_PID_TOLERANCE = 0.05;
     public static double DRIVE_MAINTAIN_ANGLE_PID_P = 0.1;
+    public static double DRIVE_DIST_PID_TOLERANCE = 0.05;
+    public static double DRIVE_DIST_PID_MAX_OUTPUT = 0.6;
 
     public static double[] DRIVE_ANGLE_PID = {0.028500, 0.0, 0.0037500};
     public static double DRIVE_ANGLE_PID_TOLERANCE = 0.075;
-
-    public static double DRIVE_KS = 0.144;
-    public static double DRIVE_KV = 2.83;
-    public static double DRIVE_KA = 0.47;
 
     public static double DRIVE_PROFILE_MAX_VEL = 3.0; // m/s
     public static double DRIVE_PROFILE_MAX_ACC = 5.0; // m/s^2
