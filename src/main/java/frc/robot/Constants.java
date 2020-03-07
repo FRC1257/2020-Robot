@@ -22,7 +22,6 @@ public final class Constants {
     public static double SEC_PER_M = 1.0; // seconds / m for auto
     public static double TURN_ANGLE_TIME = 1.5;
     public static double INDEXER_DUMP_TIME = 2.0; // seconds
-    public static double SERVO_RELEASE_TIME = 5.0; // seconds
 
     public enum AutoType {
         SEGMENTED,
