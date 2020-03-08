@@ -84,9 +84,8 @@ public class Intake extends SnailSubsystem {
      */
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Intake Eject Speed", Constants.Intake.INTAKE_EJECT_SPEED);
-        SmartDashboard.putNumber("Intake Intake Speed", Constants.Intake.INTAKE_INTAKE_SPEED);
-        SmartDashboard.putNumber("Intake Neutral Speed", Constants.Intake.INTAKE_NEUTRAL_SPEED);
+        SmartDashboard.putNumberArray("Intake Speeds (Eject, Intake, Neutral)", new double[] {
+            Constants.Intake.INTAKE_EJECT_SPEED, Constants.Intake.INTAKE_INTAKE_SPEED, Constants.Intake.INTAKE_NEUTRAL_SPEED});
     }
 
     /**
@@ -94,9 +93,11 @@ public class Intake extends SnailSubsystem {
      */
     @Override
     public void getConstantTuning() {
-        Constants.Intake.INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", Constants.Intake.INTAKE_EJECT_SPEED);
-        Constants.Intake.INTAKE_INTAKE_SPEED = SmartDashboard.getNumber("Intake Intake Speed", Constants.Intake.INTAKE_INTAKE_SPEED);
-        Constants.Intake.INTAKE_NEUTRAL_SPEED = SmartDashboard.getNumber("Intake Neutral Speed", Constants.Intake.INTAKE_NEUTRAL_SPEED);
+        double[] intakeSpeeds = SmartDashboard.getNumberArray("Intake Speeds (Eject, Intake, Neutral)", new double[] {
+                Constants.Intake.INTAKE_EJECT_SPEED, Constants.Intake.INTAKE_INTAKE_SPEED, Constants.Intake.INTAKE_NEUTRAL_SPEED});
+        Constants.Intake.INTAKE_EJECT_SPEED = intakeSpeeds[0];
+        Constants.Intake.INTAKE_INTAKE_SPEED = intakeSpeeds[1];
+        Constants.Intake.INTAKE_NEUTRAL_SPEED = intakeSpeeds[2];
     }
 
     /**

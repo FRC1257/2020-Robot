@@ -207,7 +207,7 @@ public class RobotContainer {
     }
 
     public void outputValues() {
-        if(outputCounter % 3 == 0) {
+        if (outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
                 subsystems.get(outputCounter / 3).outputValues();
             }
@@ -220,7 +220,7 @@ public class RobotContainer {
     }
 
     public void setConstantTuning() {
-        if(outputCounter % 3 == 0) {
+        if (outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
                 subsystems.get(outputCounter / 3).getConstantTuning();
             }
@@ -232,7 +232,7 @@ public class RobotContainer {
     }
 
     public void getConstantTuning() {
-        if(outputCounter % 3 == 0) {
+        if (outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
                 subsystems.get(outputCounter).getConstantTuning();
             }

@@ -100,10 +100,7 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Shooter PID kP", Constants.Shooter.SHOOTER_PIDF[0]);
-        SmartDashboard.putNumber("Shooter PID kI", Constants.Shooter.SHOOTER_PIDF[1]);
-        SmartDashboard.putNumber("Shooter PID kD", Constants.Shooter.SHOOTER_PIDF[2]);
-        SmartDashboard.putNumber("Shooter PID kFF", Constants.Shooter.SHOOTER_PIDF[3]);
+        SmartDashboard.putNumberArray("Shooter PID (kP, kI, kD, kFF)", Constants.Shooter.SHOOTER_PIDF);
 
         SmartDashboard.putNumber("Shooter Open Loop Speed", Constants.Shooter.SHOOTER_OPEN_LOOP_SPEED);
         SmartDashboard.putNumber("Shooter Vel PID Setpoint", Constants.Shooter.SHOOTER_VEL_SETPOINT);
@@ -111,10 +108,7 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void getConstantTuning() {
-        Constants.Shooter.SHOOTER_PIDF[0] = SmartDashboard.getNumber("Shooter PID kP", Constants.Shooter.SHOOTER_PIDF[0]);
-        Constants.Shooter.SHOOTER_PIDF[1] = SmartDashboard.getNumber("Shooter PID kI", Constants.Shooter.SHOOTER_PIDF[1]);
-        Constants.Shooter.SHOOTER_PIDF[2] = SmartDashboard.getNumber("Shooter PID kD", Constants.Shooter.SHOOTER_PIDF[2]);
-        Constants.Shooter.SHOOTER_PIDF[3] = SmartDashboard.getNumber("Shooter PID kFF", Constants.Shooter.SHOOTER_PIDF[3]);
+        Constants.Shooter.SHOOTER_PIDF = SmartDashboard.getNumberArray("Shooter PID (kP, kI, kD, kFF)", Constants.Shooter.SHOOTER_PIDF);
 
         Constants.Shooter.SHOOTER_OPEN_LOOP_SPEED = SmartDashboard.getNumber("Shooter Open Loop Speed", Constants.Shooter.SHOOTER_OPEN_LOOP_SPEED);
         Constants.Shooter.SHOOTER_VEL_SETPOINT = SmartDashboard.getNumber("Shooter Vel PID Setpoint", Constants.Shooter.SHOOTER_VEL_SETPOINT);

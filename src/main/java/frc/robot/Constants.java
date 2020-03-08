@@ -11,30 +11,30 @@ package frc.robot;
 public final class Constants {
 
     public static class ElectricalLayout {
-        public static int CONTROLLER_DRIVER_ID = 0;
-        public static int CONTROLLER_OPERATOR_ID = 1;
+        public final static int CONTROLLER_DRIVER_ID = 0;
+        public final static int CONTROLLER_OPERATOR_ID = 1;
 
         public final static int ELEVATOR_MOTOR_ID = 10;
         public final static int ELEVATOR_FOLLOWER_MOTOR_ID = 13;
         public final static int ELEVATOR_BRAKE_SERVO_ID = 1;
 
-        public static int INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID = 6;
-        public static int INDEXER_CONVEYOR_BACK_MOTOR_ID = 7;
-        public static int INDEXER_CONVEYOR_FRONT_BOTTOM_MOTOR_ID = 8;
-        public static int INDEXER_STOP_MOTOR_ID = 5;
-        public static int INDEXER_BOTTOM_BREAKBEAM_FRONT_ID = 0;
-        public static int INDEXER_BOTTOM_BREAKBEAM_BACK_ID = 1;
+        public final static int INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID = 6;
+        public final static int INDEXER_CONVEYOR_BACK_MOTOR_ID = 7;
+        public final static int INDEXER_CONVEYOR_FRONT_BOTTOM_MOTOR_ID = 8;
+        public final static int INDEXER_STOP_MOTOR_ID = 5;
+        public final static int INDEXER_BOTTOM_BREAKBEAM_FRONT_ID = 0;
+        public final static int INDEXER_BOTTOM_BREAKBEAM_BACK_ID = 1;
 
-        public static int INTAKE_MOTOR_ID = 9;
-        public static int INTAKE_SERVO_ID = 0;
+        public final static int INTAKE_MOTOR_ID = 9;
+        public final static int INTAKE_SERVO_ID = 0;
 
-        public static int SHOOTER_MOTOR_ID = 11;
-        public static int SHOOTER_FOLLOWER_MOTOR_ID = 12;
+        public final static int SHOOTER_MOTOR_ID = 11;
+        public final static int SHOOTER_FOLLOWER_MOTOR_ID = 12;
 
-        public static int DRIVE_FRONT_LEFT = 1;
-        public static int DRIVE_FRONT_RIGHT = 2;
-        public static int DRIVE_BACK_LEFT = 3;
-        public static int DRIVE_BACK_RIGHT = 4;
+        public final static int DRIVE_FRONT_LEFT = 1;
+        public final static int DRIVE_FRONT_RIGHT = 2;
+        public final static int DRIVE_BACK_LEFT = 3;
+        public final static int DRIVE_BACK_RIGHT = 4;
     }
 
     public static class Autonomous {
@@ -61,19 +61,15 @@ public final class Constants {
         public static double INDEXER_DUMP_TIME = 2.0; // seconds
     }
 
-    // NEO Constants
-    public static int NEO_CURRENT_LIMIT = 80;
-    public static int NEO_550_CURRENT_LIMIT = 25;
-
     public static class Elevator {
-        public final static double ELEVATOR_BRAKE_POSITION = 1.0;
-        public final static double ELEVATOR_MAX_HEIGHT = 4.0;
+        public static double ELEVATOR_BRAKE_POSITION = 1.0;
+        public static double ELEVATOR_MAX_HEIGHT = 4.0;
 
-        public static final int ELEVATOR_PID_SLOT_POS = 0;
-        public static final int ELEVATOR_PID_SLOT_VEL = 1;
+        public static int ELEVATOR_PID_SLOT_POS = 0;
+        public static int ELEVATOR_PID_SLOT_VEL = 1;
 
-        public static final double[] ELEVATOR_PID = {0, 0, 0};
-        public static final double[] ELEVATOR_VEL_PIF = {0.1, 0.0, 0.001};
+        public static double[] ELEVATOR_PID = {0, 0, 0};
+        public static double[] ELEVATOR_VEL_PIF = {0.1, 0.0, 0.001};
         public static double ELEVATOR_SETPOINT = 100;
 
         public static double ELEVATOR_KS = 0.0;
@@ -162,6 +158,10 @@ public final class Constants {
         public static double VISION_FEEDFORWARD = 0;
         public static double VISION_KP = 0.1;
     }
+
+    // NEO Constants
+    public static int NEO_CURRENT_LIMIT = 80;
+    public static int NEO_550_CURRENT_LIMIT = 25;
 
     public static double PI = 3.14159265;
 }

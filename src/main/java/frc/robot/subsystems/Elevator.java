@@ -174,27 +174,15 @@ public class Elevator extends SnailSubsystem {
 
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Elevator PID kP", Constants.Elevator.ELEVATOR_PID[0]);
-        SmartDashboard.putNumber("Elevator PID kI", Constants.Elevator.ELEVATOR_PID[1]);
-        SmartDashboard.putNumber("Elevator PID kD", Constants.Elevator.ELEVATOR_PID[2]);
-
-        SmartDashboard.putNumber("Elevator Vel kP", Constants.Elevator.ELEVATOR_VEL_PIF[0]);
-        SmartDashboard.putNumber("Elevator Vel kI", Constants.Elevator.ELEVATOR_VEL_PIF[1]);
-        SmartDashboard.putNumber("Elevator Vel kFF", Constants.Elevator.ELEVATOR_VEL_PIF[2]);
-
+        SmartDashboard.putNumberArray("Elevator PID (kP, kI, kD)", Constants.Elevator.ELEVATOR_PID);
+        SmartDashboard.putNumberArray("Elevator Vel (kP, kI, kF)", Constants.Elevator.ELEVATOR_VEL_PIF);
         SmartDashboard.putNumber("Elevator PID Setpoint", Constants.Elevator.ELEVATOR_SETPOINT);
     }
 
     @Override
     public void getConstantTuning() {
-        Constants.Elevator.ELEVATOR_PID[0] = SmartDashboard.getNumber("Elevator PID kP", Constants.Elevator.ELEVATOR_PID[0]);
-        Constants.Elevator.ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", Constants.Elevator.ELEVATOR_PID[1]);
-        Constants.Elevator.ELEVATOR_PID[2] = SmartDashboard.getNumber("Elevator PID kD", Constants.Elevator.ELEVATOR_PID[2]);
-
-        Constants.Elevator.ELEVATOR_VEL_PIF[0] = SmartDashboard.getNumber("Elevator Vel kP", Constants.Elevator.ELEVATOR_VEL_PIF[0]);
-        Constants.Elevator.ELEVATOR_VEL_PIF[1] = SmartDashboard.getNumber("Elevator Vel kI", Constants.Elevator.ELEVATOR_VEL_PIF[1]);
-        Constants.Elevator.ELEVATOR_VEL_PIF[2] = SmartDashboard.getNumber("Elevator Vel kFF", Constants.Elevator.ELEVATOR_VEL_PIF[2]);
-
+        Constants.Elevator.ELEVATOR_PID = SmartDashboard.getNumberArray("Elevator PID (kP, kI, kD)", Constants.Elevator.ELEVATOR_PID);
+        Constants.Elevator.ELEVATOR_VEL_PIF = SmartDashboard.getNumberArray("Elevator Vel (kP, kI, kF)", Constants.Elevator.ELEVATOR_VEL_PIF);
         Constants.Elevator.ELEVATOR_SETPOINT = SmartDashboard.getNumber("Elevator PID Setpoint", Constants.Elevator.ELEVATOR_SETPOINT);
 
         if (elevatorPID.getP(Constants.Elevator.ELEVATOR_PID_SLOT_POS) != Constants.Elevator.ELEVATOR_PID[0]) {
