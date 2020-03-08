@@ -1,6 +1,7 @@
 package frc.robot.util;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.Vision.VISION_FEEDFORWARD;
+import static frc.robot.Constants.Vision.VISION_KP;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -22,11 +23,9 @@ public class Limelight {
     }
 
     public static boolean isTargetValid() {
-        if(table.getEntry("tv").getDouble(0) == 1 && table.getEntry("tv").getDouble(1) == 1 && table.getEntry("tv").getDouble(2) == 1)
-            return true;
-        else{
-            return false;
-        }
+        return table.getEntry("tv").getDouble(0) == 1 &&
+                table.getEntry("tv").getDouble(1) == 1 &&
+                table.getEntry("tv").getDouble(2) == 1;
     }
 
     public static double getTargetX() {

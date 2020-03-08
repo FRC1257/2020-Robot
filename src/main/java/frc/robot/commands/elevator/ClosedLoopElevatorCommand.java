@@ -5,7 +5,7 @@ import frc.robot.subsystems.Elevator;
 
 import java.util.function.DoubleSupplier;
 
-import static frc.robot.Constants.ELEVATOR_MAX_VEL;
+import static frc.robot.Constants.Elevator.ELEVATOR_MAX_VEL;
 
 public class ClosedLoopElevatorCommand extends CommandBase {
 

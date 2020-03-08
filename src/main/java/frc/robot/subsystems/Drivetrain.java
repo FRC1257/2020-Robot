@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
+import frc.robot.Constants;
 import frc.robot.util.Gyro;
 
 import static frc.robot.Constants.*;
@@ -72,10 +73,10 @@ public class Drivetrain extends SnailSubsystem {
     private boolean slowTurning;
 
     public Drivetrain() {
-        frontLeftMotor = new CANSparkMax(DRIVE_FRONT_LEFT, MotorType.kBrushless);
-        frontRightMotor = new CANSparkMax(DRIVE_FRONT_RIGHT, MotorType.kBrushless);
-        backLeftMotor = new CANSparkMax(DRIVE_BACK_LEFT, MotorType.kBrushless);
-        backRightMotor = new CANSparkMax(DRIVE_BACK_RIGHT, MotorType.kBrushless);
+        frontLeftMotor = new CANSparkMax(ElectricalLayout.DRIVE_FRONT_LEFT, MotorType.kBrushless);
+        frontRightMotor = new CANSparkMax(ElectricalLayout.DRIVE_FRONT_RIGHT, MotorType.kBrushless);
+        backLeftMotor = new CANSparkMax(ElectricalLayout.DRIVE_BACK_LEFT, MotorType.kBrushless);
+        backRightMotor = new CANSparkMax(ElectricalLayout.DRIVE_BACK_RIGHT, MotorType.kBrushless);
 
         frontLeftMotor.restoreFactoryDefaults();
         frontRightMotor.restoreFactoryDefaults();
@@ -99,31 +100,31 @@ public class Drivetrain extends SnailSubsystem {
 
         leftEncoder = new CANEncoder(frontLeftMotor);
         rightEncoder = new CANEncoder(frontRightMotor);
-        leftEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / DRIVE_GEARBOX_REDUCTION);
-        rightEncoder.setPositionConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / DRIVE_GEARBOX_REDUCTION);
-        leftEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0 / DRIVE_GEARBOX_REDUCTION);
-        rightEncoder.setVelocityConversionFactor(Math.PI * DRIVE_WHEEL_DIAM_M / 60.0 / DRIVE_GEARBOX_REDUCTION);
+        leftEncoder.setPositionConversionFactor(Math.PI * Constants.Drivetrain.DRIVE_WHEEL_DIAM_M / Constants.Drivetrain.DRIVE_GEARBOX_REDUCTION);
+        rightEncoder.setPositionConversionFactor(Math.PI * Constants.Drivetrain.DRIVE_WHEEL_DIAM_M / Constants.Drivetrain.DRIVE_GEARBOX_REDUCTION);
+        leftEncoder.setVelocityConversionFactor(Math.PI * Constants.Drivetrain.DRIVE_WHEEL_DIAM_M / 60.0 / Constants.Drivetrain.DRIVE_GEARBOX_REDUCTION);
+        rightEncoder.setVelocityConversionFactor(Math.PI * Constants.Drivetrain.DRIVE_WHEEL_DIAM_M / 60.0 / Constants.Drivetrain.DRIVE_GEARBOX_REDUCTION);
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
 
         leftPID = new CANPIDController(frontLeftMotor);
         rightPID = new CANPIDController(frontRightMotor);
-        leftPID.setP(DRIVE_LEFT_VEL_PID_P, DRIVE_PID_SLOT_VEL);
-        leftPID.setFF(DRIVE_LEFT_VEL_PID_F, DRIVE_PID_SLOT_VEL);
-        rightPID.setP(DRIVE_RIGHT_VEL_PID_P, DRIVE_PID_SLOT_VEL);
-        rightPID.setFF(DRIVE_RIGHT_VEL_PID_F, DRIVE_PID_SLOT_VEL);
+        leftPID.setP(Constants.Drivetrain.DRIVE_LEFT_VEL_PID_P, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+        leftPID.setFF(Constants.Drivetrain.DRIVE_LEFT_VEL_PID_F, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+        rightPID.setP(Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_P, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+        rightPID.setFF(Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_F, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
 
-        driveKinematics = new DifferentialDriveKinematics(DRIVE_TRACK_WIDTH_M);
+        driveKinematics = new DifferentialDriveKinematics(Constants.Drivetrain.DRIVE_TRACK_WIDTH_M);
         driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(Gyro.getInstance().getRobotAngle()));
 
-        distPID = new PIDController(DRIVE_DIST_PID[0], DRIVE_DIST_PID[1], DRIVE_DIST_PID[2]);
-        distPID.setTolerance(DRIVE_DIST_PID_TOLERANCE);
+        distPID = new PIDController(Constants.Drivetrain.DRIVE_DIST_PID[0], Constants.Drivetrain.DRIVE_DIST_PID[1], Constants.Drivetrain.DRIVE_DIST_PID[2]);
+        distPID.setTolerance(Constants.Drivetrain.DRIVE_DIST_PID_TOLERANCE);
         
-        anglePID = new PIDController(DRIVE_ANGLE_PID[0], DRIVE_ANGLE_PID[1], DRIVE_ANGLE_PID[2]);
-        anglePID.setTolerance(DRIVE_ANGLE_PID_TOLERANCE);
+        anglePID = new PIDController(Constants.Drivetrain.DRIVE_ANGLE_PID[0], Constants.Drivetrain.DRIVE_ANGLE_PID[1], Constants.Drivetrain.DRIVE_ANGLE_PID[2]);
+        anglePID.setTolerance(Constants.Drivetrain.DRIVE_ANGLE_PID_TOLERANCE);
         anglePID.enableContinuousInput(-180.0, 180.0);
 
-        ramseteController = new RamseteController(DRIVE_RAMSETE_B, DRIVE_RAMSETE_ZETA);
+        ramseteController = new RamseteController(Constants.Drivetrain.DRIVE_RAMSETE_B, Constants.Drivetrain.DRIVE_RAMSETE_ZETA);
 
         pathTimer = new Timer();
 
@@ -145,33 +146,31 @@ public class Drivetrain extends SnailSubsystem {
         switch(state) {
             case MANUAL:
                 double[] arcadeSpeeds = arcadeDrive(reversed ? -speedForward : speedForward,
-                    slowTurning ? speedTurn * DRIVE_REDUCE_TURNING_CONSTANT : speedTurn);
+                    slowTurning ? speedTurn * Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT : speedTurn);
 
                 frontLeftMotor.set(arcadeSpeeds[0]);
                 frontRightMotor.set(arcadeSpeeds[1]);
-            break;
+                break;
             case CLOSED_LOOP:
                 ChassisSpeeds chassisSpeeds = new ChassisSpeeds(reversed ? -speedForward : speedForward, 0,
-                    slowTurning ? speedTurn * DRIVE_REDUCE_TURNING_CONSTANT : speedTurn);
+                    slowTurning ? speedTurn * Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT : speedTurn);
                 DifferentialDriveWheelSpeeds dSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
 
-                leftPID.setReference(dSpeeds.leftMetersPerSecond, ControlType.kVelocity, DRIVE_PID_SLOT_VEL);
-                rightPID.setReference(dSpeeds.rightMetersPerSecond, ControlType.kVelocity, DRIVE_PID_SLOT_VEL);
-            break;
+                leftPID.setReference(dSpeeds.leftMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                rightPID.setReference(dSpeeds.rightMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                break;
             case PID_DIST:
                 if (distSetpoint == -1257) {
                     state = defaultState;
                     break;
                 }
 
-                double angleError = Gyro.getInstance().getRobotAngle();
-                
                 double forward = distPID.calculate(leftEncoder.getPosition(), distSetpoint);
-                forward = Math.min(forward, DRIVE_DIST_PID_MAX_OUTPUT);
-                forward = Math.max(forward, -DRIVE_DIST_PID_MAX_OUTPUT);
+                forward = Math.min(forward, Constants.Drivetrain.DRIVE_DIST_PID_MAX_OUTPUT);
+                forward = Math.max(forward, -Constants.Drivetrain.DRIVE_DIST_PID_MAX_OUTPUT);
                 // Apply PID controller to forward speed and basic P control to angle
                 double[] pidDistArcadeSpeeds = arcadeDrive(forward,
-                    -angleError * DRIVE_MAINTAIN_ANGLE_PID_P);
+                    -Gyro.getInstance().getRobotAngle() * Constants.Drivetrain.DRIVE_MAINTAIN_ANGLE_PID_P);
 
                 frontLeftMotor.set(pidDistArcadeSpeeds[0]);
                 frontRightMotor.set(pidDistArcadeSpeeds[1]);
@@ -180,7 +179,7 @@ public class Drivetrain extends SnailSubsystem {
                     state = defaultState;
                     distSetpoint = -1257;
                 }
-            break;
+                break;
             case PID_ANGLE:
                 if (angleSetpoint == -1257) {
                     state = defaultState;
@@ -198,7 +197,7 @@ public class Drivetrain extends SnailSubsystem {
                     state = defaultState;
                     angleSetpoint = -1257;
                 }
-            break;
+                break;
             case PROFILE_DIST:
                 if (distProfile == null) {
                     state = defaultState;
@@ -212,17 +211,17 @@ public class Drivetrain extends SnailSubsystem {
                 double positionError = currentStateProf.position - leftEncoder.getPosition();
 
                 // use P to acquire desired velocity, P to acquire desired position, and feedforward to acquire desired velocity
-                leftPID.setReference(profiledDSpeeds.leftMetersPerSecond, ControlType.kVelocity, DRIVE_PID_SLOT_VEL,
-                    positionError * DRIVE_PROFILE_LEFT_POS_P, ArbFFUnits.kPercentOut);
-                    rightPID.setReference(profiledDSpeeds.rightMetersPerSecond, ControlType.kVelocity, DRIVE_PID_SLOT_VEL,
-                    positionError * DRIVE_PROFILE_RIGHT_POS_P, ArbFFUnits.kPercentOut);
+                leftPID.setReference(profiledDSpeeds.leftMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL,
+                    positionError * Constants.Drivetrain.DRIVE_PROFILE_LEFT_POS_P, ArbFFUnits.kPercentOut);
+                    rightPID.setReference(profiledDSpeeds.rightMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL,
+                    positionError * Constants.Drivetrain.DRIVE_PROFILE_RIGHT_POS_P, ArbFFUnits.kPercentOut);
 
                 if (distProfile.isFinished(pathTimer.get())) {
                     state = defaultState;
                     pathTimer.stop();
                     distProfile = null;
                 }
-            break;
+                break;
             case RAMSETE:
                 if (trajectory == null) {
                     state = defaultState;
@@ -257,18 +256,18 @@ public class Drivetrain extends SnailSubsystem {
                 }
 
                 // use P to acquire desired velocity and feedforward to acquire desired velocity
-                leftPID.setReference(leftSetpoint, ControlType.kVelocity, DRIVE_PID_SLOT_VEL);
-                rightPID.setReference(rightSetpoint, ControlType.kVelocity, DRIVE_PID_SLOT_VEL);
+                leftPID.setReference(leftSetpoint, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                rightPID.setReference(rightSetpoint, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
 
                 if (trajectory.getTotalTimeSeconds() <= pathTimer.get()) {
                     state = defaultState;
                     pathTimer.stop();
                     trajectory = null;
                 }
-            break;
+                break;
         }
 
-        // negative so that counter clockwise = positive angle
+        // negative angle so that counter clockwise = positive angle
         driveOdometry.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), rightEncoder.getPosition());
 
         speedForward = 0;
@@ -352,7 +351,7 @@ public class Drivetrain extends SnailSubsystem {
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
         distProfile = new TrapezoidProfile(
-            new TrapezoidProfile.Constraints(DRIVE_PROFILE_MAX_VEL, DRIVE_PROFILE_MAX_ACC),
+            new TrapezoidProfile.Constraints(Constants.Drivetrain.DRIVE_PROFILE_MAX_VEL, Constants.Drivetrain.DRIVE_PROFILE_MAX_ACC),
             new TrapezoidProfile.State(dist, 0),
             new TrapezoidProfile.State(0, 0));
         pathTimer.reset();
@@ -438,78 +437,78 @@ public class Drivetrain extends SnailSubsystem {
 
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
+        SmartDashboard.putNumber("Drive Reduce Turning Constant", Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT);
 
-        SmartDashboard.putNumber("Drive PID Vel Left kP", DRIVE_LEFT_VEL_PID_P);
-        SmartDashboard.putNumber("Drive PID Vel Left kFF", DRIVE_LEFT_VEL_PID_F);
-        SmartDashboard.putNumber("Drive PID Vel Right kP", DRIVE_RIGHT_VEL_PID_P);
-        SmartDashboard.putNumber("Drive PID Vel Right kFF", DRIVE_LEFT_VEL_PID_F);
+        SmartDashboard.putNumber("Drive PID Vel Left kP", Constants.Drivetrain.DRIVE_LEFT_VEL_PID_P);
+        SmartDashboard.putNumber("Drive PID Vel Left kFF", Constants.Drivetrain.DRIVE_LEFT_VEL_PID_F);
+        SmartDashboard.putNumber("Drive PID Vel Right kP", Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_P);
+        SmartDashboard.putNumber("Drive PID Vel Right kFF", Constants.Drivetrain.DRIVE_LEFT_VEL_PID_F);
 
-        SmartDashboard.putNumber("Drive PID Dist kP", DRIVE_DIST_PID[0]);
-        SmartDashboard.putNumber("Drive PID Dist kI", DRIVE_DIST_PID[1]);
-        SmartDashboard.putNumber("Drive PID Dist kD", DRIVE_DIST_PID[2]);
-        SmartDashboard.putNumber("Drive PID Maintain Angle kP", DRIVE_MAINTAIN_ANGLE_PID_P);
+        SmartDashboard.putNumber("Drive PID Dist kP", Constants.Drivetrain.DRIVE_DIST_PID[0]);
+        SmartDashboard.putNumber("Drive PID Dist kI", Constants.Drivetrain.DRIVE_DIST_PID[1]);
+        SmartDashboard.putNumber("Drive PID Dist kD", Constants.Drivetrain.DRIVE_DIST_PID[2]);
+        SmartDashboard.putNumber("Drive PID Maintain Angle kP", Constants.Drivetrain.DRIVE_MAINTAIN_ANGLE_PID_P);
         
-        SmartDashboard.putNumber("Drive PID Angle kP", DRIVE_ANGLE_PID[0]);
-        SmartDashboard.putNumber("Drive PID Angle kI", DRIVE_ANGLE_PID[1]);
-        SmartDashboard.putNumber("Drive PID Angle kD", DRIVE_ANGLE_PID[2]);
+        SmartDashboard.putNumber("Drive PID Angle kP", Constants.Drivetrain.DRIVE_ANGLE_PID[0]);
+        SmartDashboard.putNumber("Drive PID Angle kI", Constants.Drivetrain.DRIVE_ANGLE_PID[1]);
+        SmartDashboard.putNumber("Drive PID Angle kD", Constants.Drivetrain.DRIVE_ANGLE_PID[2]);
 
-        SmartDashboard.putNumber("Drive Profile Pos Left kP", DRIVE_PROFILE_LEFT_POS_P);
-        SmartDashboard.putNumber("Drive Profile Pos Right kP", DRIVE_PROFILE_RIGHT_POS_P);
+        SmartDashboard.putNumber("Drive Profile Pos Left kP", Constants.Drivetrain.DRIVE_PROFILE_LEFT_POS_P);
+        SmartDashboard.putNumber("Drive Profile Pos Right kP", Constants.Drivetrain.DRIVE_PROFILE_RIGHT_POS_P);
     }
 
     @Override
     public void getConstantTuning() {
-        DRIVE_REDUCE_TURNING_CONSTANT = SmartDashboard.getNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
+        Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT = SmartDashboard.getNumber("Drive Reduce Turning Constant", Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT);
 
-        DRIVE_LEFT_VEL_PID_P = SmartDashboard.getNumber("Drive PID Vel Left kP", DRIVE_LEFT_VEL_PID_P);
-        DRIVE_LEFT_VEL_PID_F = SmartDashboard.getNumber("Drive PID Vel Left kFF", DRIVE_LEFT_VEL_PID_F);
-        DRIVE_RIGHT_VEL_PID_P = SmartDashboard.getNumber("Drive PID Vel Right kP", DRIVE_RIGHT_VEL_PID_P);
-        DRIVE_RIGHT_VEL_PID_F = SmartDashboard.getNumber("Drive PID Vel Right kFF", DRIVE_LEFT_VEL_PID_F);
+        Constants.Drivetrain.DRIVE_LEFT_VEL_PID_P = SmartDashboard.getNumber("Drive PID Vel Left kP", Constants.Drivetrain.DRIVE_LEFT_VEL_PID_P);
+        Constants.Drivetrain.DRIVE_LEFT_VEL_PID_F = SmartDashboard.getNumber("Drive PID Vel Left kFF", Constants.Drivetrain.DRIVE_LEFT_VEL_PID_F);
+        Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_P = SmartDashboard.getNumber("Drive PID Vel Right kP", Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_P);
+        Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_F = SmartDashboard.getNumber("Drive PID Vel Right kFF", Constants.Drivetrain.DRIVE_LEFT_VEL_PID_F);
 
-        DRIVE_DIST_PID[0] = SmartDashboard.getNumber("Drive PID Dist kP", DRIVE_DIST_PID[0]);
-        DRIVE_DIST_PID[1] = SmartDashboard.getNumber("Drive PID Dist kI", DRIVE_DIST_PID[1]);
-        DRIVE_DIST_PID[2] = SmartDashboard.getNumber("Drive PID Dist kD", DRIVE_DIST_PID[2]);
-        DRIVE_MAINTAIN_ANGLE_PID_P = SmartDashboard.getNumber("Drive PID Maintain Angle kP", DRIVE_MAINTAIN_ANGLE_PID_P);
+        Constants.Drivetrain.DRIVE_DIST_PID[0] = SmartDashboard.getNumber("Drive PID Dist kP", Constants.Drivetrain.DRIVE_DIST_PID[0]);
+        Constants.Drivetrain.DRIVE_DIST_PID[1] = SmartDashboard.getNumber("Drive PID Dist kI", Constants.Drivetrain.DRIVE_DIST_PID[1]);
+        Constants.Drivetrain.DRIVE_DIST_PID[2] = SmartDashboard.getNumber("Drive PID Dist kD", Constants.Drivetrain.DRIVE_DIST_PID[2]);
+        Constants.Drivetrain.DRIVE_MAINTAIN_ANGLE_PID_P = SmartDashboard.getNumber("Drive PID Maintain Angle kP", Constants.Drivetrain.DRIVE_MAINTAIN_ANGLE_PID_P);
 
-        DRIVE_ANGLE_PID[0] = SmartDashboard.getNumber("Drive PID Angle kP", DRIVE_ANGLE_PID[0]);
-        DRIVE_ANGLE_PID[1] = SmartDashboard.getNumber("Drive PID Angle kI", DRIVE_ANGLE_PID[1]);
-        DRIVE_ANGLE_PID[2] = SmartDashboard.getNumber("Drive PID Angle kD", DRIVE_ANGLE_PID[2]);
+        Constants.Drivetrain.DRIVE_ANGLE_PID[0] = SmartDashboard.getNumber("Drive PID Angle kP", Constants.Drivetrain.DRIVE_ANGLE_PID[0]);
+        Constants.Drivetrain.DRIVE_ANGLE_PID[1] = SmartDashboard.getNumber("Drive PID Angle kI", Constants.Drivetrain.DRIVE_ANGLE_PID[1]);
+        Constants.Drivetrain.DRIVE_ANGLE_PID[2] = SmartDashboard.getNumber("Drive PID Angle kD", Constants.Drivetrain.DRIVE_ANGLE_PID[2]);
 
-        DRIVE_PROFILE_LEFT_POS_P = SmartDashboard.getNumber("Drive Profile Pos Left kP", DRIVE_PROFILE_LEFT_POS_P);
-        DRIVE_PROFILE_RIGHT_POS_P = SmartDashboard.getNumber("Drive Profile Pos Right kP", DRIVE_PROFILE_RIGHT_POS_P);
+        Constants.Drivetrain.DRIVE_PROFILE_LEFT_POS_P = SmartDashboard.getNumber("Drive Profile Pos Left kP", Constants.Drivetrain.DRIVE_PROFILE_LEFT_POS_P);
+        Constants.Drivetrain.DRIVE_PROFILE_RIGHT_POS_P = SmartDashboard.getNumber("Drive Profile Pos Right kP", Constants.Drivetrain.DRIVE_PROFILE_RIGHT_POS_P);
 
-        if (leftPID.getP() != DRIVE_LEFT_VEL_PID_P) {
-            leftPID.setP(DRIVE_LEFT_VEL_PID_P);
+        if (leftPID.getP() != Constants.Drivetrain.DRIVE_LEFT_VEL_PID_P) {
+            leftPID.setP(Constants.Drivetrain.DRIVE_LEFT_VEL_PID_P);
         }
-        if (leftPID.getFF() != DRIVE_LEFT_VEL_PID_F) {
-            leftPID.setFF(DRIVE_LEFT_VEL_PID_F);
+        if (leftPID.getFF() != Constants.Drivetrain.DRIVE_LEFT_VEL_PID_F) {
+            leftPID.setFF(Constants.Drivetrain.DRIVE_LEFT_VEL_PID_F);
         }
-        if (rightPID.getP() != DRIVE_RIGHT_VEL_PID_P) {
-            rightPID.setP(DRIVE_RIGHT_VEL_PID_P);
+        if (rightPID.getP() != Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_P) {
+            rightPID.setP(Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_P);
         }
-        if (rightPID.getFF() != DRIVE_RIGHT_VEL_PID_F) {
-            rightPID.setFF(DRIVE_RIGHT_VEL_PID_F);
-        }
-
-        if (distPID.getP() != DRIVE_DIST_PID[0]) {
-            distPID.setP(DRIVE_DIST_PID[0]);
-        }
-        if (distPID.getI() != DRIVE_DIST_PID[1]) {
-            distPID.setI(DRIVE_DIST_PID[1]);
-        }
-        if (distPID.getD() != DRIVE_DIST_PID[2]) {
-            distPID.setD(DRIVE_DIST_PID[2]);
+        if (rightPID.getFF() != Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_F) {
+            rightPID.setFF(Constants.Drivetrain.DRIVE_RIGHT_VEL_PID_F);
         }
 
-        if (anglePID.getP() != DRIVE_ANGLE_PID[0]) {
-            anglePID.setP(DRIVE_ANGLE_PID[0]);
+        if (distPID.getP() != Constants.Drivetrain.DRIVE_DIST_PID[0]) {
+            distPID.setP(Constants.Drivetrain.DRIVE_DIST_PID[0]);
         }
-        if (anglePID.getI() != DRIVE_ANGLE_PID[1]) {
-            anglePID.setI(DRIVE_ANGLE_PID[1]);
+        if (distPID.getI() != Constants.Drivetrain.DRIVE_DIST_PID[1]) {
+            distPID.setI(Constants.Drivetrain.DRIVE_DIST_PID[1]);
         }
-        if (anglePID.getD() != DRIVE_ANGLE_PID[2]) {
-            anglePID.setD(DRIVE_ANGLE_PID[2]);
+        if (distPID.getD() != Constants.Drivetrain.DRIVE_DIST_PID[2]) {
+            distPID.setD(Constants.Drivetrain.DRIVE_DIST_PID[2]);
+        }
+
+        if (anglePID.getP() != Constants.Drivetrain.DRIVE_ANGLE_PID[0]) {
+            anglePID.setP(Constants.Drivetrain.DRIVE_ANGLE_PID[0]);
+        }
+        if (anglePID.getI() != Constants.Drivetrain.DRIVE_ANGLE_PID[1]) {
+            anglePID.setI(Constants.Drivetrain.DRIVE_ANGLE_PID[1]);
+        }
+        if (anglePID.getD() != Constants.Drivetrain.DRIVE_ANGLE_PID[2]) {
+            anglePID.setD(Constants.Drivetrain.DRIVE_ANGLE_PID[2]);
         }
     }
 

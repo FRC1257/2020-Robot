@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.MedianFilter;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 
 import static frc.robot.Constants.*;
 
@@ -65,36 +66,36 @@ public class Indexer extends SnailSubsystem {
     State state = State.NEUTRAL;
 
     public Indexer() {
-        conveyorMotorFrontBottom = new CANSparkMax(INDEXER_CONVEYOR_FRONT_BOTTOM_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorFrontBottom = new CANSparkMax(ElectricalLayout.INDEXER_CONVEYOR_FRONT_BOTTOM_MOTOR_ID, MotorType.kBrushless);
         conveyorMotorFrontBottom.restoreFactoryDefaults();
         conveyorMotorFrontBottom.setIdleMode(IdleMode.kBrake);
         conveyorMotorFrontBottom.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
         conveyorMotorFrontBottom.setInverted(true);
 
-        conveyorMotorFrontTop = new CANSparkMax(INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorFrontTop = new CANSparkMax(ElectricalLayout.INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID, MotorType.kBrushless);
         conveyorMotorFrontTop.restoreFactoryDefaults();
         conveyorMotorFrontTop.setIdleMode(IdleMode.kBrake);
         conveyorMotorFrontTop.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
         conveyorMotorFrontTop.setInverted(true);
 
-        conveyorMotorBack = new CANSparkMax(INDEXER_CONVEYOR_BACK_MOTOR_ID, MotorType.kBrushless);
+        conveyorMotorBack = new CANSparkMax(ElectricalLayout.INDEXER_CONVEYOR_BACK_MOTOR_ID, MotorType.kBrushless);
         conveyorMotorBack.restoreFactoryDefaults();
         conveyorMotorBack.setIdleMode(IdleMode.kBrake);
         conveyorMotorBack.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
         conveyorMotorBack.follow(conveyorMotorFrontTop, true);
 
-        stopMotor = new CANSparkMax(INDEXER_STOP_MOTOR_ID, MotorType.kBrushless);
+        stopMotor = new CANSparkMax(ElectricalLayout.INDEXER_STOP_MOTOR_ID, MotorType.kBrushless);
         stopMotor.restoreFactoryDefaults();
         stopMotor.setIdleMode(IdleMode.kBrake);
         stopMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
-        bottomFrontBreakbeam = new DigitalInput(INDEXER_BOTTOM_BREAKBEAM_FRONT_ID);
-        bottomBackBreakbeam = new DigitalInput(INDEXER_BOTTOM_BREAKBEAM_BACK_ID);
+        bottomFrontBreakbeam = new DigitalInput(ElectricalLayout.INDEXER_BOTTOM_BREAKBEAM_FRONT_ID);
+        bottomBackBreakbeam = new DigitalInput(ElectricalLayout.INDEXER_BOTTOM_BREAKBEAM_BACK_ID);
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
-        filter = new MedianFilter(INDEXER_TOP_SENSOR_NUM_MED);
+        filter = new MedianFilter(Constants.Indexer.INDEXER_TOP_SENSOR_NUM_MED);
 
         looper = new Notifier(this::updateNotifier);
-        looper.startPeriodic(INDEXER_LOOPER_PERIOD);
+        looper.startPeriodic(Constants.Indexer.INDEXER_LOOPER_PERIOD);
 
         reset();
     }
@@ -114,8 +115,8 @@ public class Indexer extends SnailSubsystem {
 
         switch(state) {
             case NEUTRAL:
-                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
-                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                conveyorMotorFrontBottom.set(Constants.Indexer.INDEXER_CONVEYOR_NEUTRAL_SPEED);
+                stopMotor.set(Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
 
                 // automatically index once it sees a ball
                 // if (ballAtBot()) {
@@ -123,23 +124,23 @@ public class Indexer extends SnailSubsystem {
                 // }
                 break;
             case SHOOTING:
-                conveyorMotorFrontTop.set(-INDEXER_CONVEYOR_SHOOT_SPEED);
-                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_SHOOT_SPEED);
-                stopMotor.set(INDEXER_STOP_SHOOT_SPEED);
+                conveyorMotorFrontTop.set(-Constants.Indexer.INDEXER_CONVEYOR_SHOOT_SPEED);
+                conveyorMotorFrontBottom.set(Constants.Indexer.INDEXER_CONVEYOR_SHOOT_SPEED);
+                stopMotor.set(Constants.Indexer.INDEXER_STOP_SHOOT_SPEED);
                 break;
             case RAISING:
                 if (canMove() || override) {
-                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_RAISE_SPEED);
+                    conveyorMotorFrontBottom.set(Constants.Indexer.INDEXER_CONVEYOR_RAISE_SPEED);
                 }
-                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                stopMotor.set(Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case LOWERING:
-                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_LOWER_SPEED);
-                stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                conveyorMotorFrontBottom.set(Constants.Indexer.INDEXER_CONVEYOR_LOWER_SPEED);
+                stopMotor.set(Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
                 break;
             case BACK:
-                conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_NEUTRAL_SPEED);
-                stopMotor.set(INDEXER_STOP_BACK_SPEED);
+                conveyorMotorFrontBottom.set(Constants.Indexer.INDEXER_CONVEYOR_NEUTRAL_SPEED);
+                stopMotor.set(Constants.Indexer.INDEXER_STOP_BACK_SPEED);
                 break;
 
             // automatic indexing
@@ -148,8 +149,8 @@ public class Indexer extends SnailSubsystem {
                     state = State.CELL_RETURNING;
                 }
                 else {
-                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_RAISE_SPEED);
-                    stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                    conveyorMotorFrontBottom.set(Constants.Indexer.INDEXER_CONVEYOR_RAISE_SPEED);
+                    stopMotor.set(Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
                 }
                 if(ballAtTop()) {
                     state = State.NEUTRAL;
@@ -160,8 +161,8 @@ public class Indexer extends SnailSubsystem {
                     state = State.CELL_NUDGING;
                 }
                 else {
-                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_RETURN_SPEED);
-                    stopMotor.set(INDEXER_STOP_NEUTRAL_SPEED);
+                    conveyorMotorFrontBottom.set(Constants.Indexer.INDEXER_CONVEYOR_RETURN_SPEED);
+                    stopMotor.set(Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
                 }
                 if(ballAtTop()) {
                     state = State.NEUTRAL;
@@ -172,7 +173,7 @@ public class Indexer extends SnailSubsystem {
                     state = State.NEUTRAL;
                 }
                 else {
-                    conveyorMotorFrontBottom.set(INDEXER_CONVEYOR_NUDGE_SPEED);
+                    conveyorMotorFrontBottom.set(Constants.Indexer.INDEXER_CONVEYOR_NUDGE_SPEED);
                 }
                 if(ballAtTop()) {
                     state = State.NEUTRAL;
@@ -224,15 +225,15 @@ public class Indexer extends SnailSubsystem {
      */
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
-        SmartDashboard.putNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
+        SmartDashboard.putNumber("Indexer Stop Shoot Speed", Constants.Indexer.INDEXER_STOP_SHOOT_SPEED);
+        SmartDashboard.putNumber("Indexer Stop Neutral Speed", Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
 
-        SmartDashboard.putNumber("Indexer Conveyor Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyor Return Speed", INDEXER_CONVEYOR_RETURN_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyor Nudge Speed", INDEXER_CONVEYOR_NUDGE_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyor Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyor Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
-        SmartDashboard.putNumber("Indexer Conveyor Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Raise Speed", Constants.Indexer.INDEXER_CONVEYOR_RAISE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Return Speed", Constants.Indexer.INDEXER_CONVEYOR_RETURN_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Nudge Speed", Constants.Indexer.INDEXER_CONVEYOR_NUDGE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Lower Speed", Constants.Indexer.INDEXER_CONVEYOR_LOWER_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Shoot Speed", Constants.Indexer.INDEXER_CONVEYOR_SHOOT_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Neutral Speed", Constants.Indexer.INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
 
     /**
@@ -241,15 +242,15 @@ public class Indexer extends SnailSubsystem {
     @Override
     public void getConstantTuning() {
 
-        INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
-        INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
+        Constants.Indexer.INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", Constants.Indexer.INDEXER_STOP_SHOOT_SPEED);
+        Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
 
-        INDEXER_CONVEYOR_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyor Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
-        INDEXER_CONVEYOR_RETURN_SPEED = SmartDashboard.getNumber("Indexer Conveyor Return Speed", INDEXER_CONVEYOR_RETURN_SPEED);
-        INDEXER_CONVEYOR_NUDGE_SPEED = SmartDashboard.getNumber("Indexer Conveyor Nudge Speed", INDEXER_CONVEYOR_NUDGE_SPEED);
-        INDEXER_CONVEYOR_RAISE_SPEED = SmartDashboard.getNumber("Indexer Conveyor Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
-        INDEXER_CONVEYOR_LOWER_SPEED = SmartDashboard.getNumber("Indexer Conveyor Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
-        INDEXER_CONVEYOR_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyor Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
+        Constants.Indexer.INDEXER_CONVEYOR_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyor Shoot Speed", Constants.Indexer.INDEXER_CONVEYOR_SHOOT_SPEED);
+        Constants.Indexer.INDEXER_CONVEYOR_RETURN_SPEED = SmartDashboard.getNumber("Indexer Conveyor Return Speed", Constants.Indexer.INDEXER_CONVEYOR_RETURN_SPEED);
+        Constants.Indexer.INDEXER_CONVEYOR_NUDGE_SPEED = SmartDashboard.getNumber("Indexer Conveyor Nudge Speed", Constants.Indexer.INDEXER_CONVEYOR_NUDGE_SPEED);
+        Constants.Indexer.INDEXER_CONVEYOR_RAISE_SPEED = SmartDashboard.getNumber("Indexer Conveyor Raise Speed", Constants.Indexer.INDEXER_CONVEYOR_RAISE_SPEED);
+        Constants.Indexer.INDEXER_CONVEYOR_LOWER_SPEED = SmartDashboard.getNumber("Indexer Conveyor Lower Speed", Constants.Indexer.INDEXER_CONVEYOR_LOWER_SPEED);
+        Constants.Indexer.INDEXER_CONVEYOR_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyor Neutral Speed", Constants.Indexer.INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
     
     /**
@@ -300,7 +301,7 @@ public class Indexer extends SnailSubsystem {
      * Returns whether or not the color sensor detects a ball at the top
      */
     public boolean ballAtTop() {
-        return lastFilteredDist > INDEXER_TOP_BALL_PROXIMITY;
+        return lastFilteredDist > Constants.Indexer.INDEXER_TOP_BALL_PROXIMITY;
     }
 
     /**

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-import static frc.robot.Constants.SEC_PER_M;
+import static frc.robot.Constants.Autonomous.SEC_PER_M;
 
 // Use with .withTimeout() to add a timeout
 public class DriveDistanceCommand extends CommandBase {

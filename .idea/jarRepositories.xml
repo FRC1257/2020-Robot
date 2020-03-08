@@ -34,7 +34,17 @@
     <remote-repository>
       <option name="id" value="WPILocal" />
       <option name="name" value="WPILocal" />
-      <option name="url" value="file:/$PROJECT_DIR$/../../../../../Public/wpilib/2020/maven/" />
+      <option name="url" value="file:/C:/Public/wpilib/2020/maven/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="WPIcda7b4b1-d003-44ac-a1ef-485c1347059a_0Release" />
+      <option name="name" value="WPIcda7b4b1-d003-44ac-a1ef-485c1347059a_0Release" />
+      <option name="url" value="http://www.revrobotics.com/content/sw/color-sensor-v3/sdk/maven/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="WPILocal" />
+      <option name="name" value="WPILocal" />
+      <option name="url" value="file:/$PROJECT_DIR$/../../../../Public/wpilib/2020/maven/" />
     </remote-repository>
   </component>
 </project>

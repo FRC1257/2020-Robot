@@ -20,7 +20,7 @@ import frc.robot.commands.indexer.IndexerRaiseCommand;
 import frc.robot.commands.indexer.IndexerShootCommand;
 import frc.robot.commands.intake.IntakeNeutralCommand;
 import frc.robot.commands.intake.IntakeReleaseCommand;
-import frc.robot.commands.shooter.ShooterBackCommand;
+import frc.robot.commands.FreeShooterCommand;
 import frc.robot.commands.shooter.ShooterNeutralCommand;
 import frc.robot.commands.shooter.ShooterPIDCommand;
 import frc.robot.subsystems.*;
@@ -31,8 +31,8 @@ import frc.robot.util.SnailController;
 import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 
-import static frc.robot.Constants.CONTROLLER_DRIVER_ID;
-import static frc.robot.Constants.CONTROLLER_OPERATOR_ID;
+import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
+import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -53,9 +53,9 @@ public class RobotContainer {
     private final Elevator elevator;
     private final Shooter shooter;
 
-    private SendableChooser<Constants.AutoType> autoTypeChooser;
-    private SendableChooser<Constants.AutoPosition> autoPositionChooser;
-    private SendableChooser<Constants.AutoGoal> autoGoalChooser;
+    private SendableChooser<Constants.Autonomous.AutoType> autoTypeChooser;
+    private SendableChooser<Constants.Autonomous.AutoPosition> autoPositionChooser;
+    private SendableChooser<Constants.Autonomous.AutoGoal> autoGoalChooser;
 
     private int outputCounter;
 
@@ -131,7 +131,7 @@ public class RobotContainer {
         // Shooting Bindings
         // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
-        operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new ShooterBackCommand(shooter,indexer));
+        operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new FreeShooterCommand(shooter,indexer));
     }
 
     public void configureAutoChoosers() {
@@ -139,17 +139,17 @@ public class RobotContainer {
         autoPositionChooser = new SendableChooser<>();
         autoGoalChooser = new SendableChooser<>();
 
-        autoTypeChooser.setDefaultOption("Segmented", Constants.AutoType.SEGMENTED);
-        autoTypeChooser.addOption("Trajectory", Constants.AutoType.TRAJECTORY);
+        autoTypeChooser.setDefaultOption("Segmented", Constants.Autonomous.AutoType.SEGMENTED);
+        autoTypeChooser.addOption("Trajectory", Constants.Autonomous.AutoType.TRAJECTORY);
 
-        autoPositionChooser.setDefaultOption("Top Start", Constants.AutoPosition.TOP);
-        autoPositionChooser.addOption("Middle Start", Constants.AutoPosition.MIDDLE);
-        autoPositionChooser.addOption("Bottom Start", Constants.AutoPosition.BOTTOM);
+        autoPositionChooser.setDefaultOption("Top Start", Constants.Autonomous.AutoPosition.TOP);
+        autoPositionChooser.addOption("Middle Start", Constants.Autonomous.AutoPosition.MIDDLE);
+        autoPositionChooser.addOption("Bottom Start", Constants.Autonomous.AutoPosition.BOTTOM);
 
-        autoGoalChooser.setDefaultOption("Default Drive", Constants.AutoGoal.DEFAULT);
-        autoGoalChooser.addOption("Trench", Constants.AutoGoal.TRENCH);
-        autoGoalChooser.addOption("Generator Top", Constants.AutoGoal.GEN_TOP);
-        autoGoalChooser.addOption("Generator Bottom", Constants.AutoGoal.GEN_BOTTOM);
+        autoGoalChooser.setDefaultOption("Default Drive", Constants.Autonomous.AutoGoal.DEFAULT);
+        autoGoalChooser.addOption("Trench", Constants.Autonomous.AutoGoal.TRENCH);
+        autoGoalChooser.addOption("Generator Top", Constants.Autonomous.AutoGoal.GEN_TOP);
+        autoGoalChooser.addOption("Generator Bottom", Constants.Autonomous.AutoGoal.GEN_BOTTOM);
 
         SmartDashboard.putData("Auto Type", autoTypeChooser);
         SmartDashboard.putData("Auto Start Position", autoPositionChooser);
@@ -157,9 +157,9 @@ public class RobotContainer {
     }
 
     public Command getAutoCommand() {
-         Constants.AutoType type = autoTypeChooser.getSelected();
-         Constants.AutoPosition position = autoPositionChooser.getSelected();
-         Constants.AutoGoal goal = autoGoalChooser.getSelected();
+         Constants.Autonomous.AutoType type = autoTypeChooser.getSelected();
+         Constants.Autonomous.AutoPosition position = autoPositionChooser.getSelected();
+         Constants.Autonomous.AutoGoal goal = autoGoalChooser.getSelected();
 
         // if (type == Constants.AutoType.SEGMENTED) {
         //     switch (position) {

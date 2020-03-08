@@ -10,7 +10,7 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-import static frc.robot.Constants.INDEXER_DUMP_TIME;
+import static frc.robot.Constants.Autonomous.INDEXER_DUMP_TIME;
 
 public class SegDriveAndShoot extends ParallelDeadlineGroup {
 

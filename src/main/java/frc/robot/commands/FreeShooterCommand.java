@@ -1,18 +1,16 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Indexer;
 
 
-public class ShooterBackCommand extends CommandBase {
+public class FreeShooterCommand extends CommandBase {
 
     private final Shooter shooter;
     private final Indexer indexer;
 
-
-
-    public ShooterBackCommand(Shooter shooter, Indexer indexer) {
+    public FreeShooterCommand(Shooter shooter, Indexer indexer) {
         this.shooter = shooter;
         this.indexer = indexer;
 

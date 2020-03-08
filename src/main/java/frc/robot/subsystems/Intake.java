@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 
 import static frc.robot.Constants.*;
 
@@ -37,11 +38,11 @@ public class Intake extends SnailSubsystem {
     State state = State.NEUTRAL;
 
     public Intake() {
-        intakeMotor = new CANSparkMax(INTAKE_MOTOR_ID, MotorType.kBrushless);
+        intakeMotor = new CANSparkMax(ElectricalLayout.INTAKE_MOTOR_ID, MotorType.kBrushless);
         intakeMotor.restoreFactoryDefaults();
         intakeMotor.setIdleMode(IdleMode.kBrake);
         intakeMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-        intakeReleaseServo = new Servo(INTAKE_SERVO_ID);
+        intakeReleaseServo = new Servo(ElectricalLayout.INTAKE_SERVO_ID);
         isReleased = false;
     }
     
@@ -52,17 +53,17 @@ public class Intake extends SnailSubsystem {
     public void periodic() {
         switch(state) {
             case NEUTRAL: 
-                intakeMotor.set(INTAKE_NEUTRAL_SPEED);
+                intakeMotor.set(Constants.Intake.INTAKE_NEUTRAL_SPEED);
                 break;
             case INTAKING:
-                intakeMotor.set(INTAKE_INTAKE_SPEED);
+                intakeMotor.set(Constants.Intake.INTAKE_INTAKE_SPEED);
                 break;
             case EJECTING:
-                intakeMotor.set(INTAKE_EJECT_SPEED);
+                intakeMotor.set(Constants.Intake.INTAKE_EJECT_SPEED);
                 break;
         }
         if (isReleased) {
-            intakeReleaseServo.set(INTAKE_SERVO_RELEASE_SETPOINT);
+            intakeReleaseServo.set(Constants.Intake.INTAKE_SERVO_RELEASE_SETPOINT);
         }
         else {
             intakeReleaseServo.set(0);
@@ -82,9 +83,9 @@ public class Intake extends SnailSubsystem {
      */
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
-        SmartDashboard.putNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
-        SmartDashboard.putNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);
+        SmartDashboard.putNumber("Intake Eject Speed", Constants.Intake.INTAKE_EJECT_SPEED);
+        SmartDashboard.putNumber("Intake Intake Speed", Constants.Intake.INTAKE_INTAKE_SPEED);
+        SmartDashboard.putNumber("Intake Neutral Speed", Constants.Intake.INTAKE_NEUTRAL_SPEED);
     }
 
     /**
@@ -92,9 +93,9 @@ public class Intake extends SnailSubsystem {
      */
     @Override
     public void getConstantTuning() {
-        INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
-        INTAKE_INTAKE_SPEED = SmartDashboard.getNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
-        INTAKE_NEUTRAL_SPEED = SmartDashboard.getNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);
+        Constants.Intake.INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", Constants.Intake.INTAKE_EJECT_SPEED);
+        Constants.Intake.INTAKE_INTAKE_SPEED = SmartDashboard.getNumber("Intake Intake Speed", Constants.Intake.INTAKE_INTAKE_SPEED);
+        Constants.Intake.INTAKE_NEUTRAL_SPEED = SmartDashboard.getNumber("Intake Neutral Speed", Constants.Intake.INTAKE_NEUTRAL_SPEED);
     }
 
     /**
