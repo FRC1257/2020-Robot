@@ -393,7 +393,7 @@ public class Drivetrain extends SnailSubsystem {
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
         
-        driveOdometry.resetPosition(pose, new Rotation2d(Gyro.getInstance().getRobotAngle()));
+        driveOdometry.resetPosition(pose, new Rotation2d(-Gyro.getInstance().getRobotAngle()));
     }
 
     @Override
