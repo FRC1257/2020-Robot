@@ -171,27 +171,15 @@ public class Elevator extends SnailSubsystem {
 
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Elevator PID kP", ELEVATOR_PID[0]);
-        SmartDashboard.putNumber("Elevator PID kI", ELEVATOR_PID[1]);
-        SmartDashboard.putNumber("Elevator PID kD", ELEVATOR_PID[2]);
-
-        SmartDashboard.putNumber("Elevator Vel kP", ELEVATOR_VEL_PIF[0]);
-        SmartDashboard.putNumber("Elevator Vel kI", ELEVATOR_VEL_PIF[1]);
-        SmartDashboard.putNumber("Elevator Vel kFF", ELEVATOR_VEL_PIF[2]);
-
+        SmartDashboard.putNumberArray("Elevator PID (kP, kI, kD)", ELEVATOR_PID);
+        SmartDashboard.putNumberArray("Elevator Vel (kP, kI, kF)", ELEVATOR_VEL_PIF);
         SmartDashboard.putNumber("Elevator PID Setpoint", ELEVATOR_SETPOINT);
     }
 
     @Override
     public void getConstantTuning() {
-        ELEVATOR_PID[0] = SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0]);
-        ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1]);
-        ELEVATOR_PID[2] = SmartDashboard.getNumber("Elevator PID kD", ELEVATOR_PID[2]);
-
-        ELEVATOR_VEL_PIF[0] = SmartDashboard.getNumber("Elevator Vel kP", ELEVATOR_VEL_PIF[0]);
-        ELEVATOR_VEL_PIF[1] = SmartDashboard.getNumber("Elevator Vel kI", ELEVATOR_VEL_PIF[1]);
-        ELEVATOR_VEL_PIF[2] = SmartDashboard.getNumber("Elevator Vel kFF", ELEVATOR_VEL_PIF[2]);
-
+        ELEVATOR_PID = SmartDashboard.getNumberArray("Elevator PID (kP, kI, kD)", ELEVATOR_PID);
+        ELEVATOR_VEL_PIF = SmartDashboard.getNumberArray("Elevator Vel (kP, kI, kF)", ELEVATOR_VEL_PIF);
         ELEVATOR_SETPOINT = SmartDashboard.getNumber("Elevator PID Setpoint", ELEVATOR_SETPOINT);
 
         if (elevatorPID.getP(ELEVATOR_PID_SLOT_POS) != ELEVATOR_PID[0]) {

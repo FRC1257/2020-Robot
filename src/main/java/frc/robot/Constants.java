@@ -62,8 +62,8 @@ public final class Constants {
 
     public static final int ELEVATOR_PID_SLOT_POS = 0;
     public static final int ELEVATOR_PID_SLOT_VEL = 1;
-    public static final double[] ELEVATOR_PID = {0, 0, 0};
-    public static final double[] ELEVATOR_VEL_PIF = {0.1, 0.0, 0.001};
+    public static double[] ELEVATOR_PID = {0, 0, 0};
+    public static double[] ELEVATOR_VEL_PIF = {0.1, 0.0, 0.001};
 
     // Indexer Constants
     public static int INDEXER_CONVEYOR_FRONT_TOP_MOTOR_ID = 6;

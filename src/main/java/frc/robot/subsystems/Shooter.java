@@ -98,10 +98,7 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumber("Shooter PID kP", SHOOTER_PIDF[0]);
-        SmartDashboard.putNumber("Shooter PID kI", SHOOTER_PIDF[1]);
-        SmartDashboard.putNumber("Shooter PID kD", SHOOTER_PIDF[2]);
-        SmartDashboard.putNumber("Shooter PID kFF", SHOOTER_PIDF[3]);
+        SmartDashboard.putNumberArray("Shooter PID (kP, kI, kD, kFF)", SHOOTER_PIDF);
 
         SmartDashboard.putNumber("Shooter Open Loop Speed", SHOOTER_OPEN_LOOP_SPEED);
         SmartDashboard.putNumber("Shooter Vel PID Setpoint", SHOOTER_VEL_SETPOINT);
@@ -109,10 +106,7 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void getConstantTuning() {
-        SHOOTER_PIDF[0] = SmartDashboard.getNumber("Shooter PID kP", SHOOTER_PIDF[0]);
-        SHOOTER_PIDF[1] = SmartDashboard.getNumber("Shooter PID kI", SHOOTER_PIDF[1]);
-        SHOOTER_PIDF[2] = SmartDashboard.getNumber("Shooter PID kD", SHOOTER_PIDF[2]);
-        SHOOTER_PIDF[3] = SmartDashboard.getNumber("Shooter PID kFF", SHOOTER_PIDF[3]);
+        SHOOTER_PIDF = SmartDashboard.getNumberArray("Shooter PID (kP, kI, kD, kFF)", SHOOTER_PIDF);
 
         SHOOTER_OPEN_LOOP_SPEED = SmartDashboard.getNumber("Shooter Open Loop Speed", SHOOTER_OPEN_LOOP_SPEED);
         SHOOTER_VEL_SETPOINT = SmartDashboard.getNumber("Shooter Vel PID Setpoint", SHOOTER_VEL_SETPOINT);

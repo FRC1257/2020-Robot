@@ -400,7 +400,7 @@ public class Drivetrain extends SnailSubsystem {
     public void outputValues() {
         SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {reversed, slowTurning});
 
-        if(SmartDashboard.getBoolean("Testing", false)) {
+        if (SmartDashboard.getBoolean("Testing", false)) {
             if (distProfile != null) {
                 SmartDashboard.putNumber("Drive Profile Time Left", distProfile.timeLeftUntil(pathTimer.get()));
                 TrapezoidProfile.State currentState = distProfile.calculate(pathTimer.get());
@@ -440,56 +440,45 @@ public class Drivetrain extends SnailSubsystem {
     public void setConstantTuning() {
         SmartDashboard.putNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
 
-        SmartDashboard.putNumber("Drive PID Vel Left kP", DRIVE_LEFT_VEL_PID_P);
-        SmartDashboard.putNumber("Drive PID Vel Left kFF", DRIVE_LEFT_VEL_PID_F);
-        SmartDashboard.putNumber("Drive PID Vel Right kP", DRIVE_RIGHT_VEL_PID_P);
-        SmartDashboard.putNumber("Drive PID Vel Right kFF", DRIVE_LEFT_VEL_PID_F);
+        SmartDashboard.putNumberArray("Drive PID Vel (Left kP, kFF; Right kP, kFF)", new double[] {
+            DRIVE_LEFT_VEL_PID_P, DRIVE_LEFT_VEL_PID_F, DRIVE_RIGHT_VEL_PID_P, DRIVE_RIGHT_VEL_PID_F});
 
-        SmartDashboard.putNumber("Drive PID Dist kP", DRIVE_DIST_PID[0]);
-        SmartDashboard.putNumber("Drive PID Dist kI", DRIVE_DIST_PID[1]);
-        SmartDashboard.putNumber("Drive PID Dist kD", DRIVE_DIST_PID[2]);
+        SmartDashboard.putNumberArray("Drive PID Dist (kP, kI, kD)", DRIVE_DIST_PID);
         SmartDashboard.putNumber("Drive PID Maintain Angle kP", DRIVE_MAINTAIN_ANGLE_PID_P);
         
-        SmartDashboard.putNumber("Drive PID Angle kP", DRIVE_ANGLE_PID[0]);
-        SmartDashboard.putNumber("Drive PID Angle kI", DRIVE_ANGLE_PID[1]);
-        SmartDashboard.putNumber("Drive PID Angle kD", DRIVE_ANGLE_PID[2]);
-
-        SmartDashboard.putNumber("Drive Profile Pos Left kP", DRIVE_PROFILE_LEFT_POS_P);
-        SmartDashboard.putNumber("Drive Profile Pos Right kP", DRIVE_PROFILE_RIGHT_POS_P);
+        SmartDashboard.putNumberArray("Drive PID Angle", DRIVE_ANGLE_PID);
+        SmartDashboard.putNumberArray("Drive Profile Pos kP (Left, Right)", new double[] {
+            DRIVE_PROFILE_LEFT_POS_P, DRIVE_PROFILE_RIGHT_POS_P});
     }
 
     @Override
     public void getConstantTuning() {
         DRIVE_REDUCE_TURNING_CONSTANT = SmartDashboard.getNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
 
-        DRIVE_LEFT_VEL_PID_P = SmartDashboard.getNumber("Drive PID Vel Left kP", DRIVE_LEFT_VEL_PID_P);
-        DRIVE_LEFT_VEL_PID_F = SmartDashboard.getNumber("Drive PID Vel Left kFF", DRIVE_LEFT_VEL_PID_F);
-        DRIVE_RIGHT_VEL_PID_P = SmartDashboard.getNumber("Drive PID Vel Right kP", DRIVE_RIGHT_VEL_PID_P);
-        DRIVE_RIGHT_VEL_PID_F = SmartDashboard.getNumber("Drive PID Vel Right kFF", DRIVE_LEFT_VEL_PID_F);
-
-        DRIVE_DIST_PID[0] = SmartDashboard.getNumber("Drive PID Dist kP", DRIVE_DIST_PID[0]);
-        DRIVE_DIST_PID[1] = SmartDashboard.getNumber("Drive PID Dist kI", DRIVE_DIST_PID[1]);
-        DRIVE_DIST_PID[2] = SmartDashboard.getNumber("Drive PID Dist kD", DRIVE_DIST_PID[2]);
+        double[] DRIVE_VEL_PIDF = SmartDashboard.getNumberArray("Drive PID Vel (Left kP, kFF; Right kP, kFF)", new double[] {
+            DRIVE_LEFT_VEL_PID_P, DRIVE_LEFT_VEL_PID_F, DRIVE_RIGHT_VEL_PID_P, DRIVE_RIGHT_VEL_PID_F});
+    
+        DRIVE_DIST_PID = SmartDashboard.getNumberArray("Drive PID Dist (kP, kI, kD)", DRIVE_DIST_PID);
         DRIVE_MAINTAIN_ANGLE_PID_P = SmartDashboard.getNumber("Drive PID Maintain Angle kP", DRIVE_MAINTAIN_ANGLE_PID_P);
 
-        DRIVE_ANGLE_PID[0] = SmartDashboard.getNumber("Drive PID Angle kP", DRIVE_ANGLE_PID[0]);
-        DRIVE_ANGLE_PID[1] = SmartDashboard.getNumber("Drive PID Angle kI", DRIVE_ANGLE_PID[1]);
-        DRIVE_ANGLE_PID[2] = SmartDashboard.getNumber("Drive PID Angle kD", DRIVE_ANGLE_PID[2]);
+        DRIVE_ANGLE_PID = SmartDashboard.getNumberArray("Drive PID Angle", DRIVE_ANGLE_PID);
 
-        DRIVE_PROFILE_LEFT_POS_P = SmartDashboard.getNumber("Drive Profile Pos Left kP", DRIVE_PROFILE_LEFT_POS_P);
-        DRIVE_PROFILE_RIGHT_POS_P = SmartDashboard.getNumber("Drive Profile Pos Right kP", DRIVE_PROFILE_RIGHT_POS_P);
+        double[] DRIVE_PROFILE_POS_P = SmartDashboard.getNumberArray("Drive Profile Pos kP (Left, Right)", new double[] {
+            DRIVE_PROFILE_LEFT_POS_P, DRIVE_PROFILE_RIGHT_POS_P});
+        DRIVE_PROFILE_LEFT_POS_P = DRIVE_PROFILE_POS_P[0];
+        DRIVE_PROFILE_RIGHT_POS_P = DRIVE_PROFILE_POS_P[1];
 
-        if (leftPID.getP() != DRIVE_LEFT_VEL_PID_P) {
-            leftPID.setP(DRIVE_LEFT_VEL_PID_P);
+        if (leftPID.getP() != DRIVE_VEL_PIDF[0]) {
+            leftPID.setP(DRIVE_VEL_PIDF[0]);
         }
-        if (leftPID.getFF() != DRIVE_LEFT_VEL_PID_F) {
-            leftPID.setFF(DRIVE_LEFT_VEL_PID_F);
+        if (leftPID.getFF() != DRIVE_VEL_PIDF[1]) {
+            leftPID.setFF(DRIVE_VEL_PIDF[1]);
         }
-        if (rightPID.getP() != DRIVE_RIGHT_VEL_PID_P) {
-            rightPID.setP(DRIVE_RIGHT_VEL_PID_P);
+        if (rightPID.getP() != DRIVE_VEL_PIDF[2]) {
+            rightPID.setP(DRIVE_VEL_PIDF[2]);
         }
-        if (rightPID.getFF() != DRIVE_RIGHT_VEL_PID_F) {
-            rightPID.setFF(DRIVE_RIGHT_VEL_PID_F);
+        if (rightPID.getFF() != DRIVE_VEL_PIDF[3]) {
+            rightPID.setFF(DRIVE_VEL_PIDF[3]);
         }
 
         if (distPID.getP() != DRIVE_DIST_PID[0]) {
