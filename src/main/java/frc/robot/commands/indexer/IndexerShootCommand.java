@@ -1,9 +1,10 @@
 package frc.robot.commands.indexer;
 
-import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
+
+import java.util.function.BooleanSupplier;
 
 /**
  * - Moves the power cells to the shooter via the conveyor belt 

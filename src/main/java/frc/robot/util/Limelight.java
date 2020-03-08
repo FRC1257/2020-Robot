@@ -1,11 +1,11 @@
 package frc.robot.util;
 
-import static frc.robot.Constants.Vision.VISION_FEEDFORWARD;
-import static frc.robot.Constants.Vision.VISION_KP;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static frc.robot.Constants.Vision.VISION_FEEDFORWARD;
+import static frc.robot.Constants.Vision.VISION_KP;
 
 public class Limelight {
 

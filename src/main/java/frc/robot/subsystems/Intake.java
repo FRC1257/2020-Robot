@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 /**
  * Subsystem to handle the intake mechanism

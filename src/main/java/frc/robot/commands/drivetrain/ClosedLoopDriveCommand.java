@@ -1,7 +1,5 @@
 package frc.robot.commands.drivetrain;
 
-import static frc.robot.Constants.Drivetrain.DRIVE_CLOSED_LOOP_SLEW_RATE_LIMITER;
-
 import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -10,6 +8,7 @@ import frc.robot.util.Limelight;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import static frc.robot.Constants.Drivetrain.DRIVE_CLOSED_LOOP_SLEW_RATE_LIMITER;
 import static frc.robot.Constants.Drivetrain.DRIVE_MAX_ROT;
 import static frc.robot.Constants.Drivetrain.DRIVE_MAX_VEL;
 

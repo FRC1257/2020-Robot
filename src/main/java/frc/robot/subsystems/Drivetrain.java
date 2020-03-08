@@ -2,12 +2,11 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
+import com.revrobotics.CANPIDController.ArbFFUnits;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
-import com.revrobotics.CANPIDController.ArbFFUnits;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -25,7 +24,9 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.Constants;
 import frc.robot.util.Gyro;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.NEO_CURRENT_LIMIT;
+import static frc.robot.Constants.PI;
 
 public class Drivetrain extends SnailSubsystem {
   

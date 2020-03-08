@@ -9,7 +9,8 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 public class Shooter extends SnailSubsystem {
 

@@ -1,9 +1,9 @@
 package frc.robot.commands.indexer;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
+
+import java.util.function.DoubleSupplier;
 
 /**
  * Maintains the position of the power cells in the indexer

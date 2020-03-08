@@ -6,12 +6,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
-// import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.NEO_CURRENT_LIMIT;
+
+// import edu.wpi.first.wpilibj.Servo;
 
 public class Elevator extends SnailSubsystem {
   
