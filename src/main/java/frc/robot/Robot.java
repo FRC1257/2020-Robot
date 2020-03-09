@@ -42,6 +42,10 @@ public class Robot extends TimedRobot {
         }
 
         robotContainer.resetIndexer();
-        if (SmartDashboard.getBoolean("Testing", false)) robotContainer.setConstantTuning();
+    }
+
+    @Override
+    public void testInit() {
+        robotContainer.setConstantTuning();
     }
 }

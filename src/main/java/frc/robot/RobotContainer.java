@@ -220,13 +220,8 @@ public class RobotContainer {
     }
 
     public void setConstantTuning() {
-        if (outputCounter % 3 == 0) {
-            if (outputCounter / 3 < subsystems.size()) {
-                subsystems.get(outputCounter / 3).getConstantTuning();
-            }
-            else {
-                Gyro.getInstance().outputValues();
-            }
+        for(SnailSubsystem subsystem : subsystems) {
+            subsystem.setConstantTuning();
         }
         Limelight.setConstantTuning();
     }
@@ -234,7 +229,7 @@ public class RobotContainer {
     public void getConstantTuning() {
         if (outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
-                subsystems.get(outputCounter).getConstantTuning();
+                subsystems.get(outputCounter / 3).getConstantTuning();
             }
             else {
                 Limelight.getConstantTuning();
