@@ -40,10 +40,14 @@ public class Trajectories {
         trajectoryConfig = new TrajectoryConfig(DRIVE_PATH_MAX_VEL, DRIVE_PATH_MAX_ACC);
         trajectoryConfig.setKinematics(new DifferentialDriveKinematics(DRIVE_TRACK_WIDTH_M));
 
-        pointMap.put("Bottom", new TrajectoryPoints(true, 90, 90,
-                new Translation2d(3.048,-5.655), new Translation2d(0.445,-2.404)));
+        pointMap.put("Top-Trench-1", new TrajectoryPoints(true, 0, 0,
+            new Translation2d(3.048, -2.404), new Translation2d(0.445, -2.404)));
+        pointMap.put("Top-Trench-2", new TrajectoryPoints(false, 0, 0,
+            new Translation2d(0.445, -2.404), new Translation2d(5.248, -0.705)));
+            
+        pointMap.put("Bottom", new TrajectoryPoints(true, 0, 0,
+                new Translation2d(3.048, -5.655), new Translation2d(0.445, -2.404)));
         // TODO Add the rest of the trajectories
-        // TODO Add visualization of trajectories
 
         for (String key : pointMap.keySet()) {
             generateTrajectory(key);
