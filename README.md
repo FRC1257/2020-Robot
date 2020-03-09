@@ -16,7 +16,10 @@ Our code is written in Java and the 2020 WPILib command-based framework.
 - Shooter
 - Elevator
 
-# Vendor Dependencies
+## Trajectory Visualizer
+To plan our auto paths, we use the builtin WPILib `TrajectoryGenerator`, but we wrote our own program called [`TrajectoryVisualizer`](src/main/java/frc/robot/commands/auto/trajectory/visualization/TrajectoryVisualizer.java) that helps us visualize these on top of a field.
+
+## Vendor Dependencies
 
 - REV Robotics
 - Kauai Labs navX-MXP

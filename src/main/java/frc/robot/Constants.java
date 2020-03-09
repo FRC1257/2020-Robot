@@ -145,8 +145,9 @@ public final class Constants {
         public static double[] DRIVE_ANGLE_PID = {0.028500, 0.0, 0.0037500};
         public static double DRIVE_ANGLE_PID_TOLERANCE = 0.075;
 
-        public static double DRIVE_PROFILE_MAX_VEL = 3.0; // m/s
-        public static double DRIVE_PROFILE_MAX_ACC = 5.0; // m/s^2
+        public static double DRIVE_PATH_MAX_VEL = 2.0; // m/s
+        public static double DRIVE_PATH_MAX_ACC = 3.0; // m/s^2
+
         public static double DRIVE_PROFILE_RIGHT_POS_P = 0.1;
         public static double DRIVE_PROFILE_LEFT_POS_P = 0.1;
 

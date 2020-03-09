@@ -10,7 +10,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.TrajectoryLoader;
 
 import static frc.robot.Constants.Autonomous.INDEXER_DUMP_TIME;
 
@@ -18,8 +17,8 @@ public class TrajDriveAndShoot extends ParallelDeadlineGroup {
 
     public TrajDriveAndShoot(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Trajectory trajectory, Intake intake) {
         super(new SequentialCommandGroup(
-                new ResetAutoPositionCommand(drivetrain, TrajectoryLoader.getInitialPoseReversed(trajectory)),
-                new DriveTrajectoryCommand(drivetrain, trajectory, true),
+                new SetRobotPoseCommand(drivetrain, trajectory.getInitialPose()),
+                new DriveTrajectoryCommand(drivetrain, trajectory),
                 (new IndexerShootCommand(indexer, shooter, () -> true)).withTimeout(INDEXER_DUMP_TIME)),
             new ShooterPIDCommand(shooter)
         );

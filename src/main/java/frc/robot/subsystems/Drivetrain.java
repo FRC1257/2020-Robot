@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Transform2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -26,7 +24,6 @@ import frc.robot.util.Gyro;
 
 import static frc.robot.Constants.ElectricalLayout;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
-import static frc.robot.Constants.PI;
 
 public class Drivetrain extends SnailSubsystem {
   
@@ -55,7 +52,6 @@ public class Drivetrain extends SnailSubsystem {
 
     private final RamseteController ramseteController;
     private Trajectory trajectory;
-    private boolean reversedTrajectory;
 
     public enum State {
         MANUAL,
@@ -211,7 +207,7 @@ public class Drivetrain extends SnailSubsystem {
 
                 double positionError = currentStateProf.position - leftEncoder.getPosition();
 
-                // use P to acquire desired velocity, P to acquire desired position, and feedforward to acquire desired velocity
+                // use P and feedforward to acquire desired velocity, P to acquire desired position
                 leftPID.setReference(profiledDSpeeds.leftMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL,
                     positionError * Constants.Drivetrain.DRIVE_PROFILE_LEFT_POS_P, ArbFFUnits.kPercentOut);
                     rightPID.setReference(profiledDSpeeds.rightMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL,
@@ -230,35 +226,12 @@ public class Drivetrain extends SnailSubsystem {
                 }
 
                 Trajectory.State currentStateTraj = trajectory.sample(pathTimer.get());
-                ChassisSpeeds ramseteChassisSpeeds;
-
-                if (!reversedTrajectory) {
-                    ramseteChassisSpeeds = ramseteController.calculate(
-                        driveOdometry.getPoseMeters(), 
-                        currentStateTraj);
-                }
-                else {
-                    ramseteChassisSpeeds = ramseteController.calculate(
-                        driveOdometry.getPoseMeters().transformBy(new Transform2d(new Translation2d(0, 0), new Rotation2d(PI))), 
-                        currentStateTraj);
-                }
+                ChassisSpeeds ramseteChassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentStateTraj);
                 DifferentialDriveWheelSpeeds ramseteDSpeeds = driveKinematics.toWheelSpeeds(ramseteChassisSpeeds);
 
-                double leftSetpoint;
-                double rightSetpoint;
-
-                if (!reversedTrajectory) {
-                    leftSetpoint = ramseteDSpeeds.leftMetersPerSecond;
-                    rightSetpoint = ramseteDSpeeds.rightMetersPerSecond;
-                }
-                else {
-                    leftSetpoint = -ramseteDSpeeds.rightMetersPerSecond;
-                    rightSetpoint = -ramseteDSpeeds.leftMetersPerSecond;
-                }
-
-                // use P to acquire desired velocity and feedforward to acquire desired velocity
-                leftPID.setReference(leftSetpoint, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
-                rightPID.setReference(rightSetpoint, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                // use P and feedforward to acquire desired velocity
+                leftPID.setReference(ramseteDSpeeds.leftMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                rightPID.setReference(ramseteDSpeeds.rightMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
 
                 if (trajectory.getTotalTimeSeconds() <= pathTimer.get()) {
                     state = defaultState;
@@ -344,6 +317,8 @@ public class Drivetrain extends SnailSubsystem {
         angleSetpoint = angle;
         anglePID.reset();
         anglePID.setSetpoint(angle);
+        pathTimer.stop();
+        pathTimer.reset();
         state = State.PID_ANGLE;
     }
 
@@ -352,7 +327,7 @@ public class Drivetrain extends SnailSubsystem {
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
         distProfile = new TrapezoidProfile(
-            new TrapezoidProfile.Constraints(Constants.Drivetrain.DRIVE_PROFILE_MAX_VEL, Constants.Drivetrain.DRIVE_PROFILE_MAX_ACC),
+            new TrapezoidProfile.Constraints(Constants.Drivetrain.DRIVE_PATH_MAX_VEL, Constants.Drivetrain.DRIVE_PATH_MAX_ACC),
             new TrapezoidProfile.State(dist, 0),
             new TrapezoidProfile.State(0, 0));
         pathTimer.reset();
@@ -361,9 +336,8 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     // drives a certain trajectory
-    public void driveTrajectory(Trajectory trajectory, boolean reversedTrajectory) {
+    public void driveTrajectory(Trajectory trajectory) {
         this.trajectory = trajectory;
-        this.reversedTrajectory = reversedTrajectory;
         pathTimer.reset();
         pathTimer.start();
         state = State.RAMSETE;
