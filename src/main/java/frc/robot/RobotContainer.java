@@ -112,10 +112,10 @@ public class RobotContainer {
         // Drivetrain Bindings
         driveController.getButton(Button.kY.value).whenPressed(new ReverseDriveCommand(drivetrain));
         driveController.getButton(Button.kStart.value).whenPressed(new SlowTurnCommand(drivetrain));
-        // driveController.getButton(Button.kB.value).whileActiveOnce(new TurnAngleCommand(drivetrain, 90));
-        // driveController.getButton(Button.kX.value).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
-        driveController.getButton(Button.kB.value).whileActiveOnce(new DriveDistanceCommand(drivetrain, -1.5));
-        driveController.getButton(Button.kX.value).whileActiveOnce(new DriveDistanceCommand(drivetrain, 1.5));
+        driveController.getButton(Button.kB.value).whileActiveOnce(new TurnAngleCommand(drivetrain, 90));
+        driveController.getButton(Button.kX.value).whileActiveOnce(new TurnAngleCommand(drivetrain, -90));
+        // driveController.getButton(Button.kB.value).whileActiveOnce(new DriveDistanceCommand(drivetrain, -5.52));
+        // driveController.getButton(Button.kX.value).whileActiveOnce(new DriveDistanceCommand(drivetrain, 5.52));
 
         // Intake Bindings
         operatorController.getButton(Button.kStart.value).whenPressed(new IntakeReleaseCommand(intake));
@@ -207,7 +207,7 @@ public class RobotContainer {
     }
 
     public void outputValues() {
-        if (outputCounter % 3 == 0) {
+        if(outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
                 subsystems.get(outputCounter / 3).outputValues();
             }
@@ -227,7 +227,7 @@ public class RobotContainer {
     }
 
     public void getConstantTuning() {
-        if (outputCounter % 3 == 0) {
+        if(outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
                 subsystems.get(outputCounter / 3).getConstantTuning();
             }

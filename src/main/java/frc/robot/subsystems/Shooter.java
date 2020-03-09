@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 import static frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.Shooter.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 public class Shooter extends SnailSubsystem {
@@ -100,7 +101,10 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void setConstantTuning() {
-        SmartDashboard.putNumberArray("Shooter PID (kP, kI, kD, kFF)", Constants.Shooter.SHOOTER_PIDF);
+        SmartDashboard.putNumber("Shooter PID kP", SHOOTER_PIDF[0]);
+        SmartDashboard.putNumber("Shooter PID kI", SHOOTER_PIDF[1]);
+        SmartDashboard.putNumber("Shooter PID kD", SHOOTER_PIDF[2]);
+        SmartDashboard.putNumber("Shooter PID kFF", SHOOTER_PIDF[3]);
 
         SmartDashboard.putNumber("Shooter Open Loop Speed", Constants.Shooter.SHOOTER_OPEN_LOOP_SPEED);
         SmartDashboard.putNumber("Shooter Vel PID Setpoint", Constants.Shooter.SHOOTER_VEL_SETPOINT);
@@ -108,7 +112,10 @@ public class Shooter extends SnailSubsystem {
 
     @Override
     public void getConstantTuning() {
-        Constants.Shooter.SHOOTER_PIDF = SmartDashboard.getNumberArray("Shooter PID (kP, kI, kD, kFF)", Constants.Shooter.SHOOTER_PIDF);
+        SHOOTER_PIDF[0] = SmartDashboard.getNumber("Shooter PID kP", SHOOTER_PIDF[0]);
+        SHOOTER_PIDF[1] = SmartDashboard.getNumber("Shooter PID kI", SHOOTER_PIDF[1]);
+        SHOOTER_PIDF[2] = SmartDashboard.getNumber("Shooter PID kD", SHOOTER_PIDF[2]);
+        SHOOTER_PIDF[3] = SmartDashboard.getNumber("Shooter PID kFF", SHOOTER_PIDF[3]);
 
         Constants.Shooter.SHOOTER_OPEN_LOOP_SPEED = SmartDashboard.getNumber("Shooter Open Loop Speed", Constants.Shooter.SHOOTER_OPEN_LOOP_SPEED);
         Constants.Shooter.SHOOTER_VEL_SETPOINT = SmartDashboard.getNumber("Shooter Vel PID Setpoint", Constants.Shooter.SHOOTER_VEL_SETPOINT);

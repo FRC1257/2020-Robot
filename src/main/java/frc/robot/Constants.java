@@ -137,13 +137,14 @@ public final class Constants {
         public static double DRIVE_MAX_VEL = 3.5; // m/s
         public static double DRIVE_MAX_ROT = 3.0; // rad/s
 
-        public static double[] DRIVE_DIST_PID = {0.6, 0.0, 0.0};
+        public static double[] DRIVE_DIST_PID = {3.50, 0.0, 0.0};
         public static double DRIVE_MAINTAIN_ANGLE_PID_P = 0.1;
-        public static double DRIVE_DIST_PID_TOLERANCE = 0.05;
+        public static double DRIVE_DIST_PID_TOLERANCE = 0.01;
         public static double DRIVE_DIST_PID_MAX_OUTPUT = 0.6;
 
-        public static double[] DRIVE_ANGLE_PID = {0.028500, 0.0, 0.0037500};
+        public static double[] DRIVE_ANGLE_PID = {0.1, 0.0, 0.006};
         public static double DRIVE_ANGLE_PID_TOLERANCE = 0.075;
+        public static double DRIVE_ANGLE_PID_MAX_OUTPUT = 0.5;
 
         public static double DRIVE_PATH_MAX_VEL = 2.0; // m/s
         public static double DRIVE_PATH_MAX_ACC = 3.0; // m/s^2
