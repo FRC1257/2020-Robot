@@ -29,7 +29,8 @@ public class TrajectoryVisualizer extends JFrame implements KeyListener {
 
     public TrajectoryVisualizer() {
         Trajectories.setUpTrajectories();
-        trajectory = Trajectories.getTrajectory("Top-Trench-2");
+        trajectory = Trajectories.getTrajectory("Power-Gen-Bot");
+        System.out.println(trajectory.getTotalTimeSeconds());
 
         createWindow();
     }

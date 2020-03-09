@@ -12,8 +12,8 @@ public class TrajMiddleGenTopAuto extends SequentialCommandGroup {
 
     public TrajMiddleGenTopAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
 
-        Trajectory midGenTop1 = Trajectories.getTrajectory("Middle-Gen-Top-1");
-        Trajectory midGenTop2 = Trajectories.getTrajectory("Middle-Gen-Top-2");
+        Trajectory midGenTop1 = Trajectories.getTrajectory("Middle-Power");
+        Trajectory midGenTop2 = Trajectories.getTrajectory("Power-Gen-Top");
 
         addCommands(new TrajDriveAndShoot(drivetrain, indexer, shooter, midGenTop1, intake),
             new DriveTrajectoryCommand(drivetrain, midGenTop2));

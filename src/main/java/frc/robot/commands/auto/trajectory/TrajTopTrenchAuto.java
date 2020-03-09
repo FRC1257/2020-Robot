@@ -12,8 +12,8 @@ public class TrajTopTrenchAuto extends SequentialCommandGroup {
 
     public TrajTopTrenchAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
 
-        Trajectory topTrench1 = Trajectories.getTrajectory("Top-Trench-1");
-        Trajectory topTrench2 = Trajectories.getTrajectory("Top-Trench-2");
+        Trajectory topTrench1 = Trajectories.getTrajectory("Top-Power");
+        Trajectory topTrench2 = Trajectories.getTrajectory("Power-Trench");
 
         addCommands(new TrajDriveAndShoot(drivetrain, indexer, shooter, topTrench1, intake), 
             new DriveTrajectoryCommand(drivetrain, topTrench2));

@@ -12,8 +12,8 @@ public class TrajTopGenTopAuto extends SequentialCommandGroup {
 
     public TrajTopGenTopAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
 
-        Trajectory topGenTop1 = Trajectories.getTrajectory("Top-Gen-Top-1");
-        Trajectory topGenTop2 = Trajectories.getTrajectory("Top-Gen-Top-2");
+        Trajectory topGenTop1 = Trajectories.getTrajectory("Top-Power");
+        Trajectory topGenTop2 = Trajectories.getTrajectory("Power-Gen-Top");
 
         addCommands(new TrajDriveAndShoot(drivetrain, indexer, shooter, topGenTop1, intake), 
             new DriveTrajectoryCommand(drivetrain, topGenTop2));

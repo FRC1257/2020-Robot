@@ -1,5 +1,6 @@
 package frc.robot.commands.auto.trajectory;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -40,14 +41,19 @@ public class Trajectories {
         trajectoryConfig = new TrajectoryConfig(DRIVE_PATH_MAX_VEL, DRIVE_PATH_MAX_ACC);
         trajectoryConfig.setKinematics(new DifferentialDriveKinematics(DRIVE_TRACK_WIDTH_M));
 
-        pointMap.put("Top-Trench-1", new TrajectoryPoints(true, 0, 0,
+        pointMap.put("Top-Power", new TrajectoryPoints(true, 0, 0,
             new Translation2d(3.048, -2.404), new Translation2d(0.445, -2.404)));
-        pointMap.put("Top-Trench-2", new TrajectoryPoints(false, 0, 0,
+        pointMap.put("Middle-Power", new TrajectoryPoints(true, 0, 0, 
+            new Translation2d(3.048, -4.105), new Translation2d(0.445, -2.404)));
+        pointMap.put("Bottom-Power", new TrajectoryPoints(true, 0, 0,
+            new Translation2d(3.048, -5.655), new Translation2d(0.445, -2.404)));
+
+        pointMap.put("Power-Trench", new TrajectoryPoints(false, 0, 0,
             new Translation2d(0.445, -2.404), new Translation2d(5.248, -0.705)));
-            
-        pointMap.put("Bottom", new TrajectoryPoints(true, 0, 0,
-                new Translation2d(3.048, -5.655), new Translation2d(0.445, -2.404)));
-        // TODO Add the rest of the trajectories
+        pointMap.put("Power-Gen-Top", new TrajectoryPoints(false, 0, 0,
+            new Translation2d(0.445, -2.404), new Translation2d(5.247, -2.404)));
+        pointMap.put("Power-Gen-Bot", new TrajectoryPoints(false, 0, 0,
+            new Translation2d(0.445, -2.404), new Translation2d(5.29, -4.572)));
 
         for (String key : pointMap.keySet()) {
             generateTrajectory(key);
@@ -59,7 +65,7 @@ public class Trajectories {
     }
 
     private static void generateTrajectory(String name) {
-        if(trajectoryMap.containsKey(name)) return;
+        if (trajectoryMap.containsKey(name)) return;
 
         TrajectoryPoints points = pointMap.get(name);
         trajectoryMap.put(name, TrajectoryGenerator.generateTrajectory(points.init, List.of(points.intermediate),

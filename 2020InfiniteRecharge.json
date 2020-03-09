@@ -87,6 +87,25 @@
               "Visible data/SmartDashboard/Drive PID Angle[0]": true,
               "Visible data/SmartDashboard/Drive PID Angle[1]": true
             }
+          },
+          "3,2": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Indexer Currents (Front Top,Front Bottom, Back, Stop)",
+              "_title": "/SmartDashboard/Indexer Currents (Front Top,Front Bottom, Back, Stop)",
+              "Graph/Visible time": 30.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Visible data/SmartDashboard/Indexer Currents (Front Top,Front Bottom, Back, Stop)[0]": true,
+              "Visible data/SmartDashboard/Indexer Currents (Front Top,Front Bottom, Back, Stop)[1]": true,
+              "Visible data/SmartDashboard/Indexer Currents (Front Top,Front Bottom, Back, Stop)[2]": true,
+              "Visible data/SmartDashboard/Indexer Currents (Front Top,Front Bottom, Back, Stop)[3]": true
+            }
           }
         }
       }
