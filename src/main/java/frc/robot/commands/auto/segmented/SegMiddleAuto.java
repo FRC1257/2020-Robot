@@ -12,10 +12,10 @@ public class SegMiddleAuto extends SequentialCommandGroup {
 
     public SegMiddleAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
         
-        addCommands(new TurnAngleCommand(drivetrain, 36.6),
-            new DriveDistanceCommand(drivetrain, 2.85),
-            new TurnAngleCommand(drivetrain, -36.6),
-            new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 1.0),
+        addCommands(new TurnAngleCommand(drivetrain, -90),
+            new DriveDistanceCommand(drivetrain, 1.695),
+            new TurnAngleCommand(drivetrain, 90),
+            new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 2.85),
             new DriveDistanceCommand(drivetrain, -5.652)
         );
     }

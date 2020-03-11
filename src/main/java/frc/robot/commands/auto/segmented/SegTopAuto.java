@@ -11,7 +11,7 @@ public class SegTopAuto extends SequentialCommandGroup {
 
     public SegTopAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
 
-        addCommands(new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 3.7),
+        addCommands(new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 2.85),
             new DriveDistanceCommand(drivetrain, -5.652)
         );
     }

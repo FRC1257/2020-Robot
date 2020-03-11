@@ -12,10 +12,10 @@ public class SegBottomAuto extends SequentialCommandGroup {
 
     public SegBottomAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
 
-        addCommands(new TurnAngleCommand(drivetrain, 54.9), 
-            new DriveDistanceCommand(drivetrain, 3.97),
-            new TurnAngleCommand(drivetrain, -54.9),
-            new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 1.0),
+        addCommands(new TurnAngleCommand(drivetrain, -90), 
+            new DriveDistanceCommand(drivetrain, 3.39),
+            new TurnAngleCommand(drivetrain, 90),
+            new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 2.85),
             new DriveDistanceCommand(drivetrain, -5.652)
         );
     }
