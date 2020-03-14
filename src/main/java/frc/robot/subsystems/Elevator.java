@@ -86,7 +86,7 @@ public class Elevator extends SnailSubsystem {
     }
 
     @Override
-    public void periodic() {
+    public void update() {
         // if (!locked) {
             if (speed > 0 && encoder.getPosition() >= Constants.Elevator.ELEVATOR_MAX_HEIGHT && !override) {
                 speed = 0;
@@ -174,7 +174,7 @@ public class Elevator extends SnailSubsystem {
     }
 
     @Override
-    public void setConstantTuning() {
+    public void setUpConstantTuning() {
         SmartDashboard.putNumber("Elevator PID kP", ELEVATOR_PID[0]);
         SmartDashboard.putNumber("Elevator PID kI", ELEVATOR_PID[1]);
         SmartDashboard.putNumber("Elevator PID kD", ELEVATOR_PID[2]);

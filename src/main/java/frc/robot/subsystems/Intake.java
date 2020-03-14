@@ -52,7 +52,7 @@ public class Intake extends SnailSubsystem {
      * Update motor outputs according to the current state
      */
     @Override
-    public void periodic() {
+    public void update() {
         switch(state) {
             case NEUTRAL: 
                 intakeMotor.set(Constants.Intake.INTAKE_NEUTRAL_SPEED);
@@ -84,7 +84,7 @@ public class Intake extends SnailSubsystem {
      * Puts values that can be changed into Smart Dashboard
      */
     @Override
-    public void setConstantTuning() {
+    public void setUpConstantTuning() {
         SmartDashboard.putNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
         SmartDashboard.putNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
         SmartDashboard.putNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);

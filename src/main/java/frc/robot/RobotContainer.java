@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -63,6 +64,7 @@ public class RobotContainer {
     private SendableChooser<Constants.Autonomous.AutoGoal> autoGoalChooser;
 
     private int outputCounter;
+    private Notifier updateNotifier;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -103,6 +105,8 @@ public class RobotContainer {
         outputCounter = 0;
 
         SmartDashboard.putBoolean("Testing", false);
+
+        updateNotifier = new Notifier(this::update);
     }
 
     /**
@@ -206,6 +210,12 @@ public class RobotContainer {
         }
     }
 
+    private void update() {
+        for(SnailSubsystem subsystem : subsystems) {
+            subsystem.update();
+        }
+    }
+
     public void outputValues() {
         if(outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
@@ -219,9 +229,9 @@ public class RobotContainer {
         outputCounter = (outputCounter + 1) % ((subsystems.size() + 2) * 3);
     }
 
-    public void setConstantTuning() {
+    public void setUpConstantTuning() {
         for(SnailSubsystem subsystem : subsystems) {
-            subsystem.setConstantTuning();
+            subsystem.setUpConstantTuning();
         }
         Limelight.setConstantTuning();
     }

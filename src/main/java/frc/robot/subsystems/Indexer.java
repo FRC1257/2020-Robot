@@ -7,7 +7,6 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.MedianFilter;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
@@ -40,8 +39,6 @@ public class Indexer extends SnailSubsystem {
     private MedianFilter filter;
     private double lastFilteredDist;
     private boolean override;
-
-    private Notifier looper;
 
     /**
      * NEUTRAL - The position of each of the power cells is maintained
@@ -96,9 +93,6 @@ public class Indexer extends SnailSubsystem {
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
         filter = new MedianFilter(Constants.Indexer.INDEXER_TOP_SENSOR_NUM_MED);
 
-        looper = new Notifier(this::updateNotifier);
-        looper.startPeriodic(Constants.Indexer.INDEXER_LOOPER_PERIOD);
-
         reset();
     }
 
@@ -108,11 +102,8 @@ public class Indexer extends SnailSubsystem {
         topSpeed = 0;
     }
 
-    /**
-     * Update motor outputs according to the current state
-     * This method is called within a notifier to achieve a much faster refresh rate and in a separate thread
-     */
-    private void updateNotifier() {
+    @Override
+    public void update() {
         updateDistance();
 
         switch(state) {
@@ -189,11 +180,6 @@ public class Indexer extends SnailSubsystem {
         }
     }
 
-    @Override
-    public void periodic() {
-
-    }
-
     public void setTopSpeed(double topSpeed) {
         this.topSpeed = topSpeed;
     }
@@ -226,7 +212,7 @@ public class Indexer extends SnailSubsystem {
      * Puts values that can be changed into Smart Dashboard
      */
     @Override
-    public void setConstantTuning() {
+    public void setUpConstantTuning() {
         SmartDashboard.putNumber("Indexer Stop Shoot Speed", Constants.Indexer.INDEXER_STOP_SHOOT_SPEED);
         SmartDashboard.putNumber("Indexer Stop Neutral Speed", Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
 

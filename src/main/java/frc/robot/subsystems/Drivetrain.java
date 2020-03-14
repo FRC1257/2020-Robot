@@ -140,7 +140,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     @Override
-    public void periodic() {
+    public void update() {
         switch(state) {
             case MANUAL:
                 double[] arcadeSpeeds = arcadeDrive(reversed ? -speedForward : speedForward,
@@ -419,7 +419,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     @Override
-    public void setConstantTuning() {
+    public void setUpConstantTuning() {
         SmartDashboard.putNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
 
         SmartDashboard.putNumber("Drive PID Vel Left kP", DRIVE_LEFT_VEL_PID_P);

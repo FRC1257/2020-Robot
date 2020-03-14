@@ -50,7 +50,7 @@ public class Shooter extends SnailSubsystem {
     }
 
     @Override
-    public void periodic() {
+    public void update() {
         switch(state) {
             case NEUTRAL:
                 shooterMotor.set(Constants.Shooter.SHOOTER_NEUTRAL_SPEED);
@@ -100,7 +100,7 @@ public class Shooter extends SnailSubsystem {
     }
 
     @Override
-    public void setConstantTuning() {
+    public void setUpConstantTuning() {
         SmartDashboard.putNumber("Shooter PID kP", SHOOTER_PIDF[0]);
         SmartDashboard.putNumber("Shooter PID kI", SHOOTER_PIDF[1]);
         SmartDashboard.putNumber("Shooter PID kD", SHOOTER_PIDF[2]);
