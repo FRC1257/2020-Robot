@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.auto.trajectory.Trajectories;
 
 public class Robot extends TimedRobot {
     
@@ -13,13 +14,14 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         robotContainer = new RobotContainer();
+        Trajectories.setUpTrajectories();
     }
 
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         robotContainer.outputValues();
-        if (SmartDashboard.getBoolean("Testing", false)) robotContainer.getConstantTuning();
+        if(SmartDashboard.getBoolean("Testing", false)) robotContainer.getConstantTuning();
     }
 
     @Override
@@ -40,6 +42,10 @@ public class Robot extends TimedRobot {
         }
 
         robotContainer.resetIndexer();
-        if (SmartDashboard.getBoolean("Testing", false)) robotContainer.setConstantTuning();
+    }
+
+    @Override
+    public void testInit() {
+        robotContainer.setUpConstantTuning();
     }
 }

@@ -87,12 +87,27 @@
               "Visible data/SmartDashboard/Drive PID Angle[0]": true,
               "Visible data/SmartDashboard/Drive PID Angle[1]": true
             }
+          },
+          "3,2": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Indexer Currents (Front Top,Front Bottom, Back, Stop)",
+              "_title": "/SmartDashboard/Indexer Currents (Front Top,Front Bottom, Back, Stop)",
+              "Graph/Visible time": 30.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0
+            }
           }
         }
       }
     },
     {
-      "title": "Tab 2",
+      "title": "Tab 3",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -107,9 +122,9 @@
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive PID Dist kP",
-              "_title": "SmartDashboard/Drive PID Dist kP"
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Testing",
+              "_title": "SmartDashboard/Testing"
             }
           },
           "4,0": {
@@ -119,8 +134,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive PID Dist kI",
-              "_title": "SmartDashboard/Drive PID Dist kI"
+              "_source0": "network_table:///SmartDashboard/Drive PID Dist kP",
+              "_title": "/SmartDashboard/Drive PID Dist kP"
             }
           },
           "5,0": {
@@ -130,8 +145,46 @@
             ],
             "content": {
               "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive PID Dist kI",
+              "_title": "/SmartDashboard/Drive PID Dist kI"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Drive PID Dist kD",
-              "_title": "SmartDashboard/Drive PID Dist kD"
+              "_title": "/SmartDashboard/Drive PID Dist kD"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive PID Maintain Angle kP",
+              "_title": "/SmartDashboard/Drive PID Maintain Angle kP"
+            }
+          },
+          "6,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Robot Angle",
+              "_title": "SmartDashboard/Robot Angle",
+              "Graph/Visible time": 30.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Visible data/SmartDashboard/Robot Angle": true
             }
           },
           "3,1": {
@@ -142,13 +195,59 @@
             "content": {
               "_type": "Graph",
               "_source0": "network_table:///SmartDashboard/Drive PID Dist",
-              "_title": "SmartDashboard/Drive PID Dist",
+              "_title": "/SmartDashboard/Drive PID Dist",
               "Graph/Visible time": 30.0,
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
               "Visible data/SmartDashboard/Drive PID Dist[0]": true,
               "Visible data/SmartDashboard/Drive PID Dist[1]": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 4",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Testing",
+              "_title": "SmartDashboard/Testing"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle kP",
+              "_title": "/SmartDashboard/Drive PID Angle kP"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle kI",
+              "_title": "/SmartDashboard/Drive PID Angle kI"
             }
           },
           "6,0": {
@@ -158,8 +257,25 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive PID Maintain Angle kP",
-              "_title": "SmartDashboard/Drive PID Maintain Angle kP"
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle kD",
+              "_title": "/SmartDashboard/Drive PID Angle kD"
+            }
+          },
+          "3,1": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Drive PID Angle",
+              "_title": "/SmartDashboard/Drive PID Angle",
+              "Graph/Visible time": 30.0,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Visible data/SmartDashboard/Drive PID Angle[0]": true,
+              "Visible data/SmartDashboard/Drive PID Angle[1]": true
             }
           }
         }
