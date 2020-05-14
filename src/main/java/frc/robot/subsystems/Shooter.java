@@ -5,6 +5,9 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import badlog.lib.BadLog;
+
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -84,23 +87,46 @@ public class Shooter extends SnailSubsystem {
     }
 
     public boolean withinTolerance() {
-        return (Constants.Shooter.SHOOTER_VEL_SETPOINT - shooterEncoder.getVelocity()) / Constants.Shooter.SHOOTER_VEL_SETPOINT < Constants.Shooter.SHOOTER_PERCENT_TOLERANCE;
+        return (Constants.Shooter.SHOOTER_VEL_SETPOINT - shooterEncoder.getVelocity()) / Constants.Shooter.SHOOTER_VEL_SETPOINT 
+            < Constants.Shooter.SHOOTER_PERCENT_TOLERANCE;
     }
 
     @Override
-    public void outputValues() {
+    public void initLogging() {
+        BadLog.createTopic("Shooter/Encoder Velocity", "m/s", () -> shooterEncoder.getVelocity(),
+            "hide", "join:Shooter/Encoder Velocities");
+        BadLog.createTopic("Shooter/Velocity Setpoint", "m/s", () -> {
+                if(state == State.VEL_PID) return Constants.Shooter.SHOOTER_VEL_SETPOINT;
+                else return 0.0;
+            },
+            "hide", "join:Shooter/Encoder Velocities");
+
+        BadLog.createTopic("Shooter/Primary Current", "A", () -> shooterMotor.getOutputCurrent(),
+            "hide", "join:Shooter/Output Currents");
+        BadLog.createTopic("Shooter/Secondary Current", "A", () -> followerMotor.getOutputCurrent(),
+            "hide", "join:Shooter/Output Currents");
+
+        BadLog.createTopic("Shooter/Primary Temperature", "deg C", () -> shooterMotor.getMotorTemperature(),
+            "hide", "join:Shooter/Motor Temperatures");
+        BadLog.createTopic("Shooter/Secondary Temperature", "deg C", () -> followerMotor.getMotorTemperature(),
+            "hide", "join:Shooter/Motor Temperatures");
+    }
+
+    @Override
+    public void outputToShuffleboard() {
         if(SmartDashboard.getBoolean("Testing", false)) {
             SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
             SmartDashboard.putString("Shooter State", state.name());
+
+            SmartDashboard.putNumberArray("Shooter Currents",
+                new double[] {shooterMotor.getOutputCurrent(), followerMotor.getOutputCurrent()});
         }
         
         SmartDashboard.putBoolean("Shooter Within Tolerance", withinTolerance());
-        SmartDashboard.putNumberArray("Shooter Currents",
-            new double[] {shooterMotor.getOutputCurrent(), followerMotor.getOutputCurrent()});
     }
 
     @Override
-    public void setUpConstantTuning() {
+    public void initTuning() {
         SmartDashboard.putNumber("Shooter PID kP", SHOOTER_PIDF[0]);
         SmartDashboard.putNumber("Shooter PID kI", SHOOTER_PIDF[1]);
         SmartDashboard.putNumber("Shooter PID kD", SHOOTER_PIDF[2]);
@@ -111,7 +137,7 @@ public class Shooter extends SnailSubsystem {
     }
 
     @Override
-    public void getConstantTuning() {
+    public void tuneValues() {
         SHOOTER_PIDF[0] = SmartDashboard.getNumber("Shooter PID kP", SHOOTER_PIDF[0]);
         SHOOTER_PIDF[1] = SmartDashboard.getNumber("Shooter PID kI", SHOOTER_PIDF[1]);
         SHOOTER_PIDF[2] = SmartDashboard.getNumber("Shooter PID kD", SHOOTER_PIDF[2]);

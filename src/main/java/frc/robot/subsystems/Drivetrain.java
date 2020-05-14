@@ -6,6 +6,9 @@ import com.revrobotics.CANPIDController.ArbFFUnits;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import badlog.lib.BadLog;
+
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -67,6 +70,8 @@ public class Drivetrain extends SnailSubsystem {
 
     private double speedForward;
     private double speedTurn;
+    private double targetLeftSpeed;
+    private double targetRightSpeed;
     private boolean reversed;
     private boolean slowTurning;
 
@@ -154,8 +159,11 @@ public class Drivetrain extends SnailSubsystem {
                     slowTurning ? speedTurn * Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT : speedTurn);
                 DifferentialDriveWheelSpeeds dSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
 
-                leftPID.setReference(dSpeeds.leftMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
-                rightPID.setReference(dSpeeds.rightMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                targetLeftSpeed = dSpeeds.leftMetersPerSecond;
+                targetRightSpeed = dSpeeds.rightMetersPerSecond;
+
+                leftPID.setReference(targetLeftSpeed, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                rightPID.setReference(targetRightSpeed, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
                 break;
             case PID_DIST:
                 if (distSetpoint == -1.257) {
@@ -211,12 +219,15 @@ public class Drivetrain extends SnailSubsystem {
                 ChassisSpeeds profiledChassisSpeeds = new ChassisSpeeds(currentStateProf.velocity, 0, 0);
                 DifferentialDriveWheelSpeeds profiledDSpeeds = driveKinematics.toWheelSpeeds(profiledChassisSpeeds);
 
+                targetLeftSpeed = profiledDSpeeds.leftMetersPerSecond;
+                targetRightSpeed = profiledDSpeeds.rightMetersPerSecond;
+
                 double positionError = currentStateProf.position - leftEncoder.getPosition();
 
                 // use P and feedforward to acquire desired velocity, P to acquire desired position
-                leftPID.setReference(profiledDSpeeds.leftMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL,
+                leftPID.setReference(targetLeftSpeed, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL,
                     positionError * Constants.Drivetrain.DRIVE_PROFILE_LEFT_POS_P, ArbFFUnits.kPercentOut);
-                    rightPID.setReference(profiledDSpeeds.rightMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL,
+                    rightPID.setReference(targetRightSpeed, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL,
                     positionError * Constants.Drivetrain.DRIVE_PROFILE_RIGHT_POS_P, ArbFFUnits.kPercentOut);
 
                 if (distProfile.isFinished(pathTimer.get())) {
@@ -235,9 +246,12 @@ public class Drivetrain extends SnailSubsystem {
                 ChassisSpeeds ramseteChassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentStateTraj);
                 DifferentialDriveWheelSpeeds ramseteDSpeeds = driveKinematics.toWheelSpeeds(ramseteChassisSpeeds);
 
+                targetLeftSpeed = ramseteDSpeeds.leftMetersPerSecond;
+                targetRightSpeed = ramseteDSpeeds.rightMetersPerSecond;
+
                 // use P and feedforward to acquire desired velocity
-                leftPID.setReference(ramseteDSpeeds.leftMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
-                rightPID.setReference(ramseteDSpeeds.rightMetersPerSecond, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                leftPID.setReference(targetLeftSpeed, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
+                rightPID.setReference(targetRightSpeed, ControlType.kVelocity, Constants.Drivetrain.DRIVE_PID_SLOT_VEL);
 
                 if (trajectory.getTotalTimeSeconds() <= pathTimer.get()) {
                     state = defaultState;
@@ -379,39 +393,64 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     @Override
-    public void outputValues() {
+    public void initLogging() {
+        BadLog.createTopic("Drivetrain/Left Output Percent", BadLog.UNITLESS, () -> frontLeftMotor.get(), 
+            "hide", "join:Drivetrain/Output Percents");
+        BadLog.createTopic("Drivetrain/Right Output Percent", BadLog.UNITLESS, () -> frontRightMotor.get(), 
+            "hide", "join:Drivetrain/Output Percents");
+
+        BadLog.createTopic("Drivetrain/Front Left Current", "A", () -> frontLeftMotor.getOutputCurrent(),
+            "hide", "join:Drivetrain/Output Currents");
+        BadLog.createTopic("Drivetrain/Front Right Current", "A", () -> frontRightMotor.getOutputCurrent(),
+            "hide", "join:Drivetrain/Output Currents");
+        BadLog.createTopic("Drivetrain/Back Left Current", "A", () -> backLeftMotor.getOutputCurrent(),
+            "hide", "join:Drivetrain/Output Currents");
+        BadLog.createTopic("Drivetrain/Back Right Current", "A", () -> backRightMotor.getOutputCurrent(),
+            "hide", "join:Drivetrain/Output Currents");
+
+        BadLog.createTopic("Drivetrain/Left Encoder Distance", "m", () -> leftEncoder.getPosition(),
+            "hide", "join:Drivetrain/Encoder Distances");
+        BadLog.createTopic("Drivetrain/Right Encoder Distance", "m", () -> rightEncoder.getPosition(),
+            "hide", "join:Drivetrain/Encoder Distances");
+        BadLog.createTopic("Drivetrain/PID Dist Setpoint", "m", () -> distSetpoint,
+            "hide", "join:Drivetrain/Encoder Distances");
+            
+        BadLog.createTopic("Drivetrain/Left Encoder Velocity", "m/s", () -> leftEncoder.getVelocity(),
+            "hide", "join:Drivetrain/Encoder Velocities");
+        BadLog.createTopic("Drivetrain/Right Encoder Velocity", "m/s", () -> rightEncoder.getVelocity(),
+            "hide", "join:Drivetrain/Encoder Velocities");
+        BadLog.createTopic("Drivetrain/PID Left Velocity Setpoint", "m/s", () -> targetLeftSpeed,
+            "hide", "join:Drivetrain/Encoder Velocities");
+        BadLog.createTopic("Drivetrain/PID Right Velocity Setpoint", "m/s", () -> targetRightSpeed,
+            "hide", "join:Drivetrain/Encoder Velocities");   
+
+        BadLog.createTopic("Drivetrain/Angle", "deg", () -> Gyro.getInstance().getRobotAngle(),
+            "hide", "join:Drivetrain/Angle");
+        BadLog.createTopic("Drivetrain/Angle Setpoint", "deg", () -> angleSetpoint,
+            "hide", "join:Drivetrain/Angle");
+    }
+
+    @Override
+    public void outputToShuffleboard() {
         SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {reversed, slowTurning});
 
         if(SmartDashboard.getBoolean("Testing", false)) {
-            if (distProfile != null) {
-                SmartDashboard.putNumber("Drive Profile Time Left", distProfile.timeLeftUntil(pathTimer.get()));
-                TrapezoidProfile.State currentState = distProfile.calculate(pathTimer.get());
-                SmartDashboard.putNumber("Drive Profile Pos (m)", currentState.position);
-                SmartDashboard.putNumber("Drive Profile Vel (mps)", currentState.velocity);
-            }
-            if (trajectory != null) {
-                SmartDashboard.putNumber("Trajectory Time Left", trajectory.getTotalTimeSeconds() - pathTimer.get());
-            }
-
             SmartDashboard.putNumberArray("Drive Encoders (Lp, Rp, Lv, Rv)", new double[] {
                 leftEncoder.getPosition(), rightEncoder.getPosition(),
                 leftEncoder.getVelocity(), rightEncoder.getVelocity()
             });
 
-            // ChassisSpeeds chassisSpeeds = new ChassisSpeeds(reversed ? -speedForward : speedForward, 0,
-            // slowTurning ? speedTurn * DRIVE_REDUCE_TURNING_CONSTANT : speedTurn);
-            // DifferentialDriveWheelSpeeds dSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
-            // SmartDashboard.putNumberArray("Closed Loop Vel", new double[] {
-            //     leftEncoder.getVelocity(), rightEncoder.getVelocity(),
-            //     dSpeeds.leftMetersPerSecond, dSpeeds.rightMetersPerSecond
-            // });
-            // SmartDashboard.putNumberArray("Drive PID Dist", new double[] {
-            //     leftEncoder.getPosition(),
-            //     distSetpoint
-            // });
+            SmartDashboard.putNumberArray("Closed Loop Vel", new double[] {
+                leftEncoder.getVelocity(), rightEncoder.getVelocity(),
+                targetLeftSpeed, targetRightSpeed
+            });
+            SmartDashboard.putNumberArray("Drive PID Dist", new double[] {
+                leftEncoder.getPosition(),
+                distSetpoint
+            });
             SmartDashboard.putNumberArray("Drive PID Angle", new double[] {
-                    Gyro.getInstance().getRobotAngle(),
-                    angleSetpoint
+                Gyro.getInstance().getRobotAngle(),
+                angleSetpoint
             });
 
             SmartDashboard.putString("Drive State", state.name());
@@ -419,7 +458,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     @Override
-    public void setUpConstantTuning() {
+    public void initTuning() {
         SmartDashboard.putNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
 
         SmartDashboard.putNumber("Drive PID Vel Left kP", DRIVE_LEFT_VEL_PID_P);
@@ -441,7 +480,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     @Override
-    public void getConstantTuning() {
+    public void tuneValues() {
         Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT = SmartDashboard.getNumber("Drive Reduce Turning Constant",
                 Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT);
 

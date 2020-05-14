@@ -40,12 +40,12 @@ public class Limelight {
         return table.getEntry("ta").getDouble(0.0);
     }
 
-    public static void setConstantTuning() {
+    public static void initTuning() {
         SmartDashboard.putNumber("Vision Feedforward", VISION_FEEDFORWARD);
         SmartDashboard.putNumber("Vision kP", VISION_KP);
     }
 
-    public static void getConstantTuning() {
+    public static void tuneValues() {
         VISION_FEEDFORWARD = SmartDashboard.getNumber("Vision Feedforward", VISION_FEEDFORWARD);
         VISION_KP = SmartDashboard.getNumber("Vision kP", VISION_KP);
     }

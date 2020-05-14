@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import badlog.lib.BadLog;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -71,20 +73,27 @@ public class Intake extends SnailSubsystem {
             intakeReleaseServo.set(0);
         }
     }
+
+    @Override
+    public void initLogging() {
+        BadLog.createTopic("Indexer/Motor Current", "A", () -> intakeMotor.getOutputCurrent());
+    }
     
     /**
      * Puts relevant values to Smart Dashboard
      */
     @Override
-    public void outputValues() {
-        SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
+    public void outputToShuffleboard() {
+        if(SmartDashboard.getBoolean("Testing", false)) {
+            SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
+        }
     }
 
     /**
      * Puts values that can be changed into Smart Dashboard
      */
     @Override
-    public void setUpConstantTuning() {
+    public void initTuning() {
         SmartDashboard.putNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
         SmartDashboard.putNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
         SmartDashboard.putNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);
@@ -94,7 +103,7 @@ public class Intake extends SnailSubsystem {
      * Gets values that can be changed
      */
     @Override
-    public void getConstantTuning() {
+    public void tuneValues() {
         INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
         INTAKE_INTAKE_SPEED = SmartDashboard.getNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
         INTAKE_NEUTRAL_SPEED = SmartDashboard.getNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);

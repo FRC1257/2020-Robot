@@ -5,6 +5,9 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import badlog.lib.BadLog;
+
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +30,7 @@ public class Elevator extends SnailSubsystem {
 
     private ElevatorFeedforward feedforward;
 
-    private double setpoint;
+    private double distSetpoint;
 
     public enum State {
         MANUAL,
@@ -38,7 +41,7 @@ public class Elevator extends SnailSubsystem {
 
     private State defaultState = State.MANUAL;
     private State state = defaultState;
-    private double speed;
+    private double speedSetpoint;
     private boolean locked;
     private boolean override;
 
@@ -78,9 +81,9 @@ public class Elevator extends SnailSubsystem {
     }
 
     private void reset() {
-        speed = 0;
+        speedSetpoint = 0;
         encoder.setPosition(0);
-        setpoint = -1257;
+        distSetpoint = -1257;
         locked = false;
         override = false;
     }
@@ -88,37 +91,37 @@ public class Elevator extends SnailSubsystem {
     @Override
     public void update() {
         // if (!locked) {
-            if (speed > 0 && encoder.getPosition() >= Constants.Elevator.ELEVATOR_MAX_HEIGHT && !override) {
-                speed = 0;
+            if (speedSetpoint > 0 && encoder.getPosition() >= Constants.Elevator.ELEVATOR_MAX_HEIGHT && !override) {
+                speedSetpoint = 0;
             }
-            if (speed < 0 && encoder.getPosition() <= 0 && !override) {
-                speed = 0;
+            if (speedSetpoint < 0 && encoder.getPosition() <= 0 && !override) {
+                speedSetpoint = 0;
             }
 
             switch(state) {
                 case MANUAL:
-                    motor.set(speed);
-                    setpoint = -1257;
+                    motor.set(speedSetpoint);
+                    distSetpoint = -1257;
                     break;
                 case PID:
-                    if (setpoint == -1257.0) {
+                    if (distSetpoint == -1257.0) {
                         break;
                     }
 
-                    elevatorPID.setReference(setpoint, ControlType.kPosition, Constants.Elevator.ELEVATOR_PID_SLOT_POS);
-                    setpoint = -1257;
+                    elevatorPID.setReference(distSetpoint, ControlType.kPosition, Constants.Elevator.ELEVATOR_PID_SLOT_POS);
+                    distSetpoint = -1257;
                     break;
                 case CLOSED_LOOP:
-                    elevatorPID.setReference(speed, ControlType.kVelocity, Constants.Elevator.ELEVATOR_PID_SLOT_VEL,
+                    elevatorPID.setReference(speedSetpoint, ControlType.kVelocity, Constants.Elevator.ELEVATOR_PID_SLOT_VEL,
                             feedforward.calculate(0), CANPIDController.ArbFFUnits.kVoltage);
                     break;
                 case PROFILED:
-                    if (setpoint == -1257) {
+                    if (distSetpoint == -1257) {
                         state = defaultState;
                         break;
                     }
 
-                    elevatorPID.setReference(setpoint, ControlType.kSmartMotion, Constants.Elevator.ELEVATOR_PID_SLOT_VEL,
+                    elevatorPID.setReference(distSetpoint, ControlType.kSmartMotion, Constants.Elevator.ELEVATOR_PID_SLOT_VEL,
                             feedforward.calculate(0), CANPIDController.ArbFFUnits.kVoltage);
                     break;
             }
@@ -128,7 +131,7 @@ public class Elevator extends SnailSubsystem {
             // servo.set(ELEVATOR_BRAKE_POSITION);
         // }
         
-        speed = 0;
+        speedSetpoint = 0;
     }
     
     public void toggleLock() {
@@ -136,45 +139,72 @@ public class Elevator extends SnailSubsystem {
     }
 
     public void setElevatorSpeed(double speed) {
-        this.speed = speed;
+        this.speedSetpoint = speed;
         state = State.MANUAL;
     }
 
     public void setElevatorSpeedClosedLoop(double speed) {
-        this.speed = speed;
+        this.speedSetpoint = speed;
         state = State.CLOSED_LOOP;
     }
 
     public void raise() {
         encoder.setPosition(0);
-        setpoint = Constants.Elevator.ELEVATOR_SETPOINT;
+        distSetpoint = Constants.Elevator.ELEVATOR_SETPOINT;
         state = State.PID;
     }
 
     public void raiseProfiled() {
         encoder.setPosition(0);
-        setpoint = Constants.Elevator.ELEVATOR_SETPOINT;
+        distSetpoint = Constants.Elevator.ELEVATOR_SETPOINT;
         state = State.PROFILED;
     }
 
     public void setOverride(boolean override) {
         this.override = override;
     }
+    
+    @Override
+    public void initLogging() {
+        BadLog.createTopic("Elevator/Encoder Distance", "m", () -> encoder.getPosition(),
+            "hide", "join:Drivetrain/Encoder Distances");
+        BadLog.createTopic("Elevator/Distance Setpoint", "m", () -> distSetpoint,
+            "hide", "join:Drivetrain/Encoder Distances");
+
+        BadLog.createTopic("Elevator/Encoder Velocity", "m/s", () -> encoder.getVelocity(),
+            "hide", "join:Elevator/Encoder Velocities");
+        BadLog.createTopic("Elevator/Velocity Setpoint", "m/s", () -> speedSetpoint,
+            "hide", "join:Elevator/Encoder Velocities");
+
+        BadLog.createTopic("Elevator/Primary Current", "A", () -> motor.getOutputCurrent(),
+            "hide", "join:Elevator/Output Currents");
+        BadLog.createTopic("Elevator/Secondary Current", "A", () -> followerMotor.getOutputCurrent(),
+            "hide", "join:Elevator/Output Currents");
+
+        BadLog.createTopic("Elevator/Primary Temperature", "deg C", () -> motor.getMotorTemperature(),
+            "hide", "join:Elevator/Motor Temperatures");
+        BadLog.createTopic("Elevator/Secondary Temperature", "deg C", () -> followerMotor.getMotorTemperature(),
+            "hide", "join:Elevator/Motor Temperatures");
+    }
    
     @Override 
-    public void outputValues() {
-        SmartDashboard.putNumberArray("Elevator Stats (pos, vel, curr, temp)", new double[] {
-            encoder.getPosition(),
-            encoder.getVelocity(),
-            motor.getOutputCurrent(),
-            motor.getMotorTemperature()
-        });
+    public void outputToShuffleboard() {
+        if(SmartDashboard.getBoolean("Testing", false)) {
+            SmartDashboard.putNumberArray("Elevator Stats (pos, vel, pos_des, vel_des, curr, temp)", new double[] {
+                encoder.getPosition(),
+                encoder.getVelocity(),
+                distSetpoint,
+                speedSetpoint,
+                motor.getOutputCurrent(),
+                motor.getMotorTemperature()
+            });
+        }
 
         SmartDashboard.putBoolean("Elevator Locked", locked);
     }
 
     @Override
-    public void setUpConstantTuning() {
+    public void initTuning() {
         SmartDashboard.putNumber("Elevator PID kP", ELEVATOR_PID[0]);
         SmartDashboard.putNumber("Elevator PID kI", ELEVATOR_PID[1]);
         SmartDashboard.putNumber("Elevator PID kD", ELEVATOR_PID[2]);
@@ -187,7 +217,7 @@ public class Elevator extends SnailSubsystem {
     }
 
     @Override
-    public void getConstantTuning() {
+    public void tuneValues() {
         ELEVATOR_PID[0] = SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0]);
         ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1]);
         ELEVATOR_PID[2] = SmartDashboard.getNumber("Elevator PID kD", ELEVATOR_PID[2]);

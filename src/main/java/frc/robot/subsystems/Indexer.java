@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import badlog.lib.BadLog;
+
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
@@ -184,27 +187,40 @@ public class Indexer extends SnailSubsystem {
         this.topSpeed = topSpeed;
     }
 
+    @Override
+    public void initLogging() {
+        BadLog.createTopic("Indexer/Front Top Current", "A", () -> conveyorMotorFrontTop.getOutputCurrent(),
+            "hide", "join:Indexer/Output Currents");
+        BadLog.createTopic("Indexer/Front Bottom Current", "A", () -> conveyorMotorFrontBottom.getOutputCurrent(),
+            "hide", "join:Indexer/Output Currents");
+        BadLog.createTopic("Indexer/Back Current", "A", () -> conveyorMotorBack.getOutputCurrent(),
+            "hide", "join:Indexer/Output Currents");
+        BadLog.createTopic("Indexer/Stop Current", "A", () -> stopMotor.getOutputCurrent(),
+            "hide", "join:Indexer/Output Currents");
+    }
+
     /**
      * Puts relevant values to Smart Dashboard
      */
     @Override
-    public void outputValues() {
-        SmartDashboard.putBooleanArray("Indexer Booleans (Front BB, Back BB, Move)", new boolean[] {
-            bottomFrontBreakbeam.get(),
-            bottomBackBreakbeam.get(),
-            canMove()
-        });
-        
-        SmartDashboard.putNumberArray("Indexer Currents (Front Top, Front Bottom, Back, Stop)", new double[] {
-            conveyorMotorFrontBottom.getOutputCurrent(),
-            conveyorMotorFrontTop.getOutputCurrent(),
-            conveyorMotorBack.getOutputCurrent(),
-            stopMotor.getOutputCurrent()
-        });
+    public void outputToShuffleboard() {
 
         if(SmartDashboard.getBoolean("Testing", false)) {
             SmartDashboard.putString("Indexer State", state.name());
             SmartDashboard.putNumber("Indexer Color Sensor", lastFilteredDist);
+            
+            SmartDashboard.putBooleanArray("Indexer Booleans (Front BB, Back BB, Move)", new boolean[] {
+                bottomFrontBreakbeam.get(),
+                bottomBackBreakbeam.get(),
+                canMove()
+            });
+            
+            SmartDashboard.putNumberArray("Indexer Currents (Front Top, Front Bottom, Back, Stop)", new double[] {
+                conveyorMotorFrontTop.getOutputCurrent(),
+                conveyorMotorFrontBottom.getOutputCurrent(),
+                conveyorMotorBack.getOutputCurrent(),
+                stopMotor.getOutputCurrent()
+            });
         }
     }
 
@@ -212,7 +228,7 @@ public class Indexer extends SnailSubsystem {
      * Puts values that can be changed into Smart Dashboard
      */
     @Override
-    public void setUpConstantTuning() {
+    public void initTuning() {
         SmartDashboard.putNumber("Indexer Stop Shoot Speed", Constants.Indexer.INDEXER_STOP_SHOOT_SPEED);
         SmartDashboard.putNumber("Indexer Stop Neutral Speed", Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
 
@@ -228,7 +244,7 @@ public class Indexer extends SnailSubsystem {
      * Gets values that can be changed
      */
     @Override
-    public void getConstantTuning() {
+    public void tuneValues() {
 
         INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
         INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);

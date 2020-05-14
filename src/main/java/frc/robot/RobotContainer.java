@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -34,8 +35,13 @@ import frc.robot.util.Gyro;
 import frc.robot.util.Limelight;
 import frc.robot.util.SnailController;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
+
+import badlog.lib.BadLog;
 
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
@@ -48,16 +54,16 @@ import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
  */
 public class RobotContainer {
 
-    private final SnailController driveController;
-    private final SnailController operatorController;
+    private SnailController driveController;
+    private SnailController operatorController;
     
-    private final ArrayList<SnailSubsystem> subsystems;
-    private final Drivetrain drivetrain;
-    private final Intake intake;
-    private final Indexer indexer;
-    private final DoubleSupplier indexerTopSupplier;
-    private final Elevator elevator;
-    private final Shooter shooter;
+    private ArrayList<SnailSubsystem> subsystems;
+    private Drivetrain drivetrain;
+    private Intake intake;
+    private Indexer indexer;
+    private DoubleSupplier indexerTopSupplier;
+    private Elevator elevator;
+    private Shooter shooter;
 
     private SendableChooser<Constants.Autonomous.AutoType> autoTypeChooser;
     private SendableChooser<Constants.Autonomous.AutoPosition> autoPositionChooser;
@@ -65,6 +71,7 @@ public class RobotContainer {
 
     private int outputCounter;
     private Notifier updateNotifier;
+    private BadLog log;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -73,7 +80,20 @@ public class RobotContainer {
         driveController = new SnailController(CONTROLLER_DRIVER_ID);
         operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
 
-        intake = new Intake();
+        configureSubsystems();
+        configureAutoChoosers();
+        configureButtonBindings();
+        configureLogging();
+
+        outputCounter = 0;
+
+        SmartDashboard.putBoolean("Testing", false);
+
+        updateNotifier = new Notifier(this::update);
+        updateNotifier.startPeriodic(Constants.UPDATE_PERIOD);
+    }
+
+    private void configureSubsystems() {intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
         
         indexer = new Indexer();
@@ -99,15 +119,6 @@ public class RobotContainer {
         subsystems.add(elevator);
         subsystems.add(shooter);
         subsystems.add(drivetrain);
-
-        configureAutoChoosers();
-        configureButtonBindings();
-        outputCounter = 0;
-
-        SmartDashboard.putBoolean("Testing", false);
-
-        updateNotifier = new Notifier(this::update);
-        updateNotifier.startPeriodic(Constants.UPDATE_PERIOD);
     }
 
     /**
@@ -166,6 +177,26 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Goal", autoGoalChooser);
     }
 
+    public void configureLogging() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+        log = BadLog.init("/home/lvuser/log/" + formatter.format(new Date()) + ".bag");
+        
+        BadLog.createValue("Event Name",
+                Optional.ofNullable(DriverStation.getInstance().getEventName()).orElse(""));
+        BadLog.createValue("Match Type", DriverStation.getInstance().getMatchType().toString());
+        BadLog.createValue("Match Number", "" + DriverStation.getInstance().getMatchNumber());
+        BadLog.createValue("Alliance", DriverStation.getInstance().getAlliance().toString());
+        BadLog.createValue("Location", "" + DriverStation.getInstance().getLocation());
+        
+        BadLog.createTopic("Match Time", "s", () -> DriverStation.getInstance().getMatchTime());
+
+        for(SnailSubsystem subsystem : subsystems) {
+            subsystem.initLogging();
+        }
+
+        log.finishInitialization();
+    }
+
     public Command getAutoCommand() {
          Constants.Autonomous.AutoType type = autoTypeChooser.getSelected();
          Constants.Autonomous.AutoPosition position = autoPositionChooser.getSelected();
@@ -220,7 +251,7 @@ public class RobotContainer {
     public void outputValues() {
         if(outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
-                subsystems.get(outputCounter / 3).outputValues();
+                subsystems.get(outputCounter / 3).outputToShuffleboard();
             }
             else {
                 Gyro.getInstance().outputValues();
@@ -230,20 +261,20 @@ public class RobotContainer {
         outputCounter = (outputCounter + 1) % ((subsystems.size() + 2) * 3);
     }
 
-    public void setUpConstantTuning() {
+    public void initTuning() {
         for(SnailSubsystem subsystem : subsystems) {
-            subsystem.setUpConstantTuning();
+            subsystem.initTuning();
         }
-        Limelight.setConstantTuning();
+        Limelight.initTuning();
     }
 
-    public void getConstantTuning() {
+    public void tuneValues() {
         if(outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
-                subsystems.get(outputCounter / 3).getConstantTuning();
+                subsystems.get(outputCounter / 3).tuneValues();
             }
             else {
-                Limelight.getConstantTuning();
+                Limelight.tuneValues();
             }
         }
     }
