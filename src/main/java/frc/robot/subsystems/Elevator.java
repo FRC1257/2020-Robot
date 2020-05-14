@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 import static frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.Elevator.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 // import edu.wpi.first.wpilibj.Servo;
@@ -85,7 +86,7 @@ public class Elevator extends SnailSubsystem {
     }
 
     @Override
-    public void periodic() {
+    public void update() {
         // if (!locked) {
             if (speed > 0 && encoder.getPosition() >= Constants.Elevator.ELEVATOR_MAX_HEIGHT && !override) {
                 speed = 0;
@@ -173,17 +174,29 @@ public class Elevator extends SnailSubsystem {
     }
 
     @Override
-    public void setConstantTuning() {
-        SmartDashboard.putNumberArray("Elevator PID (kP, kI, kD)", Constants.Elevator.ELEVATOR_PID);
-        SmartDashboard.putNumberArray("Elevator Vel (kP, kI, kF)", Constants.Elevator.ELEVATOR_VEL_PIF);
-        SmartDashboard.putNumber("Elevator PID Setpoint", Constants.Elevator.ELEVATOR_SETPOINT);
+    public void setUpConstantTuning() {
+        SmartDashboard.putNumber("Elevator PID kP", ELEVATOR_PID[0]);
+        SmartDashboard.putNumber("Elevator PID kI", ELEVATOR_PID[1]);
+        SmartDashboard.putNumber("Elevator PID kD", ELEVATOR_PID[2]);
+
+        SmartDashboard.putNumber("Elevator Vel kP", ELEVATOR_VEL_PIF[0]);
+        SmartDashboard.putNumber("Elevator Vel kI", ELEVATOR_VEL_PIF[1]);
+        SmartDashboard.putNumber("Elevator Vel kFF", ELEVATOR_VEL_PIF[2]);
+
+        SmartDashboard.putNumber("Elevator PID Setpoint", ELEVATOR_SETPOINT);
     }
 
     @Override
     public void getConstantTuning() {
-        Constants.Elevator.ELEVATOR_PID = SmartDashboard.getNumberArray("Elevator PID (kP, kI, kD)", Constants.Elevator.ELEVATOR_PID);
-        Constants.Elevator.ELEVATOR_VEL_PIF = SmartDashboard.getNumberArray("Elevator Vel (kP, kI, kF)", Constants.Elevator.ELEVATOR_VEL_PIF);
-        Constants.Elevator.ELEVATOR_SETPOINT = SmartDashboard.getNumber("Elevator PID Setpoint", Constants.Elevator.ELEVATOR_SETPOINT);
+        ELEVATOR_PID[0] = SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0]);
+        ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1]);
+        ELEVATOR_PID[2] = SmartDashboard.getNumber("Elevator PID kD", ELEVATOR_PID[2]);
+
+        ELEVATOR_VEL_PIF[0] = SmartDashboard.getNumber("Elevator Vel kP", ELEVATOR_VEL_PIF[0]);
+        ELEVATOR_VEL_PIF[1] = SmartDashboard.getNumber("Elevator Vel kI", ELEVATOR_VEL_PIF[1]);
+        ELEVATOR_VEL_PIF[2] = SmartDashboard.getNumber("Elevator Vel kFF", ELEVATOR_VEL_PIF[2]);
+
+        ELEVATOR_SETPOINT = SmartDashboard.getNumber("Elevator PID Setpoint", ELEVATOR_SETPOINT);
 
         if (elevatorPID.getP(Constants.Elevator.ELEVATOR_PID_SLOT_POS) != Constants.Elevator.ELEVATOR_PID[0]) {
             elevatorPID.setP(Constants.Elevator.ELEVATOR_PID[0], Constants.Elevator.ELEVATOR_PID_SLOT_POS);

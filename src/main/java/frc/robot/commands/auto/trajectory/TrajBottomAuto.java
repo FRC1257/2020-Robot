@@ -11,7 +11,7 @@ public class TrajBottomAuto extends SequentialCommandGroup {
 
     public TrajBottomAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
         
-        Trajectory bottomTrajectory = Trajectories.getTrajectory("Bottom-Power");
+        Trajectory bottomTrajectory = Trajectories.getTrajectory("Bot-Power");
 
         addCommands(
             new TrajDriveAndShoot(drivetrain, indexer, shooter, bottomTrajectory, intake));
