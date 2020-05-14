@@ -107,6 +107,7 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Testing", false);
 
         updateNotifier = new Notifier(this::update);
+        updateNotifier.startPeriodic(Constants.UPDATE_PERIOD);
     }
 
     /**
