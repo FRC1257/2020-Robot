@@ -93,7 +93,8 @@ public class RobotContainer {
         updateNotifier.startPeriodic(Constants.UPDATE_PERIOD);
     }
 
-    private void configureSubsystems() {intake = new Intake();
+    private void configureSubsystems() {
+        intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
         
         indexer = new Indexer();
