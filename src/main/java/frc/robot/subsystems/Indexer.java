@@ -203,7 +203,7 @@ public class Indexer extends SnailSubsystem {
      * Puts relevant values to Smart Dashboard
      */
     @Override
-    public void outputToShuffleboard() {
+    public void displayShuffleboard() {
 
         if(SmartDashboard.getBoolean("Testing", false)) {
             SmartDashboard.putString("Indexer State", state.name());
@@ -228,7 +228,7 @@ public class Indexer extends SnailSubsystem {
      * Puts values that can be changed into Smart Dashboard
      */
     @Override
-    public void initTuning() {
+    public void tuningInit() {
         SmartDashboard.putNumber("Indexer Stop Shoot Speed", Constants.Indexer.INDEXER_STOP_SHOOT_SPEED);
         SmartDashboard.putNumber("Indexer Stop Neutral Speed", Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
 
@@ -244,7 +244,7 @@ public class Indexer extends SnailSubsystem {
      * Gets values that can be changed
      */
     @Override
-    public void tuneValues() {
+    public void tuningPeriodic() {
 
         INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
         INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);

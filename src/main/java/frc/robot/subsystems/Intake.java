@@ -83,7 +83,7 @@ public class Intake extends SnailSubsystem {
      * Puts relevant values to Smart Dashboard
      */
     @Override
-    public void outputToShuffleboard() {
+    public void displayShuffleboard() {
         if(SmartDashboard.getBoolean("Testing", false)) {
             SmartDashboard.putNumber("Intake Motor Current", intakeMotor.getOutputCurrent());
         }
@@ -93,7 +93,7 @@ public class Intake extends SnailSubsystem {
      * Puts values that can be changed into Smart Dashboard
      */
     @Override
-    public void initTuning() {
+    public void tuningInit() {
         SmartDashboard.putNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
         SmartDashboard.putNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
         SmartDashboard.putNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);
@@ -103,7 +103,7 @@ public class Intake extends SnailSubsystem {
      * Gets values that can be changed
      */
     @Override
-    public void tuneValues() {
+    public void tuningPeriodic() {
         INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
         INTAKE_INTAKE_SPEED = SmartDashboard.getNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
         INTAKE_NEUTRAL_SPEED = SmartDashboard.getNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);

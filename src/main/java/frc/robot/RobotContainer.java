@@ -251,7 +251,7 @@ public class RobotContainer {
     public void outputValues() {
         if(outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
-                subsystems.get(outputCounter / 3).outputToShuffleboard();
+                subsystems.get(outputCounter / 3).displayShuffleboard();
             }
             else {
                 Gyro.getInstance().outputValues();
@@ -261,20 +261,20 @@ public class RobotContainer {
         outputCounter = (outputCounter + 1) % ((subsystems.size() + 2) * 3);
     }
 
-    public void initTuning() {
+    public void tuningInit() {
         for(SnailSubsystem subsystem : subsystems) {
-            subsystem.initTuning();
+            subsystem.tuningInit();
         }
-        Limelight.initTuning();
+        Limelight.tuningInit();
     }
 
-    public void tuneValues() {
+    public void tuningPeriodic() {
         if(outputCounter % 3 == 0) {
             if (outputCounter / 3 < subsystems.size()) {
-                subsystems.get(outputCounter / 3).tuneValues();
+                subsystems.get(outputCounter / 3).tuningPeriodic();
             }
             else {
-                Limelight.tuneValues();
+                Limelight.tuningPeriodic();
             }
         }
     }

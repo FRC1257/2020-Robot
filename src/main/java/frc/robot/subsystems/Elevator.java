@@ -188,7 +188,7 @@ public class Elevator extends SnailSubsystem {
     }
    
     @Override 
-    public void outputToShuffleboard() {
+    public void displayShuffleboard() {
         if(SmartDashboard.getBoolean("Testing", false)) {
             SmartDashboard.putNumberArray("Elevator Stats (pos, vel, pos_des, vel_des, curr, temp)", new double[] {
                 encoder.getPosition(),
@@ -204,7 +204,7 @@ public class Elevator extends SnailSubsystem {
     }
 
     @Override
-    public void initTuning() {
+    public void tuningInit() {
         SmartDashboard.putNumber("Elevator PID kP", ELEVATOR_PID[0]);
         SmartDashboard.putNumber("Elevator PID kI", ELEVATOR_PID[1]);
         SmartDashboard.putNumber("Elevator PID kD", ELEVATOR_PID[2]);
@@ -217,7 +217,7 @@ public class Elevator extends SnailSubsystem {
     }
 
     @Override
-    public void tuneValues() {
+    public void tuningPeriodic() {
         ELEVATOR_PID[0] = SmartDashboard.getNumber("Elevator PID kP", ELEVATOR_PID[0]);
         ELEVATOR_PID[1] = SmartDashboard.getNumber("Elevator PID kI", ELEVATOR_PID[1]);
         ELEVATOR_PID[2] = SmartDashboard.getNumber("Elevator PID kD", ELEVATOR_PID[2]);

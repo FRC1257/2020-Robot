@@ -431,7 +431,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     @Override
-    public void outputToShuffleboard() {
+    public void displayShuffleboard() {
         SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {reversed, slowTurning});
 
         if(SmartDashboard.getBoolean("Testing", false)) {
@@ -458,7 +458,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     @Override
-    public void initTuning() {
+    public void tuningInit() {
         SmartDashboard.putNumber("Drive Reduce Turning Constant", DRIVE_REDUCE_TURNING_CONSTANT);
 
         SmartDashboard.putNumber("Drive PID Vel Left kP", DRIVE_LEFT_VEL_PID_P);
@@ -480,7 +480,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     @Override
-    public void tuneValues() {
+    public void tuningPeriodic() {
         Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT = SmartDashboard.getNumber("Drive Reduce Turning Constant",
                 Constants.Drivetrain.DRIVE_REDUCE_TURNING_CONSTANT);
 

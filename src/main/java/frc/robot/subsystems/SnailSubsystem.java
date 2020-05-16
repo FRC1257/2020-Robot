@@ -6,7 +6,7 @@ public abstract class SnailSubsystem extends SubsystemBase {
 
     public abstract void update();
     public abstract void initLogging();
-    public abstract void outputToShuffleboard();
-    public abstract void initTuning();
-    public abstract void tuneValues();
+    public abstract void displayShuffleboard();
+    public abstract void tuningInit();
+    public abstract void tuningPeriodic();
 }

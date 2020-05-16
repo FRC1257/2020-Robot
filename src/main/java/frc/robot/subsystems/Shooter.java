@@ -113,7 +113,7 @@ public class Shooter extends SnailSubsystem {
     }
 
     @Override
-    public void outputToShuffleboard() {
+    public void displayShuffleboard() {
         if(SmartDashboard.getBoolean("Testing", false)) {
             SmartDashboard.putNumber("Shooter Encoder Vel", shooterEncoder.getVelocity());
             SmartDashboard.putString("Shooter State", state.name());
@@ -126,7 +126,7 @@ public class Shooter extends SnailSubsystem {
     }
 
     @Override
-    public void initTuning() {
+    public void tuningInit() {
         SmartDashboard.putNumber("Shooter PID kP", SHOOTER_PIDF[0]);
         SmartDashboard.putNumber("Shooter PID kI", SHOOTER_PIDF[1]);
         SmartDashboard.putNumber("Shooter PID kD", SHOOTER_PIDF[2]);
@@ -137,7 +137,7 @@ public class Shooter extends SnailSubsystem {
     }
 
     @Override
-    public void tuneValues() {
+    public void tuningPeriodic() {
         SHOOTER_PIDF[0] = SmartDashboard.getNumber("Shooter PID kP", SHOOTER_PIDF[0]);
         SHOOTER_PIDF[1] = SmartDashboard.getNumber("Shooter PID kI", SHOOTER_PIDF[1]);
         SHOOTER_PIDF[2] = SmartDashboard.getNumber("Shooter PID kD", SHOOTER_PIDF[2]);

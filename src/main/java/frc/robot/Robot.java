@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         robotContainer.outputValues();
-        if(SmartDashboard.getBoolean("Testing", false)) robotContainer.tuneValues();
+        if(SmartDashboard.getBoolean("Testing", false)) robotContainer.tuningPeriodic();
     }
 
     @Override
@@ -46,6 +46,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        robotContainer.initTuning();
+        robotContainer.tuningInit();
     }
 }
