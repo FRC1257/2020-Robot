@@ -7,11 +7,11 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.MedianFilter;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 import static frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.Indexer.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 /**
@@ -39,8 +39,6 @@ public class Indexer extends SnailSubsystem {
     private MedianFilter filter;
     private double lastFilteredDist;
     private boolean override;
-
-    private Notifier looper;
 
     /**
      * NEUTRAL - The position of each of the power cells is maintained
@@ -95,9 +93,6 @@ public class Indexer extends SnailSubsystem {
         colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
         filter = new MedianFilter(Constants.Indexer.INDEXER_TOP_SENSOR_NUM_MED);
 
-        looper = new Notifier(this::updateNotifier);
-        looper.startPeriodic(Constants.Indexer.INDEXER_LOOPER_PERIOD);
-
         reset();
     }
 
@@ -107,11 +102,8 @@ public class Indexer extends SnailSubsystem {
         topSpeed = 0;
     }
 
-    /**
-     * Update motor outputs according to the current state
-     * This method is called within a notifier to achieve a much faster refresh rate and in a separate thread
-     */
-    private void updateNotifier() {
+    @Override
+    public void update() {
         updateDistance();
 
         switch(state) {
@@ -188,11 +180,6 @@ public class Indexer extends SnailSubsystem {
         }
     }
 
-    @Override
-    public void periodic() {
-
-    }
-
     public void setTopSpeed(double topSpeed) {
         this.topSpeed = topSpeed;
     }
@@ -225,14 +212,16 @@ public class Indexer extends SnailSubsystem {
      * Puts values that can be changed into Smart Dashboard
      */
     @Override
-    public void setConstantTuning() {
+    public void setUpConstantTuning() {
         SmartDashboard.putNumber("Indexer Stop Shoot Speed", Constants.Indexer.INDEXER_STOP_SHOOT_SPEED);
         SmartDashboard.putNumber("Indexer Stop Neutral Speed", Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
 
-        SmartDashboard.putNumberArray("Indexer Speeds (Raise, Return, Nudge, Lower, Shoot, Neutral)", new double[] {
-                Constants.Indexer.INDEXER_CONVEYOR_RAISE_SPEED,Constants.Indexer.INDEXER_CONVEYOR_RETURN_SPEED,
-                Constants.Indexer.INDEXER_CONVEYOR_NUDGE_SPEED, Constants.Indexer.INDEXER_CONVEYOR_LOWER_SPEED,
-                Constants.Indexer.INDEXER_CONVEYOR_SHOOT_SPEED, Constants.Indexer.INDEXER_CONVEYOR_NEUTRAL_SPEED});
+        SmartDashboard.putNumber("Indexer Conveyor Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Return Speed", INDEXER_CONVEYOR_RETURN_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Nudge Speed", INDEXER_CONVEYOR_NUDGE_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
+        SmartDashboard.putNumber("Indexer Conveyor Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
 
     /**
@@ -240,27 +229,23 @@ public class Indexer extends SnailSubsystem {
      */
     @Override
     public void getConstantTuning() {
-        Constants.Indexer.INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", Constants.Indexer.INDEXER_STOP_SHOOT_SPEED);
-        Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", Constants.Indexer.INDEXER_STOP_NEUTRAL_SPEED);
 
-        double[] indexerSpeeds = SmartDashboard.getNumberArray("Indexer Speeds (Raise, Return, Nudge, Lower, Shoot, Neutral)", new double[] {
-                Constants.Indexer.INDEXER_CONVEYOR_RAISE_SPEED, Constants.Indexer.INDEXER_CONVEYOR_RETURN_SPEED,
-                Constants.Indexer.INDEXER_CONVEYOR_NUDGE_SPEED, Constants.Indexer.INDEXER_CONVEYOR_LOWER_SPEED,
-                Constants.Indexer.INDEXER_CONVEYOR_SHOOT_SPEED, Constants.Indexer.INDEXER_CONVEYOR_NEUTRAL_SPEED});
+        INDEXER_STOP_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Stop Shoot Speed", INDEXER_STOP_SHOOT_SPEED);
+        INDEXER_STOP_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Stop Neutral Speed", INDEXER_STOP_NEUTRAL_SPEED);
 
-        Constants.Indexer.INDEXER_CONVEYOR_SHOOT_SPEED = indexerSpeeds[0];
-        Constants.Indexer.INDEXER_CONVEYOR_RETURN_SPEED = indexerSpeeds[1];
-        Constants.Indexer.INDEXER_CONVEYOR_NUDGE_SPEED = indexerSpeeds[2];
-        Constants.Indexer.INDEXER_CONVEYOR_RAISE_SPEED = indexerSpeeds[3];
-        Constants.Indexer.INDEXER_CONVEYOR_LOWER_SPEED = indexerSpeeds[4];
-        Constants.Indexer.INDEXER_CONVEYOR_NEUTRAL_SPEED = indexerSpeeds[5];
+        INDEXER_CONVEYOR_SHOOT_SPEED = SmartDashboard.getNumber("Indexer Conveyor Shoot Speed", INDEXER_CONVEYOR_SHOOT_SPEED);
+        INDEXER_CONVEYOR_RETURN_SPEED = SmartDashboard.getNumber("Indexer Conveyor Return Speed", INDEXER_CONVEYOR_RETURN_SPEED);
+        INDEXER_CONVEYOR_NUDGE_SPEED = SmartDashboard.getNumber("Indexer Conveyor Nudge Speed", INDEXER_CONVEYOR_NUDGE_SPEED);
+        INDEXER_CONVEYOR_RAISE_SPEED = SmartDashboard.getNumber("Indexer Conveyor Raise Speed", INDEXER_CONVEYOR_RAISE_SPEED);
+        INDEXER_CONVEYOR_LOWER_SPEED = SmartDashboard.getNumber("Indexer Conveyor Lower Speed", INDEXER_CONVEYOR_LOWER_SPEED);
+        INDEXER_CONVEYOR_NEUTRAL_SPEED = SmartDashboard.getNumber("Indexer Conveyor Neutral Speed", INDEXER_CONVEYOR_NEUTRAL_SPEED);
     }
     
     /**
     * Changes state to neutral if not automatically indexing at the moment
     */
     public void neutral() {
-        if (state != State.CELL_RAISING && state != State.CELL_RETURNING && state != State.CELL_NUDGING) {
+        if(state != State.CELL_RAISING && state != State.CELL_RETURNING && state != State.CELL_NUDGING) {
             state = State.NEUTRAL;
         }
     }

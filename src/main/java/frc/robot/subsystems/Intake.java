@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 import static frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.Intake.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 /**
@@ -51,7 +52,7 @@ public class Intake extends SnailSubsystem {
      * Update motor outputs according to the current state
      */
     @Override
-    public void periodic() {
+    public void update() {
         switch(state) {
             case NEUTRAL: 
                 intakeMotor.set(Constants.Intake.INTAKE_NEUTRAL_SPEED);
@@ -83,9 +84,10 @@ public class Intake extends SnailSubsystem {
      * Puts values that can be changed into Smart Dashboard
      */
     @Override
-    public void setConstantTuning() {
-        SmartDashboard.putNumberArray("Intake Speeds (Eject, Intake, Neutral)", new double[] {
-            Constants.Intake.INTAKE_EJECT_SPEED, Constants.Intake.INTAKE_INTAKE_SPEED, Constants.Intake.INTAKE_NEUTRAL_SPEED});
+    public void setUpConstantTuning() {
+        SmartDashboard.putNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
+        SmartDashboard.putNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
+        SmartDashboard.putNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);
     }
 
     /**
@@ -93,11 +95,9 @@ public class Intake extends SnailSubsystem {
      */
     @Override
     public void getConstantTuning() {
-        double[] intakeSpeeds = SmartDashboard.getNumberArray("Intake Speeds (Eject, Intake, Neutral)", new double[] {
-                Constants.Intake.INTAKE_EJECT_SPEED, Constants.Intake.INTAKE_INTAKE_SPEED, Constants.Intake.INTAKE_NEUTRAL_SPEED});
-        Constants.Intake.INTAKE_EJECT_SPEED = intakeSpeeds[0];
-        Constants.Intake.INTAKE_INTAKE_SPEED = intakeSpeeds[1];
-        Constants.Intake.INTAKE_NEUTRAL_SPEED = intakeSpeeds[2];
+        INTAKE_EJECT_SPEED = SmartDashboard.getNumber("Intake Eject Speed", INTAKE_EJECT_SPEED);
+        INTAKE_INTAKE_SPEED = SmartDashboard.getNumber("Intake Intake Speed", INTAKE_INTAKE_SPEED);
+        INTAKE_NEUTRAL_SPEED = SmartDashboard.getNumber("Intake Neutral Speed", INTAKE_NEUTRAL_SPEED);
     }
 
     /**

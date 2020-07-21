@@ -43,9 +43,9 @@ public class Trajectories {
 
         pointMap.put("Top-Power", new TrajectoryPoints(true, 0, 0,
             new Translation2d(3.048, -2.404), new Translation2d(0.445, -2.404)));
-        pointMap.put("Middle-Power", new TrajectoryPoints(true, 0, 0, 
+        pointMap.put("Mid-Power", new TrajectoryPoints(true, 0, 0, 
             new Translation2d(3.048, -4.105), new Translation2d(0.445, -2.404)));
-        pointMap.put("Bottom-Power", new TrajectoryPoints(true, 0, 0,
+        pointMap.put("Bot-Power", new TrajectoryPoints(true, 0, 0,
             new Translation2d(3.048, -5.655), new Translation2d(0.445, -2.404)));
 
         pointMap.put("Power-Trench", new TrajectoryPoints(false, 0, 0,

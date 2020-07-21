@@ -12,7 +12,7 @@ public class TrajMiddleTrenchAuto extends SequentialCommandGroup {
 
     public TrajMiddleTrenchAuto(Drivetrain drivetrain, Indexer indexer, Shooter shooter, Intake intake) {
 
-        Trajectory midTrench1 = Trajectories.getTrajectory("Middle-Power");
+        Trajectory midTrench1 = Trajectories.getTrajectory("Mid-Power");
         Trajectory midTrench2 = Trajectories.getTrajectory("Power-Trench");
 
         addCommands(new TrajDriveAndShoot(drivetrain, indexer, shooter, midTrench1, intake),

@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - SegmentVisualizer",
+      "request": "launch",
+      "mainClass": "frc.robot.commands.auto.segmented.visualization.SegmentVisualizer",
+      "projectName": "2020-Robot"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - TrajectoryVisualizer",
       "request": "launch",
       "mainClass": "frc.robot.commands.auto.trajectory.visualization.TrajectoryVisualizer",
