@@ -122,6 +122,8 @@ public class RobotContainer {
         // driveController.getButton(Button.kB.value).whileActiveOnce(new DriveDistanceCommand(drivetrain, -5.52));
         // driveController.getButton(Button.kX.value).whileActiveOnce(new DriveDistanceCommand(drivetrain, 5.52));
 
+        // driveController.getButton(Button.kA.value).whileACtiveOnce(new TrajTopGenTopAuto(drivetrain, indexer, shooter, intake));
+        
         // Intake Bindings
         operatorController.getButton(Button.kStart.value).whenPressed(new IntakeReleaseCommand(intake));
         operatorController.getButton(Button.kA.value).whileActiveOnce(new EjectCellCommand(intake, indexer));
