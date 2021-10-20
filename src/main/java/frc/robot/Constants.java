@@ -125,7 +125,7 @@ public final class Constants {
         public static double DRIVE_GEARBOX_REDUCTION = 10.71;
 
         public static double DRIVE_REDUCE_TURNING_CONSTANT = 0.45;
-        public static double DRIVE_CLOSED_LOOP_SLEW_RATE_LIMITER = 1.25;
+        public static double DRIVE_CLOSED_LOOP_SLEW_RATE_LIMITER = 1.20;
 
         public static int DRIVE_PID_SLOT_VEL = 0;
         public static double DRIVE_LEFT_VEL_PID_P = 0.25;
