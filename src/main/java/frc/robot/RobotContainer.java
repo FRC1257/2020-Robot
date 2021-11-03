@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.EjectCellCommand;
 import frc.robot.commands.FreeShooterCommand;
 import frc.robot.commands.IntakeCellCommand;
-import frc.robot.commands.auto.segmented.SegDriveAndShoot;
+import frc.robot.commands.auto.segmented.*;
+import frc.robot.commands.auto.trajectory.*;
 import frc.robot.commands.drivetrain.ClosedLoopDriveCommand;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
 import frc.robot.commands.drivetrain.ReverseDriveCommand;
@@ -173,44 +174,44 @@ public class RobotContainer {
          Constants.Autonomous.AutoPosition position = autoPositionChooser.getSelected();
          Constants.Autonomous.AutoGoal goal = autoGoalChooser.getSelected();
 
-        // if (type == Constants.AutoType.SEGMENTED) {
-        //     switch (position) {
-        //         case TOP:
-        //             return new SegTopAuto(drivetrain, indexer, shooter, intake);
-        //         case MIDDLE:
-        //             return new SegMiddleAuto(drivetrain, indexer, shooter, intake);
-        //         case BOTTOM:
-        //             return new SegBottomAuto(drivetrain, indexer, shooter, intake);
-        //     }
-        // }
-
-        // if (type == Constants.AutoType.TRAJECTORY) {
-        //     if (position == Constants.AutoPosition.BOTTOM) return new BottomAuto(drivetrain, indexer, shooter, intake);
-
-        //     switch (goal) {
-        //         case TRENCH:
-        //             if (position == Constants.AutoPosition.TOP) return new TopTrenchAuto(drivetrain, indexer, shooter, intake);
-        //             else if (position == Constants.AutoPosition.MIDDLE) return new MiddleTrenchAuto(drivetrain, indexer, shooter, intake);
-        //         case GEN_TOP: 
-        //             if (position == Constants.AutoPosition.TOP) return new TopGenTopAuto(drivetrain, indexer, shooter, intake);
-        //             else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenTopAuto(drivetrain, indexer, shooter, intake);
-        //         case GEN_BOTTOM:
-        //             if (position == Constants.AutoPosition.TOP) return new TopGenBottomAuto(drivetrain, indexer, shooter, intake);
-        //             else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
-        //         case DEFAULT: // will go to drive distance command
-        //     }
-        // }
-
-//        return new DriveDistanceCommand(drivetrain, 2);
-
-        switch(position) {
-            case MIDDLE:
-                return new TurnAngleCommand(drivetrain, 90);
-            case BOTTOM:
-                return new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 2);
-            default:
-                return new DriveDistanceCommand(drivetrain, 2); // default and top
+        if (type == Constants.AutoType.SEGMENTED) {
+            switch (position) {
+                case TOP:
+                    return new SegTopAuto(drivetrain, indexer, shooter, intake);
+                case MIDDLE:
+                    return new SegMiddleAuto(drivetrain, indexer, shooter, intake);
+                case BOTTOM:
+                    return new SegBottomAuto(drivetrain, indexer, shooter, intake);
+            }
         }
+
+        if (type == Constants.AutoType.TRAJECTORY) {
+            if (position == Constants.AutoPosition.BOTTOM) return new BottomAuto(drivetrain, indexer, shooter, intake);
+
+            switch (goal) {
+                case TRENCH:
+                    if (position == Constants.AutoPosition.TOP) return new TopTrenchAuto(drivetrain, indexer, shooter, intake);
+                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleTrenchAuto(drivetrain, indexer, shooter, intake);
+                case GEN_TOP: 
+                    if (position == Constants.AutoPosition.TOP) return new TopGenTopAuto(drivetrain, indexer, shooter, intake);
+                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenTopAuto(drivetrain, indexer, shooter, intake);
+                case GEN_BOTTOM:
+                    if (position == Constants.AutoPosition.TOP) return new TopGenBottomAuto(drivetrain, indexer, shooter, intake);
+                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
+                case DEFAULT: // will go to drive distance command
+            }
+        }
+
+       return new DriveDistanceCommand(drivetrain, 2);
+
+        // switch(position) {
+        //     case MIDDLE:
+        //         return new TurnAngleCommand(drivetrain, 90);
+        //     case BOTTOM:
+        //         return new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 2);
+        //     default:
+        //         return new DriveDistanceCommand(drivetrain, 2); // default and top
+        // }
     }
 
     private void update() {

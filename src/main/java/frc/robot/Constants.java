@@ -165,5 +165,5 @@ public final class Constants {
     public static int NEO_550_CURRENT_LIMIT = 25;
 
     public static double PI = 3.14159265;
-    public static double UPDATE_PERIOD = 1 / 50.0; // 50 hz
+    public static double UPDATE_PERIOD = 1 / 30.0; // 50 hz
 }
