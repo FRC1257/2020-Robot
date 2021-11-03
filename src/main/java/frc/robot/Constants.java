@@ -38,18 +38,18 @@ public final class Constants {
     }
 
     public static class Autonomous {
-        public enum AutoType {
+        public static enum AutoType {
             SEGMENTED,
             TRAJECTORY
         }
 
-        public enum AutoPosition {
+        public static enum AutoPosition {
             TOP,
             MIDDLE,
             BOTTOM
         }
 
-        public enum AutoGoal {
+        public static enum AutoGoal {
             DEFAULT,
             TRENCH,
             GEN_BOTTOM,
@@ -165,5 +165,5 @@ public final class Constants {
     public static int NEO_550_CURRENT_LIMIT = 25;
 
     public static double PI = 3.14159265;
-    public static double UPDATE_PERIOD = 1 / 30.0; // 50 hz
+    public static double UPDATE_PERIOD = 1 / 50; // 50 hz
 }

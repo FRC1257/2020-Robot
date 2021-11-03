@@ -40,6 +40,9 @@ import java.util.function.DoubleSupplier;
 
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
+import frc.robot.Constants.Autonomous.AutoType;
+import frc.robot.Constants.Autonomous.AutoGoal;
+import frc.robot.Constants.Autonomous.AutoPosition;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -101,11 +104,11 @@ public class RobotContainer {
         subsystems.add(shooter);
         subsystems.add(drivetrain);
 
-        configureAutoChoosers();
+        // configureAutoChoosers();
         configureButtonBindings();
         outputCounter = 0;
 
-        SmartDashboard.putBoolean("Testing", false);
+        // SmartDashboard.putBoolean("Testing", false);
 
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(Constants.UPDATE_PERIOD);
@@ -147,60 +150,60 @@ public class RobotContainer {
         operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new FreeShooterCommand(shooter,indexer));
     }
 
-    public void configureAutoChoosers() {
-        autoTypeChooser = new SendableChooser<>();
-        autoPositionChooser = new SendableChooser<>();
-        autoGoalChooser = new SendableChooser<>();
+    // public void configureAutoChoosers() {
+    //     autoTypeChooser = new SendableChooser<>();
+    //     autoPositionChooser = new SendableChooser<>();
+    //     autoGoalChooser = new SendableChooser<>();
 
-        autoTypeChooser.setDefaultOption("Segmented", Constants.Autonomous.AutoType.SEGMENTED);
-        autoTypeChooser.addOption("Trajectory", Constants.Autonomous.AutoType.TRAJECTORY);
+    //     autoTypeChooser.setDefaultOption("Segmented", Constants.Autonomous.AutoType.SEGMENTED);
+    //     autoTypeChooser.addOption("Trajectory", Constants.Autonomous.AutoType.TRAJECTORY);
 
-        autoPositionChooser.setDefaultOption("Top Start", Constants.Autonomous.AutoPosition.TOP);
-        autoPositionChooser.addOption("Middle Start", Constants.Autonomous.AutoPosition.MIDDLE);
-        autoPositionChooser.addOption("Bottom Start", Constants.Autonomous.AutoPosition.BOTTOM);
+    //     autoPositionChooser.setDefaultOption("Top Start", Constants.Autonomous.AutoPosition.TOP);
+    //     autoPositionChooser.addOption("Middle Start", Constants.Autonomous.AutoPosition.MIDDLE);
+    //     autoPositionChooser.addOption("Bottom Start", Constants.Autonomous.AutoPosition.BOTTOM);
 
-        autoGoalChooser.setDefaultOption("Default Drive", Constants.Autonomous.AutoGoal.DEFAULT);
-        autoGoalChooser.addOption("Trench", Constants.Autonomous.AutoGoal.TRENCH);
-        autoGoalChooser.addOption("Generator Top", Constants.Autonomous.AutoGoal.GEN_TOP);
-        autoGoalChooser.addOption("Generator Bottom", Constants.Autonomous.AutoGoal.GEN_BOTTOM);
+    //     autoGoalChooser.setDefaultOption("Default Drive", Constants.Autonomous.AutoGoal.DEFAULT);
+    //     autoGoalChooser.addOption("Trench", Constants.Autonomous.AutoGoal.TRENCH);
+    //     autoGoalChooser.addOption("Generator Top", Constants.Autonomous.AutoGoal.GEN_TOP);
+    //     autoGoalChooser.addOption("Generator Bottom", Constants.Autonomous.AutoGoal.GEN_BOTTOM);
 
-        SmartDashboard.putData("Auto Type", autoTypeChooser);
-        SmartDashboard.putData("Auto Start Position", autoPositionChooser);
-        SmartDashboard.putData("Auto Goal", autoGoalChooser);
-    }
+    //     SmartDashboard.putData("Auto Type", autoTypeChooser);
+    //     SmartDashboard.putData("Auto Start Position", autoPositionChooser);
+    //     SmartDashboard.putData("Auto Goal", autoGoalChooser);
+    // }
 
     public Command getAutoCommand() {
-         Constants.Autonomous.AutoType type = autoTypeChooser.getSelected();
-         Constants.Autonomous.AutoPosition position = autoPositionChooser.getSelected();
-         Constants.Autonomous.AutoGoal goal = autoGoalChooser.getSelected();
+        //  Constants.Autonomous.AutoType type = autoTypeChooser.getSelected();
+        //  Constants.Autonomous.AutoPosition position = autoPositionChooser.getSelected();
+        //  Constants.Autonomous.AutoGoal goal = autoGoalChooser.getSelected();
 
-        if (type == Constants.AutoType.SEGMENTED) {
-            switch (position) {
-                case TOP:
-                    return new SegTopAuto(drivetrain, indexer, shooter, intake);
-                case MIDDLE:
-                    return new SegMiddleAuto(drivetrain, indexer, shooter, intake);
-                case BOTTOM:
-                    return new SegBottomAuto(drivetrain, indexer, shooter, intake);
-            }
-        }
+        // if (type == Constants.Autonomous.AutoType.SEGMENTED) {
+        //     switch (position) {
+        //         case TOP:
+        //             return new SegTopAuto(drivetrain, indexer, shooter, intake);
+        //         case MIDDLE:
+        //             return new SegMiddleAuto(drivetrain, indexer, shooter, intake);
+        //         case BOTTOM:
+        //             return new SegBottomAuto(drivetrain, indexer, shooter, intake);
+        //     }
+        // }
 
-        if (type == Constants.AutoType.TRAJECTORY) {
-            if (position == Constants.AutoPosition.BOTTOM) return new BottomAuto(drivetrain, indexer, shooter, intake);
+        // if (type == Constants.Autonomous.AutoType.TRAJECTORY) {
+        //     if (position == AutoPosition.BOTTOM) return new TrajBottomAuto(drivetrain, indexer, shooter, intake);
 
-            switch (goal) {
-                case TRENCH:
-                    if (position == Constants.AutoPosition.TOP) return new TopTrenchAuto(drivetrain, indexer, shooter, intake);
-                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleTrenchAuto(drivetrain, indexer, shooter, intake);
-                case GEN_TOP: 
-                    if (position == Constants.AutoPosition.TOP) return new TopGenTopAuto(drivetrain, indexer, shooter, intake);
-                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenTopAuto(drivetrain, indexer, shooter, intake);
-                case GEN_BOTTOM:
-                    if (position == Constants.AutoPosition.TOP) return new TopGenBottomAuto(drivetrain, indexer, shooter, intake);
-                    else if (position == Constants.AutoPosition.MIDDLE) return new MiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
-                case DEFAULT: // will go to drive distance command
-            }
-        }
+        //     switch (goal) {
+        //         case TRENCH:
+        //             if (position == Constants.Autonomous.AutoPosition.TOP) return new TrajTopTrenchAuto(drivetrain, indexer, shooter, intake);
+        //             else if (position == Constants.Autonomous.AutoPosition.MIDDLE) return new TrajMiddleTrenchAuto(drivetrain, indexer, shooter, intake);
+        //         case GEN_TOP: 
+        //             if (position == Constants.Autonomous.AutoPosition.TOP) return new TrajTopGenTopAuto(drivetrain, indexer, shooter, intake);
+        //             else if (position == Constants.Autonomous.AutoPosition.MIDDLE) return new TrajMiddleGenTopAuto(drivetrain, indexer, shooter, intake);
+        //         case GEN_BOTTOM:
+        //             if (position == Constants.Autonomous.AutoPosition.TOP) return new TrajTopGenBottomAuto(drivetrain, indexer, shooter, intake);
+        //             else if (position == Constants.Autonomous.AutoPosition.MIDDLE) return new TrajMiddleGenBottomAuto(drivetrain, indexer, shooter, intake);
+        //         case DEFAULT: // will go to drive distance command
+        //     }
+        // }
 
        return new DriveDistanceCommand(drivetrain, 2);
 
@@ -220,38 +223,38 @@ public class RobotContainer {
         }
     }
 
-    public void outputValues() {
-        if(outputCounter % 3 == 0) {
-            if (outputCounter / 3 < subsystems.size()) {
-                subsystems.get(outputCounter / 3).outputValues();
-            }
-            else {
-                Gyro.getInstance().outputValues();
-            }
-        }
+    // public void outputValues() {
+    //     if(outputCounter % 3 == 0) {
+    //         if (outputCounter / 3 < subsystems.size()) {
+    //             subsystems.get(outputCounter / 3).outputValues();
+    //         }
+    //         else {
+    //             Gyro.getInstance().outputValues();
+    //         }
+    //     }
 
-        outputCounter = (outputCounter + 1) % ((subsystems.size() + 2) * 3);
-    }
+    //     outputCounter = (outputCounter + 1) % ((subsystems.size() + 2) * 3);
+    // }
 
-    public void setUpConstantTuning() {
-        for(SnailSubsystem subsystem : subsystems) {
-            subsystem.setUpConstantTuning();
-        }
-        Limelight.setConstantTuning();
-    }
+    // public void setUpConstantTuning() {
+    //     for(SnailSubsystem subsystem : subsystems) {
+    //         subsystem.setUpConstantTuning();
+    //     }
+    //     Limelight.setConstantTuning();
+    // }
 
-    public void getConstantTuning() {
-        if(outputCounter % 3 == 0) {
-            if (outputCounter / 3 < subsystems.size()) {
-                subsystems.get(outputCounter / 3).getConstantTuning();
-            }
-            else {
-                Limelight.getConstantTuning();
-            }
-        }
-    }
+    // public void getConstantTuning() {
+    //     if(outputCounter % 3 == 0) {
+    //         if (outputCounter / 3 < subsystems.size()) {
+    //             subsystems.get(outputCounter / 3).getConstantTuning();
+    //         }
+    //         else {
+    //             Limelight.getConstantTuning();
+    //         }
+    //     }
+    // }
 
-    public void resetIndexer() {
-        indexer.reset();
-    }
+    // public void resetIndexer() {
+    //     indexer.reset();
+    // }
 }

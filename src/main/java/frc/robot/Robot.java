@@ -20,8 +20,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        robotContainer.outputValues();
-        if(SmartDashboard.getBoolean("Testing", false)) robotContainer.getConstantTuning();
+        // robotContainer.outputValues();
+        // if(SmartDashboard.getBoolean("Testing", false)) robotContainer.getConstantTuning();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
             autoCommand.schedule();
         }
 
-        robotContainer.resetIndexer();
+        // robotContainer.resetIndexer();
     }
 
     @Override
@@ -41,11 +41,11 @@ public class Robot extends TimedRobot {
             autoCommand.cancel();
         }
 
-        robotContainer.resetIndexer();
+        // robotContainer.resetIndexer();
     }
 
     @Override
     public void testInit() {
-        robotContainer.setUpConstantTuning();
+        // robotContainer.setUpConstantTuning();
     }
 }
