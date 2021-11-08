@@ -12,6 +12,7 @@ import frc.robot.commands.IntakeCellCommand;
 import frc.robot.commands.auto.segmented.*;
 import frc.robot.commands.auto.trajectory.*;
 import frc.robot.commands.drivetrain.ClosedLoopDriveCommand;
+import frc.robot.commands.drivetrain.ManualDriveCommand;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
 import frc.robot.commands.drivetrain.ReverseDriveCommand;
 import frc.robot.commands.drivetrain.SlowTurnCommand;
@@ -63,9 +64,9 @@ public class RobotContainer {
     private final Elevator elevator;
     private final Shooter shooter;
 
-    private SendableChooser<Constants.Autonomous.AutoType> autoTypeChooser;
-    private SendableChooser<Constants.Autonomous.AutoPosition> autoPositionChooser;
-    private SendableChooser<Constants.Autonomous.AutoGoal> autoGoalChooser;
+    // private SendableChooser<Constants.Autonomous.AutoType> autoTypeChooser;
+    // private SendableChooser<Constants.Autonomous.AutoPosition> autoPositionChooser;
+    // private SendableChooser<Constants.Autonomous.AutoGoal> autoGoalChooser;
 
     private int outputCounter;
     private Notifier updateNotifier;
@@ -147,7 +148,7 @@ public class RobotContainer {
         // Shooting Bindings
         // operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterShootCommand(shooter));
         operatorController.getTrigger(Hand.kLeft).whileActiveOnce(new ShooterPIDCommand(shooter));
-        operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new FreeShooterCommand(shooter,indexer));
+        operatorController.getDPad(SnailController.DPad.DOWN).whileActiveOnce(new FreeShooterCommand(shooter, indexer));
     }
 
     // public void configureAutoChoosers() {
@@ -206,6 +207,7 @@ public class RobotContainer {
         // }
 
        return new DriveDistanceCommand(drivetrain, 2);
+        // return new SegDriveAndShoot(drivetrain, indexer, shooter, intake, 3.7);
 
         // switch(position) {
         //     case MIDDLE:
@@ -240,7 +242,7 @@ public class RobotContainer {
     //     for(SnailSubsystem subsystem : subsystems) {
     //         subsystem.setUpConstantTuning();
     //     }
-    //     Limelight.setConstantTuning();
+        // Limelight.setConstantTuning();
     // }
 
     // public void getConstantTuning() {
